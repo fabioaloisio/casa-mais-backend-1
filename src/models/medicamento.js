@@ -1,3 +1,4 @@
+// Aldruin Bonfim de Lima Souza - RA 10482416915
 class Medicamento {
   constructor(data) {
     this.id = data.id || null;

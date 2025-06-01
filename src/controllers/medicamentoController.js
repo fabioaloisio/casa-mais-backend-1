@@ -1,3 +1,4 @@
+// Aldruin Bonfim de Lima Souza - RA 10482416915
 const MedicamentoRepository = require('../repository/medicamentoRepository');
 const Medicamento = require('../models/medicamento');
 
