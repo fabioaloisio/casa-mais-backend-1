@@ -1,4 +1,4 @@
-class Medicamentos {
+class Medicamento {
   constructor(data) {
     this.id = data.id || null;
     this.nome = data.nome;
@@ -60,4 +60,4 @@ class Medicamentos {
 
 }
 
-module.exports = Medicamentos;
+module.exports = Medicamento;
