@@ -1,3 +1,5 @@
+// Aldruin Bonfim de Lima Souza - RA 10482416915
+
 const db = require('../config/database');
 const Medicamento = require('../models/medicamento');
 
