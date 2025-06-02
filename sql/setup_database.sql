@@ -1,7 +1,10 @@
 -- Criar o banco de dados se não existir
-CREATE DATABASE IF NOT EXISTS casamais_db 
-CHARACTER SET utf8mb4 
+CREATE DATABASE IF NOT EXISTS casamais_db
+CHARACTER SET utf8mb4
 COLLATE utf8mb4_unicode_ci;
+
+-- Usar o banco de dados criado
+USE casamais_db;
 
 -- Criar tabela de doações
 CREATE TABLE IF NOT EXISTS doacoes (
@@ -16,7 +19,7 @@ CREATE TABLE IF NOT EXISTS doacoes (
     observacoes TEXT,
     data_cadastro DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     data_atualizacao DATETIME ON UPDATE CURRENT_TIMESTAMP,
-    
+
     INDEX idx_documento (documento),
     INDEX idx_data_doacao (data_doacao),
     INDEX idx_tipo_doador (tipo_doador)
