@@ -5,7 +5,7 @@ require('dotenv').config();
 
 async function populateDatabase() {
   let connection;
-  
+
   try {
     // Conectar ao banco de dados
     connection = await mysql.createConnection({
@@ -25,18 +25,21 @@ async function populateDatabase() {
 
     // Garantir que o banco e tabelas existem
     console.log('🔄 Verificando banco de dados e tabelas...');
-    
+
     // Verificar se as tabelas existem antes de popular
     const [tables] = await connection.execute(
-      "SELECT COUNT(*) as count FROM information_schema.tables WHERE table_schema = ? AND table_name IN ('medicamentos', 'doacoes')",
+      `SELECT COUNT(*) as count FROM information_schema.tables 
+   WHERE table_schema = ? 
+     AND table_name IN ('assistidas', 'drogas_utilizadas', 'internacoes', 'medicamentos_utilizados', 'doacoes', 'medicamentos')`,
       [process.env.DB_NAME || 'casamais_db']
     );
-    
-    if (tables[0].count < 2) {
+
+
+    if (tables[0].count < 6) {
       console.log('❌ Tabelas não encontradas. Execute primeiro: npm run setup-db');
       process.exit(1);
     }
-    
+
     console.log('✅ Tabelas verificadas');
 
     // Executar o script SQL
@@ -48,10 +51,25 @@ async function populateDatabase() {
     const [doacoes] = await connection.execute('SELECT COUNT(*) as total FROM doacoes');
     const [totalArrecadado] = await connection.execute('SELECT COALESCE(SUM(valor), 0) as total FROM doacoes');
 
+    const [assistidas] = await connection.execute('SELECT COUNT(*) as total FROM assistidas');
+    const [drogas] = await connection.execute('SELECT COUNT(*) as total FROM drogas_utilizadas');
+    const [internacoes] = await connection.execute('SELECT COUNT(*) as total FROM internacoes');
+    const [medicamentosUtilizados] = await connection.execute('SELECT COUNT(*) as total FROM medicamentos_utilizados');
+
+
     console.log('\n📊 Dados inseridos com sucesso:');
     console.log(`   - Medicamentos: ${medicamentos[0].total}`);
     console.log(`   - Doações: ${doacoes[0].total}`);
     console.log(`   - Total arrecadado: R$ ${Number(totalArrecadado[0].total).toFixed(2)}`);
+
+    console.log('\n📊 Dados inseridos com sucesso:');
+    console.log(`   - Assistidas: ${assistidas[0].total}`);
+    console.log(`   - Drogas utilizadas: ${drogas[0].total}`);
+    console.log(`   - Internações: ${internacoes[0].total}`);
+    console.log(`   - Medicamentos utilizados: ${medicamentosUtilizados[0].total}`);
+    console.log(`   - Doações: ${doacoes[0].total}`);
+    console.log(`   - Total arrecadado: R$ ${Number(totalArrecadado[0].total).toFixed(2)}`);
+
 
     console.log('\n🎉 População do banco de dados concluída!');
 
