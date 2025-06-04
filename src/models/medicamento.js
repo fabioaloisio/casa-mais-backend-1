@@ -44,6 +44,31 @@ class Medicamento {
     return dataValidade >= hoje;
   }
 
+  validaUpdate() {
+  const errors = [];
+
+  if (this.nome !== undefined && this.nome.trim().length === 0)
+    errors.push('Nome do Medicamento não pode ser vazio.');
+
+  if (this.tipo !== undefined && this.tipo.trim().length === 0)
+    errors.push('Tipo do Medicamento não pode ser vazio.');
+
+  if (this.quantidade !== undefined) {
+    if (typeof this.quantidade !== 'number' || this.quantidade <= 0)
+      errors.push('Quantidade deve ser um número maior que zero.');
+  }
+
+  if (this.validade !== undefined) {
+    if (this.validade.trim().length === 0) {
+      errors.push('Data de validade não pode ser vazia.');
+    } else if (!this.validaData(this.validade)) {
+      errors.push('Data de validade inválida. Formato esperado: MM/YYYY.');
+    }
+  }
+
+  return errors;
+}
+
   getDataParaMySQL() {
     const [mes, ano] = this.validade.split('/');
     return `${ano}-${mes}-01`;
