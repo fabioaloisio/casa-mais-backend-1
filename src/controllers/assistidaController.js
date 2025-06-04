@@ -171,7 +171,6 @@ class AssistidaController {
             });
         }
     }
-    //incluido
 
 }
 
