@@ -8,74 +8,59 @@ class Medicamento {
     this.validade = data.validade;
   }
 
-  validaMedicamento() {
+  validate(isUpdate = false) {
     const errors = [];
 
-    if (!this.nome || this.nome.trim().length === 0)
-      errors.push('Nome do Medicamento é obrigatório.');
-
-    if (!this.tipo || this.tipo.trim().length === 0)
-      errors.push('Tipo do Medicamento é obrigatório.');
-
-    if (this.quantidade === undefined || this.quantidade === null)
-      errors.push('Quantidade é obrigatória.');
-    else if (typeof this.quantidade !== 'number' || this.quantidade <= 0)
-      errors.push('Quantidade deve ser um número maior que zero.');
-
-    if (!this.validade || this.validade.trim().length === 0) {
-      errors.push('Data de validade é obrigatória.');
-    } else if (!this.validaData(this.validade)) {
-      errors.push('Data de validade inválida. Formato esperado: MM/YYYY e mês entre 01 e 12.');
+    if (!isUpdate || this.nome !== undefined) {
+      if (!this.nome || this.nome.trim().length === 0) {
+        errors.push(isUpdate ? 'Nome do Medicamento não pode ser vazio.' : 'Nome do Medicamento é obrigatório.');
+      }
     }
 
+    if (!isUpdate || this.tipo !== undefined) {
+      if (!this.tipo || this.tipo.trim().length === 0) {
+        errors.push(isUpdate ? 'Tipo do Medicamento não pode ser vazio.' : 'Tipo do Medicamento é obrigatório.');
+      }
+    }
+
+    if (!isUpdate || this.quantidade !== undefined) {
+      if (this.quantidade === undefined || this.quantidade === null) {
+        errors.push('Quantidade é obrigatória.');
+      } else if (typeof this.quantidade !== 'number' || this.quantidade <= 0) {
+        errors.push('Quantidade deve ser um número maior que zero.');
+      }
+    }
+
+    if (!isUpdate || this.validade !== undefined) {
+      if (!this.validade || this.validade.trim().length === 0) {
+        errors.push(isUpdate ? 'Data de validade não pode ser vazia.' : 'Data de validade é obrigatória.');
+      } else if (!this.validaData(this.validade)) {
+        errors.push('Data de validade inválida. Formato esperado: DD/MM/YYYY.');
+      }
+    }
     return errors;
   }
 
   validaData(data) {
-    const regex = /^(0[1-9]|1[0-2])\/\d{4}$/;
+    const regex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
     if (!regex.test(data)) return false;
 
-    const [mes, ano] = data.split('/').map(Number);
+    const [dia, mes, ano] = data.split('/').map(Number);
 
-    const dataValidade = new Date(ano, mes - 1, 1);
+    const dataValidade = new Date(ano, mes - 1, dia);
     const hoje = new Date();
     hoje.setHours(0, 0, 0, 0);
 
     return dataValidade >= hoje;
   }
 
-  validaUpdate() {
-  const errors = [];
-
-  if (this.nome !== undefined && this.nome.trim().length === 0)
-    errors.push('Nome do Medicamento não pode ser vazio.');
-
-  if (this.tipo !== undefined && this.tipo.trim().length === 0)
-    errors.push('Tipo do Medicamento não pode ser vazio.');
-
-  if (this.quantidade !== undefined) {
-    if (typeof this.quantidade !== 'number' || this.quantidade <= 0)
-      errors.push('Quantidade deve ser um número maior que zero.');
-  }
-
-  if (this.validade !== undefined) {
-    if (this.validade.trim().length === 0) {
-      errors.push('Data de validade não pode ser vazia.');
-    } else if (!this.validaData(this.validade)) {
-      errors.push('Data de validade inválida. Formato esperado: MM/YYYY.');
-    }
-  }
-
-  return errors;
-}
-
   getDataParaMySQL() {
-    const [mes, ano] = this.validade.split('/');
-    return `${ano}-${mes}-01`;
+    const [dia, mes, ano] = this.validade.split('/');
+    return `${ano}-${mes.padStart(2, '0')}-${dia.padStart(2, '0')}`;
   }
 
-  toJSON(){
-    return{
+  toJSON() {
+    return {
       id: this.id,
       nome: this.nome,
       tipo: this.tipo,
