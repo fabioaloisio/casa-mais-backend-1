@@ -330,7 +330,7 @@ class AssistidaRepository {
             if (row.status === 'Inativa') stats.inativas = row.quantidade;
         }
 
-        return stats;
+        return stats
     }
 
 }
