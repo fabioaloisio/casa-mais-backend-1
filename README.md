@@ -65,15 +65,19 @@ src/
 ├── controllers/        # Controladores (lógica de negócio)
 │   ├── medicamentoController.js
 │   └── doacaoController.js
+│   └── assistidaController.js
 ├── models/             # Modelos (validação e formatação)
 │   ├── medicamento.js
 │   └── doacao.js
+│   └── assistida.js
 ├── repository/         # Camada de acesso a dados
 │   ├── medicamentoRepository.js
 │   └── doacaoRepository.js
+│   └── assistidasRepository.js
 └── routes/             # Definição de rotas
     ├── medicamentoRoutes.js
     └── doacaoRoutes.js
+    └── assistidasRoutes.js
 ```
 
 ## 🛣️ Endpoints da API
@@ -99,6 +103,13 @@ http://localhost:3003/api
 - `POST /api/doacoes` - Criar nova doação
 - `PUT /api/doacoes/:id` - Atualizar doação
 - `DELETE /api/doacoes/:id` - Excluir doação
+- 
+### Assistidas
+- `GET /api/assistidas` - Listar todas as assistidas
+- `GET /api/assistidas/:id` - Buscar assistida por ID
+- `POST /api/assistidas` - Criar nova assistida
+- `PUT /api/assistidas/:id` - Atualizar assistida
+- `DELETE /api/assistidas/:id` - Excluir assistida
 
 ## 🏗️ Arquitetura
 
@@ -175,6 +186,69 @@ npm run dev
 - data_atualizacao (DATETIME)
 ```
 
+**Assistidas**
+```sql - assistidas
+- id (INT, PK, AUTO_INCREMENT)
+- nome (VARCHAR 255)
+- cpf (VARCHAR 20, UNIQUE)
+- rg (VARCHAR 20)
+- idade (INT)
+- data_nascimento (DATE)
+- nacionalidade (VARCHAR 100)
+- estado_civil (VARCHAR 100)
+- profissao (VARCHAR 100)
+- escolaridade (VARCHAR 100)
+- status (VARCHAR 50)
+- logradouro (VARCHAR 255)
+- bairro (VARCHAR 255)
+- numero (VARCHAR 20)
+- cep (VARCHAR 20)
+- estado (VARCHAR 2)
+- cidade (VARCHAR 100)
+- telefone (VARCHAR 20)
+- telefone_contato (VARCHAR 20)
+- data_atendimento (DATE)
+- hora (TIME)
+- historia_patologica (TEXT)
+- tempo_sem_uso (VARCHAR 100)
+- motivacao_internacoes (TEXT)
+- fatos_marcantes (TEXT)
+- infancia (TEXT)
+- adolescencia (TEXT)
+- createdAt (TIMESTAMP)
+- updatedAt (TIMESTAMP)
+```
+
+``` sql drogas_utilizadas
+- id (INT, PK, AUTO_INCREMENT)
+- assistida_id (INT, FK → assistidas.id)
+- tipo (VARCHAR 100)
+- idade_inicio (INT)
+- tempo_uso (VARCHAR 100)
+- intensidade (VARCHAR 100)
+- createdAt (TIMESTAMP)
+- updatedAt (TIMESTAMP)
+```
+
+``` sql internacoes
+- id (INT, PK, AUTO_INCREMENT)
+- assistida_id (INT, FK → assistidas.id)
+- local (VARCHAR 255)
+- duracao (VARCHAR 100)
+- data (DATE)
+- createdAt (TIMESTAMP)
+- updatedAt (TIMESTAMP)
+```
+
+``` sql medicamentos_utilizados
+- id (INT, PK, AUTO_INCREMENT)
+- assistida_id (INT, FK → assistidas.id)
+- nome (VARCHAR 255)
+- dosagem (VARCHAR 50)
+- frequencia (VARCHAR 100)
+- createdAt (TIMESTAMP)
+- updatedAt (TIMESTAMP)
+```
 ## 🚀 Deploy
 
 Para deploy em produção:
