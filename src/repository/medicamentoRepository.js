@@ -34,10 +34,35 @@ class MedicamentoRepository {
   }
 
   async update(id, medicamento) {
+    const campos = [];
+    const valores = [];
+
+    if (medicamento.nome !== undefined) {
+      campos.push('nome = ?');
+      valores.push(medicamento.nome);
+    }
+    if (medicamento.tipo !== undefined) {
+      campos.push('tipo = ?');
+      valores.push(medicamento.tipo);
+    }
+    if (medicamento.quantidade !== undefined) {
+      campos.push('quantidade = ?');
+      valores.push(medicamento.quantidade);
+    }
+    if (medicamento.validade !== undefined) {
+      campos.push('validade = ?');
+      valores.push(medicamento.getDataParaMySQL());
+    }
+
+    if (campos.length === 0) return false;
+
+    valores.push(id);
+
     const [result] = await db.execute(
-      `UPDATE medicamentos SET nome = ?, tipo = ?, quantidade = ?, validade = ? WHERE id = ?;`,
-      [medicamento.nome, medicamento.tipo, medicamento.quantidade, medicamento.getDataParaMySQL(), id]
+      `UPDATE medicamentos SET ${campos.join(', ')} WHERE id = ?;`,
+      valores
     );
+
     return result.affectedRows > 0;
   }
 

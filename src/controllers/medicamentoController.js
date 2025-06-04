@@ -53,7 +53,7 @@ class MedicamentoController {
   async create(req, res) {
     try {
       const medicamento = new Medicamento(req.body);
-      const errors = medicamento.validaMedicamento();
+      const errors = medicamento.validate();
 
       if (errors.length > 0) {
         return res.status(400).json({ success: false, errors });
@@ -77,7 +77,7 @@ class MedicamentoController {
       const { id } = req.params;
       const medicamento = new Medicamento({ ...req.body, id });
 
-      const errors = medicamento.validaMedicamento();
+      const errors = medicamento.validate();
       if (errors.length > 0) {
         return res.status(400).json({ success: false, errors });
       }
