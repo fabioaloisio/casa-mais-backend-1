@@ -146,7 +146,7 @@ class AssistidaController {
             })
         }
     }
-    
+
     async estatisticas(req, res) {
         try {
             const filtros = {
@@ -171,7 +171,7 @@ class AssistidaController {
             });
         }
     }
-
+    //incluido
 
 }
 
