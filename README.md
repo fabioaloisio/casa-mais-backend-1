@@ -14,9 +14,10 @@ API REST para o sistema de gestão da organização social Casa de Lázaro de Be
 ## 📦 Instalação
 
 ### Pré-requisitos
+
 - Node.js 16+ instalado
 - MySQL 8.0+ instalado e rodando
-- Ver detalhes em: `CONFIGURACAO_MYSQL.md`
+- Ver detalhes em: [CONFIGURACAO_MYSQL.md](../docs/CONFIGURACAO_MYSQL.md)
 
 ```bash
 # Instalar dependências
@@ -26,9 +27,13 @@ npm install
 # Por padrão usa: host=localhost, user=root, password=admin, database=casamais_db
 
 # Criar banco de dados e tabelas
+npm run setup-db
+# ou
 node setup-db.js
 
 # Popular com dados de exemplo (opcional)
+npm run populate-db
+# ou
 node populate-db.js
 
 # Iniciar servidor
@@ -49,15 +54,15 @@ npm start
 **Arquivo**: `src/config/database.js`
 
 ```javascript
-// Configuração atual (hardcoded)
+// Utiliza variáveis de ambibente com fallback abaixo:
 host: 'localhost',
-user: 'root', 
+user: 'root',
 password: 'admin',
 database: 'casamais_db',
 port: 3306
 ```
 
-**⚠️ Para produção**: Configure variáveis de ambiente no `database.js`
+**⚠️ Para produção**: Configure apenas variáveis de ambiente no `database.js`
 
 ```env
 # Exemplo para produção
@@ -105,11 +110,13 @@ Para instruções detalhadas: [CONFIGURACAO_MYSQL.md](./CONFIGURACAO_MYSQL.md)
 ## 🛣️ Endpoints da API
 
 ### Base URL
+
 ```
 http://localhost:3003/api
 ```
 
 ### Assistidas
+
 - `GET /api/assistidas` - Listar todas as assistidas
 - `GET /api/assistidas/:id` - Buscar assistida por ID
 - `POST /api/assistidas` - Criar nova assistida
@@ -117,6 +124,7 @@ http://localhost:3003/api
 - `DELETE /api/assistidas/:id` - Excluir assistida
 
 ### Medicamentos
+
 - `GET /api/medicamentos` - Listar todos os medicamentos
 - `GET /api/medicamentos/:id` - Buscar medicamento por ID
 - `POST /api/medicamentos` - Criar novo medicamento
@@ -124,6 +132,7 @@ http://localhost:3003/api
 - `DELETE /api/medicamentos/:id` - Excluir medicamento
 
 ### Doações
+
 - `GET /api/doacoes` - Listar todas as doações
   - Query params: `tipo_doador`, `data_inicio`, `data_fim`, `limit`, `offset`
 - `GET /api/doacoes/:id` - Buscar doação por ID
@@ -183,6 +192,7 @@ npm run dev
 ### Tabelas Principais
 
 **assistidas**
+
 ```sql
 - id (INT, PK, AUTO_INCREMENT)
 - nome_completo (VARCHAR 255)
@@ -209,6 +219,7 @@ npm run dev
 ```
 
 **drogas_utilizadas** (relacionada com assistidas)
+
 ```sql
 - id (INT, PK, AUTO_INCREMENT)
 - assistida_id (INT, FK)
@@ -218,8 +229,9 @@ npm run dev
 ```
 
 **internacoes** (relacionada com assistidas)
+
 ```sql
-- id (INT, PK, AUTO_INCREMENT) 
+- id (INT, PK, AUTO_INCREMENT)
 - assistida_id (INT, FK)
 - data_internacao (DATE)
 - motivo (VARCHAR 255)
@@ -229,6 +241,7 @@ npm run dev
 ```
 
 **medicamentos**
+
 ```sql
 - id (INT, PK, AUTO_INCREMENT)
 - nome (VARCHAR 100)
@@ -240,6 +253,7 @@ npm run dev
 ```
 
 **doacoes**
+
 ```sql
 - id (INT, PK, AUTO_INCREMENT)
 - tipo_doador (ENUM 'PF', 'PJ')
@@ -255,6 +269,7 @@ npm run dev
 ```
 
 **drogas_utilizadas** (relacionada com assistidas)
+
 ```sql
 - id (INT, PK, AUTO_INCREMENT)
 - assistida_id (INT, FK)
@@ -266,6 +281,7 @@ npm run dev
 ```
 
 **internacoes** (relacionada com assistidas)
+
 ```sql
 - id (INT, PK, AUTO_INCREMENT)
 - assistida_id (INT, FK)
