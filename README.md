@@ -1,71 +1,70 @@
-# Casa Mais - Backend
+# 🏠 Casa+ Backend
 
-API REST para o sistema de gestão da organização social Casa de Lázaro de Betânia.
+API REST completa para o sistema de gestão da Casa+, uma ONG dedicada ao cuidado de mulheres em situação de vulnerabilidade.
 
-## 🚀 Tecnologias
+## 🚀 Funcionalidades Implementadas
+
+### 👥 **Gestão de Doadores**
+- ✅ CRUD completo de doadores (PF/PJ)
+- ✅ CPF/CNPJ com dígitos verificadores válidos
+- ✅ Endereços completos com dados brasileiros
+- ✅ Sistema de ativação/desativação
+- ✅ Histórico completo de doações por doador
+
+### 💰 **Gestão de Doações**
+- ✅ Sistema normalizado com relacionamento entre doadores e doações
+- ✅ Compatibilidade com formato antigo (dadosDoador inline)
+- ✅ Filtros avançados (período, tipo, doador)
+- ✅ Estatísticas e relatórios
+- ✅ Validações de negócio
+
+### 💊 **Gestão de Medicamentos**
+- ✅ Cadastro completo com validações
+- ✅ Controle de lote e validade
+- ✅ Sistema de estoque
+
+### 👩 **Gestão de Assistidas**
+- ✅ Cadastro de mulheres assistidas
+- ✅ Controle de internações
+- ✅ Histórico de medicamentos utilizados
+
+## 🛠️ Tecnologias
 
 - **Node.js** - Runtime JavaScript
-- **Express 5.1.0** - Framework web
-- **MySQL2 3.14.1** - Driver MySQL com suporte a Promises
-- **CORS 2.8.5** - Middleware para Cross-Origin Resource Sharing
-- **Dotenv 16.5.0** - Gerenciamento de variáveis de ambiente
-- **Nodemon 3.1.10** - Hot reload para desenvolvimento
+- **Express.js** - Framework web
+- **MySQL** - Banco de dados relacional
+- **mysql2** - Driver MySQL com suporte a promises
+- **dotenv** - Gerenciamento de variáveis de ambiente
+- **cors** - Middleware para CORS
+- **nodemon** - Auto-reload em desenvolvimento
 
-## 📦 Instalação
+## 📦 Instalação e Setup
 
-### Pré-requisitos
-
-- Node.js 16+ instalado
-- MySQL 8.0+ instalado e rodando
-- Ver detalhes em: [CONFIGURACAO_MYSQL.md](../docs/CONFIGURACAO_MYSQL.md)
-
+### 1. Pré-requisitos
 ```bash
-# Instalar dependências
+# Node.js 18+
+node --version
+
+# MySQL 8.0+
+mysql --version
+```
+
+### 2. Instalação
+```bash
+# Clone o repositório
+git clone <url-do-repo>
+cd casa_mais/backend
+
+# Instale as dependências
 npm install
-
-# Configurar banco de dados (edite src/config/database.js se necessário)
-# Por padrão usa: host=localhost, user=root, password=admin, database=casamais_db
-
-# Criar banco de dados e tabelas
-npm run setup-db
-# ou
-node setup-db.js
-
-# Popular com dados de exemplo (opcional)
-npm run populate-db
-# ou
-node populate-db.js
-
-# Iniciar servidor
-npm start
 ```
 
-## 🎯 Scripts Disponíveis
+### 3. Configuração do Banco
+```bash
+# Configure o arquivo .env
+cp .env.example .env
 
-- `npm start` - Inicia o servidor em produção (porta 3003)
-- `node setup-db.js` - Cria o banco de dados e tabelas
-- `node populate-db.js` - Popula o banco com dados de exemplo
-- `node index.js` - Forma alternativa de iniciar o servidor
-
-## 🔧 Configuração
-
-### Configuração do Banco de Dados
-
-**Arquivo**: `src/config/database.js`
-
-```javascript
-// Utiliza variáveis de ambibente com fallback abaixo:
-host: 'localhost',
-user: 'root',
-password: 'admin',
-database: 'casamais_db',
-port: 3306
-```
-
-**⚠️ Para produção**: Configure apenas variáveis de ambiente no `database.js`
-
-```env
-# Exemplo para produção
+# Edite o .env com suas credenciais MySQL
 DB_HOST=localhost
 DB_USER=root
 DB_PASSWORD=sua_senha
@@ -73,241 +72,234 @@ DB_NAME=casamais_db
 DB_PORT=3306
 ```
 
-Para instruções detalhadas: [CONFIGURACAO_MYSQL.md](./CONFIGURACAO_MYSQL.md)
-
-## 📁 Estrutura do Projeto
-
-```
-.
-├── index.js            # Ponto de entrada da aplicação
-├── setup-db.js         # Script para criar banco e tabelas
-├── populate-db.js      # Script para popular dados de exemplo
-├── sql/                # Scripts SQL
-│   ├── setup_database.sql
-│   └── populate_data.sql
-└── src/
-    ├── app.js          # Configuração do Express
-    ├── config/
-    │   └── database.js # Configuração e pool de conexões MySQL
-    ├── controllers/    # Controladores (lógica de negócio)
-    │   ├── assistidaController.js
-    │   ├── doacaoController.js
-    │   └── medicamentoController.js
-    ├── models/         # Modelos (validação e formatação)
-    │   ├── assistida.js
-    │   ├── doacao.js
-    │   └── medicamento.js
-    ├── repository/     # Camada de acesso a dados
-    │   ├── assistidasRepository.js
-    │   ├── doacaoRepository.js
-    │   └── medicamentoRepository.js
-    └── routes/         # Definição de rotas
-        ├── assistidasRoutes.js
-        ├── doacaoRoutes.js
-        └── medicamentoRoutes.js
-```
-
-## 🛣️ Endpoints da API
-
-### Base URL
-
-```
-http://localhost:3003/api
-```
-
-### Assistidas
-
-- `GET /api/assistidas` - Listar todas as assistidas
-- `GET /api/assistidas/:id` - Buscar assistida por ID
-- `POST /api/assistidas` - Criar nova assistida
-- `PUT /api/assistidas/:id` - Atualizar assistida
-- `DELETE /api/assistidas/:id` - Excluir assistida
-
-### Medicamentos
-
-- `GET /api/medicamentos` - Listar todos os medicamentos
-- `GET /api/medicamentos/:id` - Buscar medicamento por ID
-- `POST /api/medicamentos` - Criar novo medicamento
-- `PUT /api/medicamentos/:id` - Atualizar medicamento
-- `DELETE /api/medicamentos/:id` - Excluir medicamento
-
-### Doações
-
-- `GET /api/doacoes` - Listar todas as doações
-  - Query params: `tipo_doador`, `data_inicio`, `data_fim`, `limit`, `offset`
-- `GET /api/doacoes/:id` - Buscar doação por ID
-- `GET /api/doacoes/doador/:documento` - Buscar doações por CPF/CNPJ
-- `GET /api/doacoes/estatisticas` - Obter estatísticas
-- `POST /api/doacoes` - Criar nova doação
-- `PUT /api/doacoes/:id` - Atualizar doação
-- `DELETE /api/doacoes/:id` - Excluir doação
-
-## 🏗️ Arquitetura
-
-O projeto segue o padrão **MVC + Repository Pattern**:
-
-1. **Routes** → Define os endpoints e mapeia para controllers
-2. **Controllers** → Recebe requisições, valida e retorna respostas
-3. **Models** → Define estrutura e validações de negócio
-4. **Repository** → Acesso ao banco de dados
-5. **Database** → Pool de conexões MySQL
-
-### Fluxo de Dados
-
-```
-Request → Route → Controller → Model (validação) → Repository → Database
-                      ↓
-                   Response ← Controller ← Repository ←
-```
-
-## 🔒 Segurança
-
-- Validação de entrada em todos os endpoints
-- Prepared statements para prevenir SQL Injection
-- CORS configurado para aceitar requisições do frontend
-- Variáveis sensíveis em arquivo .env (não commitado)
-
-## 🧪 Desenvolvimento
-
-### Iniciando em modo desenvolvimento
-
+### 4. Setup do Banco de Dados
 ```bash
-# Backend com hot reload
-npm run dev
+# Criar banco e tabelas
+npm run setup-db
 
-# Em outro terminal, frontend
-cd ../frontend
-npm run dev
+# Popular com dados de exemplo (inclui doadores com CPF/CNPJ válidos)
+npm run populate-doadores
+
+# Validar documentos gerados
+npm run validate-docs
 ```
 
-### Padrões de Código
+### 5. Iniciar o Servidor
+```bash
+# Desenvolvimento (auto-reload)
+npm run dev
 
-- CommonJS modules (`require`/`module.exports`)
-- Async/await para operações assíncronas
-- Tratamento de erros centralizado
-- Respostas padronizadas: `{ success: boolean, data?: any, error?: string }`
+# Produção
+npm start
+```
 
-## 📊 Banco de Dados
+Servidor rodando em: `http://localhost:3003`
+
+## 📋 Scripts Disponíveis
+
+| Script | Descrição |
+|--------|-----------|
+| `npm start` | Inicia servidor em produção |
+| `npm run dev` | Inicia servidor em desenvolvimento |
+| `npm run setup-db` | Cria banco e tabelas |
+| `npm run populate-db` | Popula dados originais |
+| `npm run populate-doadores` | Popula doadores com CPF/CNPJ válidos |
+| `npm run validate-docs` | Valida todos os documentos |
+
+## 🌐 Endpoints da API
+
+### 👥 Doadores (`/api/doadores`)
+
+| Método | Endpoint | Descrição |
+|--------|----------|-----------|
+| `GET` | `/` | Lista todos os doadores |
+| `POST` | `/` | Cria novo doador |
+| `GET` | `/:id` | Busca doador por ID |
+| `PUT` | `/:id` | Atualiza doador |
+| `DELETE` | `/:id` | Desativa doador |
+| `GET` | `/:id/doacoes` | Histórico de doações |
+
+**Filtros disponíveis:**
+- `?tipo_doador=PF/PJ` - Filtra por tipo
+- `?search=nome` - Busca por nome
+- `?ativo=true/false` - Filtra por status
+
+### 💰 Doações (`/api/doacoes`)
+
+| Método | Endpoint | Descrição |
+|--------|----------|-----------|
+| `GET` | `/` | Lista todas as doações |
+| `POST` | `/` | Cria nova doação |
+| `GET` | `/:id` | Busca doação por ID |
+| `PUT` | `/:id` | Atualiza doação |
+| `DELETE` | `/:id` | Exclui doação |
+| `GET` | `/doador/:id` | Doações por doador |
+| `GET` | `/estatisticas` | Dashboard |
+
+**Filtros disponíveis:**
+- `?tipoDoador=PF/PJ` - Filtra por tipo de doador
+- `?dataInicio=YYYY-MM-DD` - Data inicial
+- `?dataFim=YYYY-MM-DD` - Data final
+- `?doadorId=123` - Doações de um doador específico
+
+### 💊 Medicamentos (`/api/medicamentos`)
+
+| Método | Endpoint | Descrição |
+|--------|----------|-----------|
+| `GET` | `/` | Lista medicamentos |
+| `POST` | `/` | Cria medicamento |
+| `GET` | `/:id` | Busca por ID |
+| `PUT` | `/:id` | Atualiza medicamento |
+| `DELETE` | `/:id` | Exclui medicamento |
+
+### 👩 Assistidas (`/api/assistidas`)
+
+| Método | Endpoint | Descrição |
+|--------|----------|-----------|
+| `GET` | `/` | Lista assistidas |
+| `POST` | `/` | Cria assistida |
+| `GET` | `/:id` | Busca por ID |
+| `PUT` | `/:id` | Atualiza assistida |
+| `DELETE` | `/:id` | Exclui assistida |
+
+## 🧪 Testando a API
+
+### Testes Automatizados
+```bash
+# Testar todos os endpoints de doadores
+./test_doadores_endpoints.sh
+
+# Testar todos os endpoints de doações
+./test_doacoes_endpoints.sh
+```
+
+### Exemplos de Uso
+
+#### Criar Doador PF
+```bash
+curl -X POST http://localhost:3003/api/doadores \
+  -H "Content-Type: application/json" \
+  -d '{
+    "tipo_doador": "PF",
+    "nome": "João da Silva",
+    "documento": "12345678901",
+    "email": "joao@email.com",
+    "telefone": "11999999999",
+    "endereco": "Rua das Flores, 123",
+    "cidade": "São Paulo",
+    "estado": "SP",
+    "cep": "01234567"
+  }'
+```
+
+#### Criar Doação
+```bash
+curl -X POST http://localhost:3003/api/doacoes \
+  -H "Content-Type: application/json" \
+  -d '{
+    "doadorId": 1,
+    "valor": 250.75,
+    "dataDoacao": "2025-06-05",
+    "observacoes": "Doação mensal"
+  }'
+```
+
+## 📊 Estrutura do Banco de Dados
 
 ### Tabelas Principais
 
-**assistidas**
+#### `doadores`
+- Informações completas dos doadores
+- CPF/CNPJ com validação
+- Endereço completo
+- Status ativo/inativo
 
-```sql
-- id (INT, PK, AUTO_INCREMENT)
-- nome_completo (VARCHAR 255)
-- cpf (VARCHAR 11, UNIQUE)
-- data_nascimento (DATE)
-- telefone (VARCHAR 15)
-- email (VARCHAR 255)
-- endereco (VARCHAR 255)
-- cep (VARCHAR 8)
-- cidade (VARCHAR 100)
-- estado (VARCHAR 2)
-- estado_civil (ENUM)
-- profissao (VARCHAR 100)
-- renda_familiar (DECIMAL 10,2)
-- numero_filhos (INT)
-- situacao_habitacional (ENUM)
-- beneficios_sociais (TEXT)
-- condicoes_saude (TEXT)
-- medicamentos_uso (TEXT)
-- historico_atendimento (TEXT)
-- observacoes (TEXT)
-- data_cadastro (DATETIME)
-- data_atualizacao (DATETIME)
+#### `doacoes`
+- Relacionamento com doadores via `doador_id`
+- Valores e datas das doações
+- Observações
+
+#### `medicamentos`
+- Catálogo de medicamentos
+- Controle de estoque e validade
+
+#### `assistidas`
+- Cadastro das mulheres assistidas
+- Histórico de atendimentos
+
+### Relacionamentos
+- `doacoes.doador_id` → `doadores.id` (FK)
+- `internacoes.assistida_id` → `assistidas.id` (FK)
+- `medicamentos_utilizados.medicamento_id` → `medicamentos.id` (FK)
+
+## 📚 Documentação Adicional
+
+- **[CURL_COMMANDS.md](./CURL_COMMANDS.md)** - Comandos curl para todos os endpoints
+- **[DOCUMENTOS_VALIDOS.md](./DOCUMENTOS_VALIDOS.md)** - Explicação sobre validação de CPF/CNPJ
+- **[sql/](./sql/)** - Scripts de criação e migração do banco
+
+## 🔧 Configuração Avançada
+
+### Variáveis de Ambiente
+
+```env
+# Servidor
+PORT=3003
+NODE_ENV=development
+
+# Banco de Dados
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=sua_senha
+DB_NAME=casamais_db
+DB_PORT=3306
+DB_CONNECTION_LIMIT=10
 ```
 
-**drogas_utilizadas** (relacionada com assistidas)
+### Estrutura de Arquivos
 
-```sql
-- id (INT, PK, AUTO_INCREMENT)
-- assistida_id (INT, FK)
-- droga (VARCHAR 100)
-- frequencia (VARCHAR 50)
-- observacoes (TEXT)
+```
+backend/
+├── src/
+│   ├── controllers/        # Lógica de controle
+│   ├── models/            # Modelos de dados
+│   ├── repository/        # Acesso ao banco
+│   ├── routes/           # Definição de rotas
+│   ├── config/           # Configurações
+│   └── app.js            # Configuração do Express
+├── sql/                  # Scripts SQL
+├── tests/               # Scripts de teste
+├── docs/               # Documentação
+└── package.json        # Dependências
 ```
 
-**internacoes** (relacionada com assistidas)
+## 🚨 Validações Implementadas
 
-```sql
-- id (INT, PK, AUTO_INCREMENT)
-- assistida_id (INT, FK)
-- data_internacao (DATE)
-- motivo (VARCHAR 255)
-- instituicao (VARCHAR 255)
-- data_alta (DATE)
-- observacoes (TEXT)
-```
+### Doadores
+- ✅ CPF: 11 dígitos com verificadores válidos
+- ✅ CNPJ: 14 dígitos com verificadores válidos
+- ✅ Email: formato válido
+- ✅ Telefone: obrigatório
+- ✅ Documento único por doador
 
-**medicamentos**
+### Doações
+- ✅ Valor maior que zero
+- ✅ Data não pode ser futura
+- ✅ Doador obrigatório e válido
+- ✅ Relacionamento via foreign key
 
-```sql
-- id (INT, PK, AUTO_INCREMENT)
-- nome (VARCHAR 100)
-- tipo (VARCHAR 45)
-- quantidade (INT)
-- validade (DATE)
-- createdAt (TIMESTAMP)
-- updatedAt (TIMESTAMP)
-```
+## 🤝 Contribuindo
 
-**doacoes**
+1. Fork o projeto
+2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
+3. Commit suas mudanças (`git commit -m 'feat: add some AmazingFeature'`)
+4. Push para a branch (`git push origin feature/AmazingFeature`)
+5. Abra um Pull Request
 
-```sql
-- id (INT, PK, AUTO_INCREMENT)
-- tipo_doador (ENUM 'PF', 'PJ')
-- nome_doador (VARCHAR 255)
-- documento (VARCHAR 14)
-- email (VARCHAR 255)
-- telefone (VARCHAR 15)
-- valor (DECIMAL 10,2)
-- data_doacao (DATE)
-- observacoes (TEXT)
-- data_cadastro (DATETIME)
-- data_atualizacao (DATETIME)
-```
+## 📄 Licença
 
-**drogas_utilizadas** (relacionada com assistidas)
+Este projeto está sob a licença ISC.
 
-```sql
-- id (INT, PK, AUTO_INCREMENT)
-- assistida_id (INT, FK)
-- tipo (VARCHAR 100)
-- idade_inicio (INT)
-- tempo_uso (VARCHAR 100)
-- intensidade (VARCHAR 100)
-- createdAt, updatedAt (TIMESTAMPS)
-```
+---
 
-**internacoes** (relacionada com assistidas)
-
-```sql
-- id (INT, PK, AUTO_INCREMENT)
-- assistida_id (INT, FK)
-- local (VARCHAR 255)
-- duracao (VARCHAR 100)
-- data (DATE)
-- createdAt, updatedAt (TIMESTAMPS)
-```
-
-## 🚀 Deploy
-
-Para deploy em produção:
-
-1. Configure as variáveis de ambiente no servidor
-2. Execute `npm install --production`
-3. Configure um processo manager (PM2, systemd, etc.)
-4. Configure proxy reverso (Nginx, Apache)
-5. Configure SSL/TLS
-
-## 👥 Contribuindo
-
-1. Crie uma branch para sua feature (`git checkout -b feature/NovaFuncionalidade`)
-2. Commit suas mudanças (`git commit -m 'Add: nova funcionalidade'`)
-3. Push para a branch (`git push origin feature/NovaFuncionalidade`)
-4. Abra um Pull Request
-
-## 📝 Licença
-
-ISC - Grupo 4
+**Desenvolvido com ❤️ para a Casa+ - Grupo 4 - UNOESTE**
