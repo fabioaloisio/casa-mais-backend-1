@@ -147,6 +147,31 @@ class AssistidaController {
         }
     }
 
+    async estatisticas(req, res) {
+        try {
+            const filtros = {
+                status: req.query.status,
+                cidade: req.query.cidade,
+                dataInicio: req.query.dataInicio,
+                dataFim: req.query.dataFim
+            };
+
+            const estatisticas = await assistidasRepository.obterEstatisticas(filtros);
+
+            return res.json({
+                success: true,
+                data: estatisticas
+            });
+        } catch (error) {
+            console.error('Erro ao obter estatísticas de assistidas:', error);
+            return res.status(500).json({
+                success: false,
+                message: 'Erro ao obter estatísticas',
+                error: error.message
+            });
+        }
+    }
+
 }
 
 module.exports = new AssistidaController();
