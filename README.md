@@ -13,81 +13,92 @@ API REST para o sistema de gestão da organização social Casa de Lázaro de Be
 
 ## 📦 Instalação
 
+### Pré-requisitos
+
+- Node.js 16+ instalado
+- MySQL 8.0+ instalado e rodando
+- Ver detalhes em: [CONFIGURACAO_MYSQL.md](../docs/CONFIGURACAO_MYSQL.md)
+
 ```bash
 # Instalar dependências
 npm install
 
-# Configurar variáveis de ambiente
-cp .env.example .env
-# Editar .env com suas credenciais do MySQL
+# Configurar banco de dados (edite src/config/database.js se necessário)
+# Por padrão usa: host=localhost, user=root, password=admin, database=casamais_db
 
 # Criar banco de dados e tabelas
 npm run setup-db
+# ou
+node setup-db.js
 
 # Popular com dados de exemplo (opcional)
 npm run populate-db
+# ou
+node populate-db.js
+
+# Iniciar servidor
+npm start
 ```
 
 ## 🎯 Scripts Disponíveis
 
-- `npm run dev` - Inicia o servidor com nodemon (hot reload)
-- `npm start` - Inicia o servidor em produção
-- `npm run setup-db` - Cria o banco de dados e tabelas
-- `npm run populate-db` - Popula o banco com dados de exemplo
+- `npm start` - Inicia o servidor em produção (porta 3003)
+- `node setup-db.js` - Cria o banco de dados e tabelas
+- `node populate-db.js` - Popula o banco com dados de exemplo
+- `node index.js` - Forma alternativa de iniciar o servidor
 
 ## 🔧 Configuração
 
-### Variáveis de Ambiente (.env)
+### Configuração do Banco de Dados
+
+**Arquivo**: `src/config/database.js`
+
+```javascript
+// Utiliza variáveis de ambibente com fallback abaixo:
+host: 'localhost',
+user: 'root',
+password: 'admin',
+database: 'casamais_db',
+port: 3306
+```
+
+**⚠️ Para produção**: Configure apenas variáveis de ambiente no `database.js`
 
 ```env
-# Servidor
-PORT=3003
-NODE_ENV=development
-
-# Banco de Dados MySQL
+# Exemplo para produção
 DB_HOST=localhost
 DB_USER=root
 DB_PASSWORD=sua_senha
 DB_NAME=casamais_db
 DB_PORT=3306
-
-# Pool de Conexões
-DB_CONNECTION_LIMIT=10
 ```
+
+Para instruções detalhadas: [CONFIGURACAO_MYSQL.md](./CONFIGURACAO_MYSQL.md)
 
 ## 📁 Estrutura do Projeto
 
 ```
-src/
-├── app.js              # Configuração do Express
-├── config/
-│   └── database.js     # Configuração e pool de conexões MySQL
-├── controllers/        # Controladores (lógica de negócio)
-│   ├── medicamentoController.js
-│   └── doacaoController.js
-│   └── assistidaController.js
-├── models/             # Modelos (validação e formatação)
-│   ├── medicamento.js
-│   └── doacao.js
-│   └── assistida.js
-├── repository/         # Camada de acesso a dados
-│   ├── medicamentoRepository.js
-│   └── doacaoRepository.js
-│   └── assistidasRepository.js
-└── routes/             # Definição de rotas
-    ├── medicamentoRoutes.js
-    └── doacaoRoutes.js
-    └── assistidasRoutes.js
+
 ```
 
 ## 🛣️ Endpoints da API
 
 ### Base URL
+
 ```
 http://localhost:3003/api
 ```
 
+### Assistidas
+
+- `GET /api/assistidas` - Listar todas as assistidas
+- `GET /api/assistidas/:id` - Buscar assistida por ID
+- `POST /api/assistidas` - Criar nova assistida
+- `PUT /api/assistidas/:id` - Atualizar assistida
+- `DELETE /api/assistidas/:id` - Excluir assistida
+
 ### Medicamentos
+
 - `GET /api/medicamentos` - Listar todos os medicamentos
 - `GET /api/medicamentos/:id` - Buscar medicamento por ID
 - `POST /api/medicamentos` - Criar novo medicamento
@@ -95,6 +106,7 @@ http://localhost:3003/api
 - `DELETE /api/medicamentos/:id` - Excluir medicamento
 
 ### Doações
+
 - `GET /api/doacoes` - Listar todas as doações
   - Query params: `tipo_doador`, `data_inicio`, `data_fim`, `limit`, `offset`
 - `GET /api/doacoes/:id` - Buscar doação por ID
@@ -145,7 +157,7 @@ Request → Route → Controller → Model (validação) → Repository → Data
 npm run dev
 
 # Em outro terminal, frontend
-cd ../casa-mais-react
+cd ../frontend
 npm run dev
 ```
 
@@ -160,7 +172,57 @@ npm run dev
 
 ### Tabelas Principais
 
+**assistidas**
+
+```sql
+- id (INT, PK, AUTO_INCREMENT)
+- nome_completo (VARCHAR 255)
+- cpf (VARCHAR 11, UNIQUE)
+- data_nascimento (DATE)
+- telefone (VARCHAR 15)
+- email (VARCHAR 255)
+- endereco (VARCHAR 255)
+- cep (VARCHAR 8)
+- cidade (VARCHAR 100)
+- estado (VARCHAR 2)
+- estado_civil (ENUM)
+- profissao (VARCHAR 100)
+- renda_familiar (DECIMAL 10,2)
+- numero_filhos (INT)
+- situacao_habitacional (ENUM)
+- beneficios_sociais (TEXT)
+- condicoes_saude (TEXT)
+- medicamentos_uso (TEXT)
+- historico_atendimento (TEXT)
+- observacoes (TEXT)
+- data_cadastro (DATETIME)
+- data_atualizacao (DATETIME)
+```
+
+**drogas_utilizadas** (relacionada com assistidas)
+
+```sql
+- id (INT, PK, AUTO_INCREMENT)
+- assistida_id (INT, FK)
+- droga (VARCHAR 100)
+- frequencia (VARCHAR 50)
+- observacoes (TEXT)
+```
+
+**internacoes** (relacionada com assistidas)
+
+```sql
+- id (INT, PK, AUTO_INCREMENT)
+- assistida_id (INT, FK)
+- data_internacao (DATE)
+- motivo (VARCHAR 255)
+- instituicao (VARCHAR 255)
+- data_alta (DATE)
+- observacoes (TEXT)
+```
+
 **medicamentos**
+
 ```sql
 - id (INT, PK, AUTO_INCREMENT)
 - nome (VARCHAR 100)
@@ -172,6 +234,7 @@ npm run dev
 ```
 
 **doacoes**
+
 ```sql
 - id (INT, PK, AUTO_INCREMENT)
 - tipo_doador (ENUM 'PF', 'PJ')
@@ -186,69 +249,12 @@ npm run dev
 - data_atualizacao (DATETIME)
 ```
 
-**Assistidas**
-```sql - assistidas
-- id (INT, PK, AUTO_INCREMENT)
-- nome (VARCHAR 255)
-- cpf (VARCHAR 20, UNIQUE)
-- rg (VARCHAR 20)
-- idade (INT)
-- data_nascimento (DATE)
-- nacionalidade (VARCHAR 100)
-- estado_civil (VARCHAR 100)
-- profissao (VARCHAR 100)
-- escolaridade (VARCHAR 100)
-- status (VARCHAR 50)
-- logradouro (VARCHAR 255)
-- bairro (VARCHAR 255)
-- numero (VARCHAR 20)
-- cep (VARCHAR 20)
-- estado (VARCHAR 2)
-- cidade (VARCHAR 100)
-- telefone (VARCHAR 20)
-- telefone_contato (VARCHAR 20)
-- data_atendimento (DATE)
-- hora (TIME)
-- historia_patologica (TEXT)
-- tempo_sem_uso (VARCHAR 100)
-- motivacao_internacoes (TEXT)
-- fatos_marcantes (TEXT)
-- infancia (TEXT)
-- adolescencia (TEXT)
-- createdAt (TIMESTAMP)
-- updatedAt (TIMESTAMP)
-```
 
-``` sql drogas_utilizadas
-- id (INT, PK, AUTO_INCREMENT)
-- assistida_id (INT, FK → assistidas.id)
 - tipo (VARCHAR 100)
 - idade_inicio (INT)
 - tempo_uso (VARCHAR 100)
 - intensidade (VARCHAR 100)
-- createdAt (TIMESTAMP)
-- updatedAt (TIMESTAMP)
-```
 
-``` sql internacoes
-- id (INT, PK, AUTO_INCREMENT)
-- assistida_id (INT, FK → assistidas.id)
-- local (VARCHAR 255)
-- duracao (VARCHAR 100)
-- data (DATE)
-- createdAt (TIMESTAMP)
-- updatedAt (TIMESTAMP)
-```
-
-``` sql medicamentos_utilizados
-- id (INT, PK, AUTO_INCREMENT)
-- assistida_id (INT, FK → assistidas.id)
-- nome (VARCHAR 255)
-- dosagem (VARCHAR 50)
-- frequencia (VARCHAR 100)
-- createdAt (TIMESTAMP)
-- updatedAt (TIMESTAMP)
-```
 ## 🚀 Deploy
 
 Para deploy em produção:
