@@ -114,7 +114,7 @@ class DoadorRepository {
     const connection = await pool.getConnection();
     try {
       const [result] = await connection.execute(
-        'UPDATE doadores SET ativo = FALSE WHERE id = ?',
+        'DELETE FROM doadores WHERE id = ?',
         [id]
       );
       return result.affectedRows;
