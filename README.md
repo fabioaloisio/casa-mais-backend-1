@@ -5,13 +5,14 @@ API REST completa para o sistema de gestão da Casa+, uma ONG dedicada ao cuidad
 ## 🚀 Funcionalidades Implementadas
 
 ### 👥 **Gestão de Doadores**
+
 - ✅ CRUD completo de doadores (PF/PJ)
 - ✅ CPF/CNPJ com dígitos verificadores válidos
 - ✅ Endereços completos com dados brasileiros
-- ✅ Sistema de ativação/desativação
 - ✅ Histórico completo de doações por doador
 
 ### 💰 **Gestão de Doações**
+
 - ✅ Sistema normalizado com relacionamento entre doadores e doações
 - ✅ Compatibilidade com formato antigo (dadosDoador inline)
 - ✅ Filtros avançados (período, tipo, doador)
@@ -19,11 +20,12 @@ API REST completa para o sistema de gestão da Casa+, uma ONG dedicada ao cuidad
 - ✅ Validações de negócio
 
 ### 💊 **Gestão de Medicamentos**
+
 - ✅ Cadastro completo com validações
-- ✅ Controle de lote e validade
 - ✅ Sistema de estoque
 
 ### 👩 **Gestão de Assistidas**
+
 - ✅ Cadastro de mulheres assistidas
 - ✅ Controle de internações
 - ✅ Histórico de medicamentos utilizados
@@ -41,6 +43,7 @@ API REST completa para o sistema de gestão da Casa+, uma ONG dedicada ao cuidad
 ## 📦 Instalação e Setup
 
 ### 1. Pré-requisitos
+
 ```bash
 # Node.js 18+
 node --version
@@ -50,6 +53,7 @@ mysql --version
 ```
 
 ### 2. Instalação
+
 ```bash
 # Clone o repositório
 git clone <url-do-repo>
@@ -60,6 +64,7 @@ npm install
 ```
 
 ### 3. Configuração do Banco
+
 ```bash
 # Configure o arquivo .env
 cp .env.example .env
@@ -73,6 +78,7 @@ DB_PORT=3306
 ```
 
 ### 4. Setup do Banco de Dados
+
 ```bash
 # Criar banco e tabelas
 npm run setup-db
@@ -85,6 +91,7 @@ npm run validate-docs
 ```
 
 ### 5. Iniciar o Servidor
+
 ```bash
 # Desenvolvimento (auto-reload)
 npm run dev
@@ -97,46 +104,50 @@ Servidor rodando em: `http://localhost:3003`
 
 ## 📋 Scripts Disponíveis
 
-| Script | Descrição |
-|--------|-----------|
-| `npm start` | Inicia servidor em produção |
-| `npm run dev` | Inicia servidor em desenvolvimento |
-| `npm run setup-db` | Cria banco e tabelas |
-| `npm run populate-db` | Popula dados originais |
+| Script                      | Descrição                            |
+| --------------------------- | ------------------------------------ |
+| `npm start`                 | Inicia servidor em produção          |
+| `npm run dev`               | Inicia servidor em desenvolvimento   |
+| `npm run setup-db`          | Cria banco e tabelas                 |
+| `npm run populate-db`       | Popula dados originais               |
 | `npm run populate-doadores` | Popula doadores com CPF/CNPJ válidos |
-| `npm run validate-docs` | Valida todos os documentos |
+| `npm run validate-docs`     | Valida todos os documentos           |
+| `npm run test:doadores`     | Testa endpoints de doadores          |
+| `npm run test:doacoes`      | Testa endpoints de doações           |
 
 ## 🌐 Endpoints da API
 
 ### 👥 Doadores (`/api/doadores`)
 
-| Método | Endpoint | Descrição |
-|--------|----------|-----------|
-| `GET` | `/` | Lista todos os doadores |
-| `POST` | `/` | Cria novo doador |
-| `GET` | `/:id` | Busca doador por ID |
-| `PUT` | `/:id` | Atualiza doador |
-| `DELETE` | `/:id` | Desativa doador |
-| `GET` | `/:id/doacoes` | Histórico de doações |
+| Método   | Endpoint       | Descrição               |
+| -------- | -------------- | ----------------------- |
+| `GET`    | `/`            | Lista todos os doadores |
+| `POST`   | `/`            | Cria novo doador        |
+| `GET`    | `/:id`         | Busca doador por ID     |
+| `PUT`    | `/:id`         | Atualiza doador         |
+| `DELETE` | `/:id`         | Desativa doador         |
+| `GET`    | `/:id/doacoes` | Histórico de doações    |
 
 **Filtros disponíveis:**
+
 - `?tipo_doador=PF/PJ` - Filtra por tipo
 - `?search=nome` - Busca por nome
 - `?ativo=true/false` - Filtra por status
 
 ### 💰 Doações (`/api/doacoes`)
 
-| Método | Endpoint | Descrição |
-|--------|----------|-----------|
-| `GET` | `/` | Lista todas as doações |
-| `POST` | `/` | Cria nova doação |
-| `GET` | `/:id` | Busca doação por ID |
-| `PUT` | `/:id` | Atualiza doação |
-| `DELETE` | `/:id` | Exclui doação |
-| `GET` | `/doador/:id` | Doações por doador |
-| `GET` | `/estatisticas` | Dashboard |
+| Método   | Endpoint        | Descrição              |
+| -------- | --------------- | ---------------------- |
+| `GET`    | `/`             | Lista todas as doações |
+| `POST`   | `/`             | Cria nova doação       |
+| `GET`    | `/:id`          | Busca doação por ID    |
+| `PUT`    | `/:id`          | Atualiza doação        |
+| `DELETE` | `/:id`          | Exclui doação          |
+| `GET`    | `/doador/:id`   | Doações por doador     |
+| `GET`    | `/estatisticas` | Dashboard              |
 
 **Filtros disponíveis:**
+
 - `?tipoDoador=PF/PJ` - Filtra por tipo de doador
 - `?dataInicio=YYYY-MM-DD` - Data inicial
 - `?dataFim=YYYY-MM-DD` - Data final
@@ -144,38 +155,44 @@ Servidor rodando em: `http://localhost:3003`
 
 ### 💊 Medicamentos (`/api/medicamentos`)
 
-| Método | Endpoint | Descrição |
-|--------|----------|-----------|
-| `GET` | `/` | Lista medicamentos |
-| `POST` | `/` | Cria medicamento |
-| `GET` | `/:id` | Busca por ID |
-| `PUT` | `/:id` | Atualiza medicamento |
-| `DELETE` | `/:id` | Exclui medicamento |
+| Método   | Endpoint | Descrição            |
+| -------- | -------- | -------------------- |
+| `GET`    | `/`      | Lista medicamentos   |
+| `POST`   | `/`      | Cria medicamento     |
+| `GET`    | `/:id`   | Busca por ID         |
+| `PUT`    | `/:id`   | Atualiza medicamento |
+| `DELETE` | `/:id`   | Exclui medicamento   |
 
 ### 👩 Assistidas (`/api/assistidas`)
 
-| Método | Endpoint | Descrição |
-|--------|----------|-----------|
-| `GET` | `/` | Lista assistidas |
-| `POST` | `/` | Cria assistida |
-| `GET` | `/:id` | Busca por ID |
-| `PUT` | `/:id` | Atualiza assistida |
-| `DELETE` | `/:id` | Exclui assistida |
+| Método   | Endpoint | Descrição          |
+| -------- | -------- | ------------------ |
+| `GET`    | `/`      | Lista assistidas   |
+| `POST`   | `/`      | Cria assistida     |
+| `GET`    | `/:id`   | Busca por ID       |
+| `PUT`    | `/:id`   | Atualiza assistida |
+| `DELETE` | `/:id`   | Exclui assistida   |
 
 ## 🧪 Testando a API
 
 ### Testes Automatizados
+
 ```bash
 # Testar todos os endpoints de doadores
-./test_doadores_endpoints.sh
+npm run test:doadores
 
 # Testar todos os endpoints de doações
-./test_doacoes_endpoints.sh
+npm run test:doacoes
+
+# Ou executar diretamente
+bash scripts/test_doadores_endpoints.sh
+bash scripts/test_doacoes_endpoints.sh
 ```
 
 ### Exemplos de Uso
 
 #### Criar Doador PF
+
 ```bash
 curl -X POST http://localhost:3003/api/doadores \
   -H "Content-Type: application/json" \
@@ -193,6 +210,7 @@ curl -X POST http://localhost:3003/api/doadores \
 ```
 
 #### Criar Doação
+
 ```bash
 curl -X POST http://localhost:3003/api/doacoes \
   -H "Content-Type: application/json" \
@@ -209,33 +227,39 @@ curl -X POST http://localhost:3003/api/doacoes \
 ### Tabelas Principais
 
 #### `doadores`
+
 - Informações completas dos doadores
 - CPF/CNPJ com validação
 - Endereço completo
 - Status ativo/inativo
 
 #### `doacoes`
+
 - Relacionamento com doadores via `doador_id`
 - Valores e datas das doações
 - Observações
 
 #### `medicamentos`
+
 - Catálogo de medicamentos
 - Controle de estoque e validade
 
 #### `assistidas`
+
 - Cadastro das mulheres assistidas
 - Histórico de atendimentos
 
 ### Relacionamentos
+
 - `doacoes.doador_id` → `doadores.id` (FK)
 - `internacoes.assistida_id` → `assistidas.id` (FK)
 - `medicamentos_utilizados.medicamento_id` → `medicamentos.id` (FK)
 
 ## 📚 Documentação Adicional
 
-- **[CURL_COMMANDS.md](./CURL_COMMANDS.md)** - Comandos curl para todos os endpoints
-- **[DOCUMENTOS_VALIDOS.md](./DOCUMENTOS_VALIDOS.md)** - Explicação sobre validação de CPF/CNPJ
+- **[docs/CURL_COMMANDS.md](./docs/CURL_COMMANDS.md)** - Comandos curl para todos os endpoints
+- **[docs/DOCUMENTOS_VALIDOS.md](./docs/DOCUMENTOS_VALIDOS.md)** - Explicação sobre validação de CPF/CNPJ
+- **[scripts/README.md](./scripts/README.md)** - Documentação dos scripts utilitários
 - **[sql/](./sql/)** - Scripts de criação e migração do banco
 
 ## 🔧 Configuração Avançada
@@ -261,21 +285,30 @@ DB_CONNECTION_LIMIT=10
 ```
 backend/
 ├── src/
-│   ├── controllers/        # Lógica de controle
-│   ├── models/            # Modelos de dados
-│   ├── repository/        # Acesso ao banco
-│   ├── routes/           # Definição de rotas
-│   ├── config/           # Configurações
-│   └── app.js            # Configuração do Express
-├── sql/                  # Scripts SQL
-├── tests/               # Scripts de teste
-├── docs/               # Documentação
-└── package.json        # Dependências
+│   ├── controllers/                # Lógica de controle
+│   ├── models/                     # Modelos de dados
+│   ├── repository/                 # Acesso ao banco
+│   ├── routes/                     # Definição de rotas
+│   ├── config/                     # Configurações
+│   └── app.js                      # Configuração do Express
+├── scripts/                        # Scripts utilitários
+│   ├── setup-db.js
+│   ├── populate-db.js
+│   ├── populate-doadores.js
+│   ├── validar-documentos.js
+│   ├── test_doadores_endpoints.sh
+│   └── test_doacoes_endpoints.sh
+├── docs/                           # Documentação
+│   ├── CURL_COMMANDS.md
+│   └── DOCUMENTOS_VALIDOS.md
+├── sql/                            # Scripts SQL
+└── package.json                    # Dependências
 ```
 
 ## 🚨 Validações Implementadas
 
 ### Doadores
+
 - ✅ CPF: 11 dígitos com verificadores válidos
 - ✅ CNPJ: 14 dígitos com verificadores válidos
 - ✅ Email: formato válido
@@ -283,6 +316,7 @@ backend/
 - ✅ Documento único por doador
 
 ### Doações
+
 - ✅ Valor maior que zero
 - ✅ Data não pode ser futura
 - ✅ Doador obrigatório e válido

@@ -106,7 +106,7 @@ class Doacao {
         id: row.doador_id,
         nome: row.doador_nome,
         documento: row.doador_documento,
-        tipoDoador: row.doador_tipo_doador,
+        tipo_doador: row.doador_tipo_doador,
         email: row.doador_email,
         telefone: row.doador_telefone
       };

@@ -8,15 +8,17 @@ class DoadorController {
 
       if (!tipo_doador || !nome || !documento || !telefone) {
         return res.status(400).json({ 
-          error: 'Campos obrigatórios: tipo_doador, nome, documento, telefone' 
+          success: false,
+          message: 'Campos obrigatórios: tipo_doador, nome, documento, telefone' 
         });
       }
 
       const doadorExistente = await doadorRepository.findByDocumento(documento);
       if (doadorExistente) {
         return res.status(409).json({ 
-          error: 'Já existe um doador cadastrado com este documento',
-          doador: doadorExistente
+          success: false,
+          message: 'Já existe um doador cadastrado com este documento',
+          data: doadorExistente
         });
       }
 
@@ -40,12 +42,16 @@ class DoadorController {
       const doadorCriado = await doadorRepository.findById(id);
 
       res.status(201).json({
+        success: true,
         message: 'Doador cadastrado com sucesso',
-        doador: doadorCriado
+        data: doadorCriado
       });
     } catch (error) {
       console.error('Erro ao criar doador:', error);
-      res.status(500).json({ error: 'Erro ao cadastrar doador' });
+      res.status(500).json({ 
+        success: false,
+        message: 'Erro ao cadastrar doador' 
+      });
     }
   }
 
@@ -59,10 +65,16 @@ class DoadorController {
       if (search) filters.search = search;
 
       const doadores = await doadorRepository.findAll(filters);
-      res.json(doadores);
+      res.json({
+        success: true,
+        data: doadores
+      });
     } catch (error) {
       console.error('Erro ao buscar doadores:', error);
-      res.status(500).json({ error: 'Erro ao buscar doadores' });
+      res.status(500).json({ 
+        success: false,
+        message: 'Erro ao buscar doadores' 
+      });
     }
   }
 
@@ -72,18 +84,27 @@ class DoadorController {
       const doador = await doadorRepository.findById(id);
 
       if (!doador) {
-        return res.status(404).json({ error: 'Doador não encontrado' });
+        return res.status(404).json({ 
+          success: false,
+          message: 'Doador não encontrado' 
+        });
       }
 
       const totalDoacoes = await doadorRepository.getTotalDoacoesByDoador(id);
       
       res.json({
-        ...doador,
-        estatisticas: totalDoacoes
+        success: true,
+        data: {
+          ...doador,
+          estatisticas: totalDoacoes
+        }
       });
     } catch (error) {
       console.error('Erro ao buscar doador:', error);
-      res.status(500).json({ error: 'Erro ao buscar doador' });
+      res.status(500).json({ 
+        success: false,
+        message: 'Erro ao buscar doador' 
+      });
     }
   }
 
@@ -94,14 +115,18 @@ class DoadorController {
 
       const doadorExistente = await doadorRepository.findById(id);
       if (!doadorExistente) {
-        return res.status(404).json({ error: 'Doador não encontrado' });
+        return res.status(404).json({ 
+          success: false,
+          message: 'Doador não encontrado' 
+        });
       }
 
       if (dadosAtualizacao.documento && dadosAtualizacao.documento !== doadorExistente.documento) {
         const doadorComMesmoDocumento = await doadorRepository.findByDocumento(dadosAtualizacao.documento);
         if (doadorComMesmoDocumento) {
           return res.status(409).json({ 
-            error: 'Já existe outro doador cadastrado com este documento' 
+            success: false,
+            message: 'Já existe outro doador cadastrado com este documento' 
           });
         }
       }
@@ -112,17 +137,24 @@ class DoadorController {
       const linhasAfetadas = await doadorRepository.update(id, doadorAtualizado);
       
       if (linhasAfetadas === 0) {
-        return res.status(400).json({ error: 'Nenhuma alteração realizada' });
+        return res.status(400).json({ 
+          success: false,
+          message: 'Nenhuma alteração realizada' 
+        });
       }
 
       const doador = await doadorRepository.findById(id);
       res.json({
+        success: true,
         message: 'Doador atualizado com sucesso',
-        doador
+        data: doador
       });
     } catch (error) {
       console.error('Erro ao atualizar doador:', error);
-      res.status(500).json({ error: 'Erro ao atualizar doador' });
+      res.status(500).json({ 
+        success: false,
+        message: 'Erro ao atualizar doador' 
+      });
     }
   }
 
@@ -132,13 +164,17 @@ class DoadorController {
 
       const doador = await doadorRepository.findById(id);
       if (!doador) {
-        return res.status(404).json({ error: 'Doador não encontrado' });
+        return res.status(404).json({ 
+          success: false,
+          message: 'Doador não encontrado' 
+        });
       }
 
       const doacoes = await doadorRepository.findDoacoesByDoadorId(id);
       if (doacoes.length > 0) {
         return res.status(400).json({ 
-          error: 'Não é possível excluir um doador que possui doações registradas',
+          success: false,
+          message: 'Não é possível excluir um doador que possui doações registradas',
           total_doacoes: doacoes.length
         });
       }
@@ -146,13 +182,22 @@ class DoadorController {
       const linhasAfetadas = await doadorRepository.delete(id);
       
       if (linhasAfetadas === 0) {
-        return res.status(400).json({ error: 'Erro ao desativar doador' });
+        return res.status(400).json({ 
+          success: false,
+          message: 'Erro ao excluir doador' 
+        });
       }
 
-      res.json({ message: 'Doador desativado com sucesso' });
+      res.json({ 
+        success: true,
+        message: 'Doador excluído com sucesso' 
+      });
     } catch (error) {
-      console.error('Erro ao desativar doador:', error);
-      res.status(500).json({ error: 'Erro ao desativar doador' });
+      console.error('Erro ao excluir doador:', error);
+      res.status(500).json({ 
+        success: false,
+        message: 'Erro ao excluir doador' 
+      });
     }
   }
 
@@ -162,20 +207,23 @@ class DoadorController {
       
       const doador = await doadorRepository.findById(id);
       if (!doador) {
-        return res.status(404).json({ error: 'Doador não encontrado' });
+        return res.status(404).json({ 
+          success: false,
+          message: 'Doador não encontrado' 
+        });
       }
 
       const doacoes = await doadorRepository.findDoacoesByDoadorId(id);
-      const estatisticas = await doadorRepository.getTotalDoacoesByDoador(id);
-
       res.json({
-        doador,
-        doacoes,
-        estatisticas
+        success: true,
+        data: doacoes
       });
     } catch (error) {
       console.error('Erro ao buscar doações do doador:', error);
-      res.status(500).json({ error: 'Erro ao buscar doações' });
+      res.status(500).json({ 
+        success: false,
+        message: 'Erro ao buscar doações do doador' 
+      });
     }
   }
 }
