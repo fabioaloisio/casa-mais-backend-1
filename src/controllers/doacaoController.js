@@ -1,11 +1,48 @@
 const doacaoRepository = require('../repository/doacaoRepository');
+const doadorRepository = require('../repository/doadorRepository');
 const Doacao = require('../models/doacao');
+const Doador = require('../models/doador');
 
 class DoacaoController {
   // Criar nova doação
   async criar(req, res) {
     try {
-      const doacao = new Doacao(req.body);
+      const { doadorId, dadosDoador, valor, dataDoacao, observacoes } = req.body;
+      
+      let doadorIdFinal = doadorId;
+      
+      // Se não foi fornecido doadorId, tentar encontrar ou criar doador
+      if (!doadorIdFinal && dadosDoador) {
+        // Verificar se doador já existe pelo documento
+        const doadorExistente = await doadorRepository.findByDocumento(dadosDoador.documento);
+        
+        if (doadorExistente) {
+          doadorIdFinal = doadorExistente.id;
+        } else {
+          // Criar novo doador
+          const novoDoador = new Doador(
+            null,
+            dadosDoador.tipoDoador,
+            dadosDoador.nomeDoador || dadosDoador.nome,
+            dadosDoador.documento,
+            dadosDoador.email,
+            dadosDoador.telefone,
+            dadosDoador.endereco,
+            dadosDoador.cidade,
+            dadosDoador.estado,
+            dadosDoador.cep
+          );
+          
+          doadorIdFinal = await doadorRepository.create(novoDoador);
+        }
+      }
+      
+      const doacao = new Doacao({
+        doadorId: doadorIdFinal,
+        valor,
+        dataDoacao,
+        observacoes
+      });
       
       // Validar dados
       const erros = doacao.validaDoacao();
@@ -18,7 +55,7 @@ class DoacaoController {
       }
       
       // Criar doação
-      const id = await doacaoRepository.criar(req.body);
+      const id = await doacaoRepository.criar(doacao);
       
       // Buscar doação criada
       const doacaoCriada = await doacaoRepository.buscarPorId(id);
@@ -45,6 +82,7 @@ class DoacaoController {
         tipoDoador: req.query.tipoDoador,
         nomeDoador: req.query.nomeDoador,
         documento: req.query.documento,
+        doadorId: req.query.doadorId,
         dataInicio: req.query.dataInicio,
         dataFim: req.query.dataFim
       };
@@ -97,16 +135,16 @@ class DoacaoController {
   // Buscar doações por doador
   async buscarPorDoador(req, res) {
     try {
-      const { documento } = req.params;
+      const { doadorId } = req.params;
       
-      if (!documento) {
+      if (!doadorId) {
         return res.status(400).json({
           success: false,
-          message: 'Documento do doador é obrigatório'
+          message: 'ID do doador é obrigatório'
         });
       }
       
-      const doacoes = await doacaoRepository.buscarPorDoador(documento);
+      const doacoes = await doacaoRepository.buscarPorDoador(doadorId);
       
       return res.json({
         success: true,

@@ -7,6 +7,8 @@
     "start": "node index.js",
     "setup-db": "node setup-db.js",
     "populate-db": "node populate-db.js",
+    "populate-doadores": "node populate-doadores.js",
+    "validate-docs": "node validar-documentos.js",
     "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

@@ -3,6 +3,7 @@ const cors = require('cors');
 const medicamentoRoutes = require('./routes/medicamentoRoutes');
 const doacaoRoutes = require('./routes/doacaoRoutes');
 const assistidasRoutes = require('./routes/assistidasRoutes');
+const doadorRoutes = require('./routes/doadorRoutes');
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.use(express.json());
 app.use('/api/medicamentos', medicamentoRoutes);
 app.use('/api/doacoes', doacaoRoutes);
 app.use('/api/assistidas', assistidasRoutes);
+app.use('/api/doadores', doadorRoutes);
 
 app.get('/', (req, res) => {
   res.json({ message: 'API Casa+ funcionando!' });
