@@ -78,33 +78,7 @@ Para instruções detalhadas: [CONFIGURACAO_MYSQL.md](./CONFIGURACAO_MYSQL.md)
 ## 📁 Estrutura do Projeto
 
 ```
-.
-├── index.js            # Ponto de entrada da aplicação
-├── setup-db.js         # Script para criar banco e tabelas
-├── populate-db.js      # Script para popular dados de exemplo
-├── sql/                # Scripts SQL
-│   ├── setup_database.sql
-│   └── populate_data.sql
-└── src/
-    ├── app.js          # Configuração do Express
-    ├── config/
-    │   └── database.js # Configuração e pool de conexões MySQL
-    ├── controllers/    # Controladores (lógica de negócio)
-    │   ├── assistidaController.js
-    │   ├── doacaoController.js
-    │   └── medicamentoController.js
-    ├── models/         # Modelos (validação e formatação)
-    │   ├── assistida.js
-    │   ├── doacao.js
-    │   └── medicamento.js
-    ├── repository/     # Camada de acesso a dados
-    │   ├── assistidasRepository.js
-    │   ├── doacaoRepository.js
-    │   └── medicamentoRepository.js
-    └── routes/         # Definição de rotas
-        ├── assistidasRoutes.js
-        ├── doacaoRoutes.js
-        └── medicamentoRoutes.js
+
 ```
 
 ## 🛣️ Endpoints da API
@@ -141,6 +115,13 @@ http://localhost:3003/api
 - `POST /api/doacoes` - Criar nova doação
 - `PUT /api/doacoes/:id` - Atualizar doação
 - `DELETE /api/doacoes/:id` - Excluir doação
+- 
+### Assistidas
+- `GET /api/assistidas` - Listar todas as assistidas
+- `GET /api/assistidas/:id` - Buscar assistida por ID
+- `POST /api/assistidas` - Criar nova assistida
+- `PUT /api/assistidas/:id` - Atualizar assistida
+- `DELETE /api/assistidas/:id` - Excluir assistida
 
 ## 🏗️ Arquitetura
 
@@ -268,28 +249,11 @@ npm run dev
 - data_atualizacao (DATETIME)
 ```
 
-**drogas_utilizadas** (relacionada com assistidas)
 
-```sql
-- id (INT, PK, AUTO_INCREMENT)
-- assistida_id (INT, FK)
 - tipo (VARCHAR 100)
 - idade_inicio (INT)
 - tempo_uso (VARCHAR 100)
 - intensidade (VARCHAR 100)
-- createdAt, updatedAt (TIMESTAMPS)
-```
-
-**internacoes** (relacionada com assistidas)
-
-```sql
-- id (INT, PK, AUTO_INCREMENT)
-- assistida_id (INT, FK)
-- local (VARCHAR 255)
-- duracao (VARCHAR 100)
-- data (DATE)
-- createdAt, updatedAt (TIMESTAMPS)
-```
 
 ## 🚀 Deploy
 
