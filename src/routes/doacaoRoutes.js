@@ -7,7 +7,7 @@ router.post('/', doacaoController.criar);
 router.get('/', doacaoController.listar);
 router.get('/estatisticas', doacaoController.estatisticas);
 router.get('/:id', doacaoController.buscarPorId);
-router.get('/doador/:documento', doacaoController.buscarPorDoador);
+router.get('/doador/:doadorId', doacaoController.buscarPorDoador);
 router.put('/:id', doacaoController.atualizar);
 router.delete('/:id', doacaoController.excluir);
 

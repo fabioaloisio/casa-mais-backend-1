@@ -9,17 +9,12 @@ class DoacaoRepository {
     
     const query = `
       INSERT INTO doacoes (
-        tipo_doador, nome_doador, documento, email, telefone,
-        valor, data_doacao, observacoes, data_cadastro
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        doador_id, valor, data_doacao, observacoes, data_cadastro
+      ) VALUES (?, ?, ?, ?, ?)
     `;
     
     const valores = [
-      dadosMySQL.tipo_doador,
-      dadosMySQL.nome_doador,
-      dadosMySQL.documento,
-      dadosMySQL.email,
-      dadosMySQL.telefone,
+      dadosMySQL.doador_id,
       dadosMySQL.valor,
       dadosMySQL.data_doacao,
       dadosMySQL.observacoes,
@@ -33,41 +28,56 @@ class DoacaoRepository {
   // Buscar todas as doações com filtros opcionais
   async buscarTodos(filtros = {}) {
     let query = `
-      SELECT * FROM doacoes WHERE 1=1
+      SELECT 
+        d.*,
+        dr.nome as doador_nome,
+        dr.documento as doador_documento,
+        dr.tipo_doador as doador_tipo_doador,
+        dr.email as doador_email,
+        dr.telefone as doador_telefone
+      FROM doacoes d
+      INNER JOIN doadores dr ON d.doador_id = dr.id
+      WHERE 1=1
     `;
     const valores = [];
     
     // Filtro por tipo de doador
     if (filtros.tipoDoador) {
-      query += ' AND tipo_doador = ?';
+      query += ' AND dr.tipo_doador = ?';
       valores.push(filtros.tipoDoador);
     }
     
     // Filtro por nome do doador
     if (filtros.nomeDoador) {
-      query += ' AND nome_doador LIKE ?';
+      query += ' AND dr.nome LIKE ?';
       valores.push(`%${filtros.nomeDoador}%`);
     }
     
     // Filtro por documento
     if (filtros.documento) {
-      query += ' AND documento = ?';
+      query += ' AND dr.documento = ?';
       valores.push(filtros.documento.replace(/\D/g, ''));
+    }
+    
+    // Filtro por doador ID
+    if (filtros.doadorId) {
+      query += ' AND d.doador_id = ?';
+      valores.push(filtros.doadorId);
     }
     
     // Filtro por período
     if (filtros.dataInicio) {
-      query += ' AND data_doacao >= ?';
+      query += ' AND d.data_doacao >= ?';
       valores.push(filtros.dataInicio);
     }
     
     if (filtros.dataFim) {
-      query += ' AND data_doacao <= ?';
+      query += ' AND d.data_doacao <= ?';
       valores.push(filtros.dataFim);
     }
     
     // Ordenação
-    query += ' ORDER BY data_doacao DESC, id DESC';
+    query += ' ORDER BY d.data_doacao DESC, d.id DESC';
     
     const [rows] = await pool.execute(query, valores);
     return rows.map(row => Doacao.fromDatabase(row));
@@ -75,7 +85,18 @@ class DoacaoRepository {
 
   // Buscar doação por ID
   async buscarPorId(id) {
-    const query = 'SELECT * FROM doacoes WHERE id = ?';
+    const query = `
+      SELECT 
+        d.*,
+        dr.nome as doador_nome,
+        dr.documento as doador_documento,
+        dr.tipo_doador as doador_tipo_doador,
+        dr.email as doador_email,
+        dr.telefone as doador_telefone
+      FROM doacoes d
+      INNER JOIN doadores dr ON d.doador_id = dr.id
+      WHERE d.id = ?
+    `;
     const [rows] = await pool.execute(query, [id]);
     
     if (rows.length === 0) {
@@ -85,16 +106,23 @@ class DoacaoRepository {
     return Doacao.fromDatabase(rows[0]);
   }
 
-  // Buscar doações por doador (documento)
-  async buscarPorDoador(documento) {
-    const documentoLimpo = documento.replace(/\D/g, '');
+  // Buscar doações por doador ID
+  async buscarPorDoador(doadorId) {
     const query = `
-      SELECT * FROM doacoes 
-      WHERE documento = ? 
-      ORDER BY data_doacao DESC
+      SELECT 
+        d.*,
+        dr.nome as doador_nome,
+        dr.documento as doador_documento,
+        dr.tipo_doador as doador_tipo_doador,
+        dr.email as doador_email,
+        dr.telefone as doador_telefone
+      FROM doacoes d
+      INNER JOIN doadores dr ON d.doador_id = dr.id
+      WHERE d.doador_id = ?
+      ORDER BY d.data_doacao DESC
     `;
     
-    const [rows] = await pool.execute(query, [documentoLimpo]);
+    const [rows] = await pool.execute(query, [doadorId]);
     return rows.map(row => Doacao.fromDatabase(row));
   }
 
@@ -105,11 +133,7 @@ class DoacaoRepository {
     
     const query = `
       UPDATE doacoes SET
-        tipo_doador = ?,
-        nome_doador = ?,
-        documento = ?,
-        email = ?,
-        telefone = ?,
+        doador_id = ?,
         valor = ?,
         data_doacao = ?,
         observacoes = ?,
@@ -118,11 +142,7 @@ class DoacaoRepository {
     `;
     
     const valores = [
-      dadosMySQL.tipo_doador,
-      dadosMySQL.nome_doador,
-      dadosMySQL.documento,
-      dadosMySQL.email,
-      dadosMySQL.telefone,
+      dadosMySQL.doador_id,
       dadosMySQL.valor,
       dadosMySQL.data_doacao,
       dadosMySQL.observacoes,
@@ -142,17 +162,17 @@ class DoacaoRepository {
 
   // Obter estatísticas
   async obterEstatisticas(filtros = {}) {
-    let queryBase = 'FROM doacoes WHERE 1=1';
+    let queryBase = 'FROM doacoes d INNER JOIN doadores dr ON d.doador_id = dr.id WHERE 1=1';
     const valores = [];
     
     // Aplicar filtros de período
     if (filtros.dataInicio) {
-      queryBase += ' AND data_doacao >= ?';
+      queryBase += ' AND d.data_doacao >= ?';
       valores.push(filtros.dataInicio);
     }
     
     if (filtros.dataFim) {
-      queryBase += ' AND data_doacao <= ?';
+      queryBase += ' AND d.data_doacao <= ?';
       valores.push(filtros.dataFim);
     }
     
@@ -164,22 +184,29 @@ class DoacaoRepository {
     
     // Soma dos valores
     const [somaRows] = await pool.execute(
-      `SELECT COALESCE(SUM(valor), 0) as soma ${queryBase}`,
+      `SELECT COALESCE(SUM(d.valor), 0) as soma ${queryBase}`,
       valores
     );
     
     // Doações por tipo
     const [tipoRows] = await pool.execute(
-      `SELECT tipo_doador, COUNT(*) as quantidade, COALESCE(SUM(valor), 0) as total 
+      `SELECT dr.tipo_doador, COUNT(*) as quantidade, COALESCE(SUM(d.valor), 0) as total 
        ${queryBase} 
-       GROUP BY tipo_doador`,
+       GROUP BY dr.tipo_doador`,
       valores
     );
     
     // Última doação
     const [ultimaRows] = await pool.execute(
-      `SELECT * ${queryBase} 
-       ORDER BY data_doacao DESC, id DESC 
+      `SELECT 
+        d.*,
+        dr.nome as doador_nome,
+        dr.documento as doador_documento,
+        dr.tipo_doador as doador_tipo_doador,
+        dr.email as doador_email,
+        dr.telefone as doador_telefone
+       ${queryBase} 
+       ORDER BY d.data_doacao DESC, d.id DESC 
        LIMIT 1`,
       valores
     );

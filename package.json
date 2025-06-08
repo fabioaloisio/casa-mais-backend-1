@@ -5,8 +5,12 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "setup-db": "node setup-db.js",
-    "populate-db": "node populate-db.js",
+    "setup-db": "node scripts/setup-db.js",
+    "populate-db": "node scripts/populate-db.js",
+    "populate-doadores": "node scripts/populate-doadores.js",
+    "validate-docs": "node scripts/validar-documentos.js",
+    "test:doadores": "bash scripts/test_doadores_endpoints.sh",
+    "test:doacoes": "bash scripts/test_doacoes_endpoints.sh",
     "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

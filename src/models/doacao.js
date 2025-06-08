@@ -1,53 +1,23 @@
 class Doacao {
   constructor(doacao) {
     this.id = doacao.id;
-    this.tipoDoador = doacao.tipoDoador;
-    this.nomeDoador = doacao.nomeDoador;
-    this.documento = doacao.documento;
-    this.email = doacao.email || null;
-    this.telefone = doacao.telefone;
+    this.doadorId = doacao.doadorId;
     this.valor = parseFloat(doacao.valor) || 0;
     this.dataDoacao = doacao.dataDoacao;
     this.observacoes = doacao.observacoes || null;
     this.dataCadastro = doacao.dataCadastro || new Date();
     this.dataAtualizacao = doacao.dataAtualizacao || null;
+    
+    // Campos do doador (apenas para exibição quando vem de JOIN)
+    this.doador = doacao.doador || null;
   }
 
   validaDoacao() {
     const erros = [];
 
-    // Validação do tipo de doador
-    if (!this.tipoDoador || !['PF', 'PJ'].includes(this.tipoDoador)) {
-      erros.push('Tipo de doador inválido. Deve ser PF ou PJ');
-    }
-
-    // Validação do nome do doador
-    if (!this.nomeDoador || this.nomeDoador.trim().length === 0) {
-      erros.push('Nome do doador é obrigatório');
-    }
-
-    // Validação do documento (CPF/CNPJ)
-    if (!this.documento || this.documento.trim().length === 0) {
-      erros.push('Documento é obrigatório');
-    } else {
-      // Remove caracteres não numéricos
-      const docLimpo = this.documento.replace(/\D/g, '');
-      
-      if (this.tipoDoador === 'PF' && docLimpo.length !== 11) {
-        erros.push('CPF deve ter 11 dígitos');
-      } else if (this.tipoDoador === 'PJ' && docLimpo.length !== 14) {
-        erros.push('CNPJ deve ter 14 dígitos');
-      }
-    }
-
-    // Validação do email (opcional, mas se fornecido deve ser válido)
-    if (this.email && !this.validaEmail(this.email)) {
-      erros.push('Email inválido');
-    }
-
-    // Validação do telefone
-    if (!this.telefone || this.telefone.trim().length === 0) {
-      erros.push('Telefone é obrigatório');
+    // Validação do doador
+    if (!this.doadorId) {
+      erros.push('Doador é obrigatório');
     }
 
     // Validação do valor
@@ -70,15 +40,6 @@ class Doacao {
     return erros;
   }
 
-  validaEmail(email) {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email);
-  }
-
-  // Formata documento removendo caracteres especiais
-  getDocumentoLimpo() {
-    return this.documento ? this.documento.replace(/\D/g, '') : '';
-  }
 
   // Formata data para MySQL
   getDataDoacaoParaMySQL() {
@@ -104,11 +65,7 @@ class Doacao {
   // Prepara objeto para inserção/atualização no banco
   paraMySQL() {
     return {
-      tipo_doador: this.tipoDoador,
-      nome_doador: this.nomeDoador,
-      documento: this.getDocumentoLimpo(),
-      email: this.email,
-      telefone: this.telefone.replace(/\D/g, ''), // Remove formatação
+      doador_id: this.doadorId,
       valor: this.valor,
       data_doacao: this.getDataDoacaoParaMySQL(),
       observacoes: this.observacoes,
@@ -121,11 +78,8 @@ class Doacao {
   toJSON() {
     return {
       id: this.id,
-      tipoDoador: this.tipoDoador,
-      nomeDoador: this.nomeDoador,
-      documento: this.documento,
-      email: this.email,
-      telefone: this.telefone,
+      doadorId: this.doadorId,
+      doador: this.doador,
       valor: this.valor,
       dataDoacao: this.dataDoacao,
       observacoes: this.observacoes,
@@ -136,19 +90,29 @@ class Doacao {
 
   // Método estático para criar doação a partir do resultado do banco
   static fromDatabase(row) {
-    return new Doacao({
+    const doacao = new Doacao({
       id: row.id,
-      tipoDoador: row.tipo_doador,
-      nomeDoador: row.nome_doador,
-      documento: row.documento,
-      email: row.email,
-      telefone: row.telefone,
+      doadorId: row.doador_id,
       valor: row.valor,
       dataDoacao: row.data_doacao,
       observacoes: row.observacoes,
       dataCadastro: row.data_cadastro,
       dataAtualizacao: row.data_atualizacao
     });
+
+    // Se veio dados do doador via JOIN, adiciona
+    if (row.doador_nome) {
+      doacao.doador = {
+        id: row.doador_id,
+        nome: row.doador_nome,
+        documento: row.doador_documento,
+        tipo_doador: row.doador_tipo_doador,
+        email: row.doador_email,
+        telefone: row.doador_telefone
+      };
+    }
+
+    return doacao;
   }
 }
 
