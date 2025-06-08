@@ -83,11 +83,6 @@ DB_PORT=3306
 # Criar banco e tabelas
 npm run setup-db
 
-# Popular com dados de exemplo (inclui doadores com CPF/CNPJ válidos)
-npm run populate-doadores
-
-# Validar documentos gerados
-npm run validate-docs
 ```
 
 ### 5. Iniciar o Servidor
@@ -119,14 +114,7 @@ Servidor rodando em: `http://localhost:3003`
 
 ### 👥 Doadores (`/api/doadores`)
 
-| Método   | Endpoint       | Descrição               |
-| -------- | -------------- | ----------------------- |
-| `GET`    | `/`            | Lista todos os doadores |
-| `POST`   | `/`            | Cria novo doador        |
-| `GET`    | `/:id`         | Busca doador por ID     |
-| `PUT`    | `/:id`         | Atualiza doador         |
-| `DELETE` | `/:id`         | Desativa doador         |
-| `GET`    | `/:id/doacoes` | Histórico de doações    |
+
 
 **Filtros disponíveis:**
 
@@ -257,65 +245,7 @@ curl -X POST http://localhost:3003/api/doacoes \
 
 ## 📚 Documentação Adicional
 
-- **[docs/CURL_COMMANDS.md](./docs/CURL_COMMANDS.md)** - Comandos curl para todos os endpoints
-- **[docs/DOCUMENTOS_VALIDOS.md](./docs/DOCUMENTOS_VALIDOS.md)** - Explicação sobre validação de CPF/CNPJ
-- **[scripts/README.md](./scripts/README.md)** - Documentação dos scripts utilitários
-- **[sql/](./sql/)** - Scripts de criação e migração do banco
 
-## 🔧 Configuração Avançada
-
-### Variáveis de Ambiente
-
-```env
-# Servidor
-PORT=3003
-NODE_ENV=development
-
-# Banco de Dados
-DB_HOST=localhost
-DB_USER=root
-DB_PASSWORD=sua_senha
-DB_NAME=casamais_db
-DB_PORT=3306
-DB_CONNECTION_LIMIT=10
-```
-
-### Estrutura de Arquivos
-
-```
-backend/
-├── src/
-│   ├── controllers/                # Lógica de controle
-│   ├── models/                     # Modelos de dados
-│   ├── repository/                 # Acesso ao banco
-│   ├── routes/                     # Definição de rotas
-│   ├── config/                     # Configurações
-│   └── app.js                      # Configuração do Express
-├── scripts/                        # Scripts utilitários
-│   ├── setup-db.js
-│   ├── populate-db.js
-│   ├── populate-doadores.js
-│   ├── validar-documentos.js
-│   ├── test_doadores_endpoints.sh
-│   └── test_doacoes_endpoints.sh
-├── docs/                           # Documentação
-│   ├── CURL_COMMANDS.md
-│   └── DOCUMENTOS_VALIDOS.md
-├── sql/                            # Scripts SQL
-└── package.json                    # Dependências
-```
-
-## 🚨 Validações Implementadas
-
-### Doadores
-
-- ✅ CPF: 11 dígitos com verificadores válidos
-- ✅ CNPJ: 14 dígitos com verificadores válidos
-- ✅ Email: formato válido
-- ✅ Telefone: obrigatório
-- ✅ Documento único por doador
-
-### Doações
 
 - ✅ Valor maior que zero
 - ✅ Data não pode ser futura
