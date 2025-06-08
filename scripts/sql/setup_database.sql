@@ -109,5 +109,7 @@ CREATE TABLE IF NOT EXISTS medicamentos_utilizados (
     FOREIGN KEY (assistida_id) REFERENCES assistidas(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Medicamentos usados por assistidas';
 
+
+
 -- Mensagem final de confirmação
 SELECT 'Banco de dados e todas as tabelas criadas com sucesso!' AS mensagem;

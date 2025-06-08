@@ -11,7 +11,7 @@ async function populateDatabase() {
     connection = await mysql.createConnection({
       host: process.env.DB_HOST || 'localhost',
       user: process.env.DB_USER || 'root',
-      password: process.env.DB_PASSWORD || 'admin',
+      password: process.env.DB_PASSWORD || '3511',
       database: process.env.DB_NAME || 'casamais_db',
       port: process.env.DB_PORT || 3306,
       multipleStatements: true
@@ -19,32 +19,32 @@ async function populateDatabase() {
 
     console.log('✅ Conectado ao banco de dados');
 
-    // Ler o arquivo SQL
-    const sqlFilePath = path.join(__dirname, 'sql', 'populate_data.sql');
-    const sqlContent = await fs.readFile(sqlFilePath, 'utf8');
-
-    // Garantir que o banco e tabelas existem
+    // Verificar se as tabelas existem
     console.log('🔄 Verificando banco de dados e tabelas...');
-
-    // Verificar se as tabelas existem antes de popular
     const [tables] = await connection.execute(
       `SELECT COUNT(*) as count FROM information_schema.tables 
-   WHERE table_schema = ? 
-     AND table_name IN ('assistidas', 'drogas_utilizadas', 'internacoes', 'medicamentos_utilizados', 'doacoes', 'medicamentos')`,
+       WHERE table_schema = ? 
+         AND table_name IN ('assistidas', 'drogas_utilizadas', 'internacoes', 'medicamentos_utilizados', 'doacoes', 'medicamentos')`,
       [process.env.DB_NAME || 'casamais_db']
     );
-
 
     if (tables[0].count < 6) {
       console.log('❌ Tabelas não encontradas. Execute primeiro: npm run setup-db');
       process.exit(1);
     }
-
     console.log('✅ Tabelas verificadas');
 
-    // Executar o script SQL
+    // Executar o script populate_data.sql
     console.log('🔄 Populando banco de dados...');
-    await connection.query(sqlContent);
+    const populateSQLPath = path.join(__dirname, 'sql', 'populate_data.sql');
+    const populateSQL = await fs.readFile(populateSQLPath, 'utf8');
+    await connection.query(populateSQL);
+
+    // Executar a migração de doadores
+    console.log('🔄 Executando migração dos doadores...');
+    const migrateSQLPath = path.join(__dirname, 'sql', 'migrate_doadores_data.sql');
+    const migrateSQL = await fs.readFile(migrateSQLPath, 'utf8');
+    await connection.query(migrateSQL);
 
     // Verificar resultados
     const [medicamentos] = await connection.execute('SELECT COUNT(*) as total FROM medicamentos');
@@ -56,40 +56,31 @@ async function populateDatabase() {
     const [internacoes] = await connection.execute('SELECT COUNT(*) as total FROM internacoes');
     const [medicamentosUtilizados] = await connection.execute('SELECT COUNT(*) as total FROM medicamentos_utilizados');
 
-
     console.log('\n📊 Dados inseridos com sucesso:');
     console.log(`   - Medicamentos: ${medicamentos[0].total}`);
     console.log(`   - Doações: ${doacoes[0].total}`);
     console.log(`   - Total arrecadado: R$ ${Number(totalArrecadado[0].total).toFixed(2)}`);
-
-    console.log('\n📊 Dados inseridos com sucesso:');
     console.log(`   - Assistidas: ${assistidas[0].total}`);
     console.log(`   - Drogas utilizadas: ${drogas[0].total}`);
     console.log(`   - Internações: ${internacoes[0].total}`);
     console.log(`   - Medicamentos utilizados: ${medicamentosUtilizados[0].total}`);
-    console.log(`   - Doações: ${doacoes[0].total}`);
-    console.log(`   - Total arrecadado: R$ ${Number(totalArrecadado[0].total).toFixed(2)}`);
 
-
-    console.log('\n🎉 População do banco de dados concluída!');
-
+    console.log('\n✅ Migração concluída e banco de dados populado com sucesso!');
   } catch (error) {
-    console.error('❌ Erro ao popular banco de dados:', error.message);
+    console.error('❌ Erro ao executar script:', error.message);
     process.exit(1);
   } finally {
-    if (connection) {
-      await connection.end();
-    }
+    if (connection) await connection.end();
   }
 }
 
-// Perguntar confirmação antes de popular
+// Confirmação do usuário antes de executar
 const readline = require('readline').createInterface({
   input: process.stdin,
   output: process.stdout
 });
 
-console.log('⚠️  ATENÇÃO: Este script irá inserir dados de exemplo no banco de dados.');
+console.log('⚠️  ATENÇÃO: Este script irá inserir dados de exemplo e migrar os doadores.');
 console.log('   Certifique-se de que o banco foi criado com: npm run setup-db\n');
 
 readline.question('Deseja continuar? (s/N): ', (answer) => {
@@ -97,7 +88,7 @@ readline.question('Deseja continuar? (s/N): ', (answer) => {
     readline.close();
     populateDatabase();
   } else {
-    console.log('Operação cancelada.');
+    console.log('❌ Operação cancelada.');
     readline.close();
   }
 });

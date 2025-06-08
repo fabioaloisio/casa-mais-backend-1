@@ -74,11 +74,11 @@ function gerarEnderecoFake() {
     'das Acácias', 'dos Eucaliptos', 'da Liberdade', 'do Comércio', 'Central',
     'Bela Vista', 'Alto da Boa Vista', 'Vila Rica', 'Jardim América', 'Campo Belo'
   ];
-  
+
   const tipo = tiposRua[Math.floor(Math.random() * tiposRua.length)];
   const nome = nomes[Math.floor(Math.random() * nomes.length)];
   const numero = Math.floor(Math.random() * 9999) + 1;
-  
+
   return `${tipo} ${nome}, ${numero}`;
 }
 
@@ -91,7 +91,7 @@ function gerarCidadeFake() {
     'Teresina', 'Natal', 'Campo Grande', 'João Pessoa', 'São Bernardo do Campo',
     'Nova Iguaçu', 'Osasco', 'Santo André', 'São José dos Campos', 'Ribeirão Preto'
   ];
-  
+
   return cidades[Math.floor(Math.random() * cidades.length)];
 }
 
@@ -102,7 +102,7 @@ function gerarEstadoFake() {
     'PB', 'PA', 'ES', 'AL', 'MT', 'MS', 'DF', 'SE', 'AM', 'RO',
     'AC', 'MA', 'RN', 'TO', 'PI', 'AP', 'RR'
   ];
-  
+
   return estados[Math.floor(Math.random() * estados.length)];
 }
 
@@ -122,7 +122,7 @@ async function populateDoadores() {
     connection = await mysql.createConnection({
       host: process.env.DB_HOST || 'localhost',
       user: process.env.DB_USER || 'root',
-      password: process.env.DB_PASSWORD,
+      password: process.env.DB_PASSWORD || '3511',
       database: process.env.DB_NAME || 'casamais_db'
     });
 
@@ -202,7 +202,7 @@ async function populateDoadores() {
       'Doação corporativa mensal', 'Parceria solidária', null, 'Doação trimestral', 'Apoio social',
       'Doação anual', null, 'Responsabilidade social', null, 'Campanha solidária dos pais'
     ];
-    
+
     const datasDoacao = [
       '2025-01-05', '2025-01-04', '2025-01-03', '2025-01-02', '2025-01-01',
       '2024-12-31', '2024-12-30', '2024-12-29', '2024-12-28', '2024-12-27',
@@ -227,11 +227,11 @@ async function populateDoadores() {
     console.log(`   - Doadores: ${doadores[0].total}`);
     console.log(`   - Doações: ${doacoes[0].total}`);
     console.log(`   - Total arrecadado: R$ ${Number(totalArrecadado[0].total).toFixed(2)}`);
-    
+
     console.log('\n🔍 Exemplos de CPFs gerados:');
     const [exemplosPF] = await connection.execute('SELECT nome, documento FROM doadores WHERE tipo_doador = "PF" LIMIT 3');
     exemplosPF.forEach(d => console.log(`   ${d.nome}: ${d.documento}`));
-    
+
     console.log('\n🔍 Exemplos de CNPJs gerados:');
     const [exemplosPJ] = await connection.execute('SELECT nome, documento FROM doadores WHERE tipo_doador = "PJ" LIMIT 3');
     exemplosPJ.forEach(d => console.log(`   ${d.nome}: ${d.documento}`));

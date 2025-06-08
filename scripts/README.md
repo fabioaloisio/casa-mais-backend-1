@@ -7,6 +7,7 @@ Esta pasta contém scripts utilitários para o backend da Casa+.
 ### 🛠️ **Setup e Configuração**
 
 #### `setup-db.js`
+
 Cria o banco de dados e todas as tabelas necessárias.
 
 ```bash
@@ -26,7 +27,8 @@ node scripts/setup-db.js
 ### 🗃️ **População de Dados**
 
 #### `populate-db.js`
-Popula o banco com dados de exemplo originais.
+
+Popula o banco com dados de exemplo originais, e faz a migração dos dados existentes de doações para doadores
 
 ```bash
 # Executar via npm
@@ -37,11 +39,13 @@ node scripts/populate-db.js
 ```
 
 **Funcionalidades:**
+
 - ✅ Dados de assistidas, medicamentos, doações
 - ✅ Estrutura original do sistema
 - ✅ Validação de tabelas existentes
 
 #### `populate-doadores.js`
+
 Popula o banco com doadores que possuem CPF/CNPJ válidos e endereços completos.
 
 ```bash
@@ -53,6 +57,7 @@ node scripts/populate-doadores.js
 ```
 
 **Funcionalidades:**
+
 - ✅ Gera 10 doadores PF com CPFs válidos
 - ✅ Gera 10 doadores PJ com CNPJs válidos
 - ✅ Endereços brasileiros completos
@@ -62,6 +67,7 @@ node scripts/populate-doadores.js
 ### 🔍 **Validação**
 
 #### `validar-documentos.js`
+
 Valida todos os CPFs e CNPJs no banco de dados.
 
 ```bash
@@ -73,6 +79,7 @@ node scripts/validar-documentos.js
 ```
 
 **Funcionalidades:**
+
 - ✅ Valida CPFs usando algoritmo oficial
 - ✅ Valida CNPJs usando algoritmo oficial
 - ✅ Mostra estatísticas de validação
@@ -81,6 +88,7 @@ node scripts/validar-documentos.js
 ### 🧪 **Testes de API**
 
 #### `test_doadores_endpoints.sh`
+
 Testa todos os endpoints da API de doadores.
 
 ```bash
@@ -92,6 +100,7 @@ bash scripts/test_doadores_endpoints.sh
 ```
 
 **Testes inclusos:**
+
 - ✅ Listar doadores
 - ✅ Criar doador PF/PJ
 - ✅ Buscar por ID
@@ -102,6 +111,7 @@ bash scripts/test_doadores_endpoints.sh
 - ✅ Desativar doador
 
 #### `test_doacoes_endpoints.sh`
+
 Testa todos os endpoints da API de doações.
 
 ```bash
@@ -113,6 +123,7 @@ bash scripts/test_doacoes_endpoints.sh
 ```
 
 **Testes inclusos:**
+
 - ✅ Listar doações
 - ✅ Criar com doador existente
 - ✅ Criar com novo doador (compatibilidade)
@@ -134,6 +145,7 @@ Para executar os scripts:
 ## 📊 Saída dos Scripts
 
 ### População de Doadores
+
 ```
 🚀 Iniciando população de doadores com dados válidos...
 
@@ -157,6 +169,7 @@ Para executar os scripts:
 ```
 
 ### Validação de Documentos
+
 ```
 🔍 Validando documentos gerados...
 
@@ -172,6 +185,7 @@ Para executar os scripts:
 ```
 
 ### Testes de API
+
 ```
 🧪 TESTANDO ENDPOINTS DE DOADORES
 ==================================
@@ -203,6 +217,7 @@ Status: 201 ✅
 ### Modificando População
 
 Para alterar os dados gerados, edite:
+
 - `populate-doadores.js` - Nomes, endereços, valores
 - Funções `gerarCPFValido()` e `gerarCNPJValido()`
 - Arrays de dados fake (cidades, estados, etc.)
@@ -210,21 +225,27 @@ Para alterar os dados gerados, edite:
 ## 🐛 Resolução de Problemas
 
 ### Erro de Conexão
+
 ```bash
 ❌ Erro: Access denied for user 'root'@'localhost'
 ```
+
 **Solução**: Verifique as credenciais no `.env`
 
 ### Erro de Foreign Key
+
 ```bash
 ❌ Erro: Cannot add or update a child row: a foreign key constraint fails
 ```
+
 **Solução**: Execute o script de limpeza antes de popular
 
 ### Scripts não Executam
+
 ```bash
 ❌ Permission denied
 ```
+
 **Solução**: `chmod +x scripts/*.sh`
 
 ## 📚 Documentação Relacionada
