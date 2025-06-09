@@ -61,9 +61,9 @@ async function populateDatabase() {
     console.log(`   - Doações: ${doacoes[0].total}`);
     console.log(`   - Total arrecadado: R$ ${Number(totalArrecadado[0].total).toFixed(2)}`);
     console.log(`   - Assistidas: ${assistidas[0].total}`);
-    console.log(`   - Drogas utilizadas: ${drogas[0].total}`);
-    console.log(`   - Internações: ${internacoes[0].total}`);
-    console.log(`   - Medicamentos utilizados: ${medicamentosUtilizados[0].total}`);
+    // console.log(`   - Drogas utilizadas: ${drogas[0].total}`);
+    // console.log(`   - Internações: ${internacoes[0].total}`);
+    // console.log(`   - Medicamentos utilizados: ${medicamentosUtilizados[0].total}`);
 
     console.log('\n✅ Migração concluída e banco de dados populado com sucesso!');
   } catch (error) {
