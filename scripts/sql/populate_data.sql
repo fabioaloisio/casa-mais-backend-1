@@ -58,150 +58,126 @@ VALUES
   ('PJ', 'Escola Infantil Pequeno Príncipe', '01234567000189', 'direcao@pequenoprincipe.edu.br', '1122223333', 350.00, '2024-12-27', 'Campanha solidária dos pais');
 
 
-INSERT INTO assistidas
-  (
+INSERT INTO assistidas 
+(
   nome, cpf, rg, idade, data_nascimento, nacionalidade, estado_civil, profissao, escolaridade, status,
-  logradouro, bairro, numero, cep, estado, cidade, telefone, telefone_contato,
-  data_atendimento, hora, historia_patologica, tempo_sem_uso,
-  motivacao_internacoes, fatos_marcantes, infancia, adolescencia
-  )
+  logradouro, bairro, numero, cep, estado, cidade, telefone, telefone_contato
+)
 VALUES
-  -- 1. Maria das Dores
   ('Maria das Dores', '12345678900', 'MG-12345678', 42, '1983-09-15', 'Brasileira', 'Solteira', 'Cozinheira', 'Fundamental Completo', 'Ativa',
-    'Rua das Flores', 'Centro', '120', '30100-000', 'MG', 'Belo Horizonte', '31999998888', '31988887777',
-    '2025-05-01', '14:30:00', 'Histórico de alcoolismo desde os 20 anos.', '6 meses',
-    'Tentativas de reabilitação por alcoolismo', 'Perda da guarda dos filhos', 'Cresceu em situação de vulnerabilidade', 'Envolvimento com más companhias'),
+   'Rua das Flores', 'Centro', '120', '30100-000', 'MG', 'Belo Horizonte', '31999998888', '31988887777'),
 
-  -- 2. Ana Paula Lima
   ('Ana Paula Lima', '98765432199', 'SP-98765432', 36, '1988-02-20', 'Brasileira', 'Casada', 'Auxiliar de Limpeza', 'Médio Incompleto', 'Em Tratamento',
-    'Avenida Central', 'Jardim das Palmeiras', '500', '04000-200', 'SP', 'São Paulo', '11912345678', '11934567890',
-    '2025-05-10', '09:00:00', 'Dependência de crack nos últimos 10 anos.', '3 semanas',
-    NULL, 'Perda do emprego por uso', 'Família instável e violenta', 'Morou na rua por um tempo'),
+   'Avenida Central', 'Jardim das Palmeiras', '500', '04000-200', 'SP', 'São Paulo', '11912345678', '11934567890'),
 
-  -- 3. Jéssica Andrade
   ('Jéssica Andrade', '11223344556', 'RJ-33445566', 29, '1995-03-10', 'Brasileira', 'Solteira', 'Manicure', 'Médio Completo', 'Ativa',
-    'Rua das Acácias', 'Lapa', '88', '20220-330', 'RJ', 'Rio de Janeiro', '21999887766', '21988776655',
-    '2025-04-15', '10:00:00', 'Uso ocasional de maconha.', '15 dias',
-    NULL, 'Separação conturbada', 'Abandono paterno', 'Boa aluna, mas rebelde'),
+   'Rua das Acácias', 'Lapa', '88', '20220-330', 'RJ', 'Rio de Janeiro', '21999887766', '21988776655'),
 
-  -- 4. Carla Menezes
   ('Carla Menezes', '22334455667', 'BA-44556677', 40, '1984-07-12', 'Brasileira', 'Divorciada', 'Doméstica', 'Fundamental Completo', 'Inativa',
-    'Rua do Sossego', 'São Caetano', '22', '40200-000', 'BA', 'Salvador', '71987654321', '71996543210',
-    '2025-03-22', '11:45:00', 'Uso intenso de álcool e calmantes.', '2 meses',
-    'Crises de abstinência severas', 'Perda da mãe aos 10 anos', 'Criada pela avó', 'Casamento abusivo'),
+   'Rua do Sossego', 'São Caetano', '22', '40200-000', 'BA', 'Salvador', '71987654321', '71996543210'),
 
-  -- 5. Renata Oliveira
   ('Renata Oliveira', '33445566778', 'RS-55667788', 33, '1991-01-25', 'Brasileira', 'Casada', 'Atendente', 'Médio Completo', 'Em Tratamento',
-    'Avenida Brasil', 'Centro', '305', '90010-000', 'RS', 'Porto Alegre', '51991234567', '51993456789',
-    '2025-06-01', '08:30:00', 'Histórico de uso de crack e cocaína.', '1 semana',
-    'Recaídas constantes', 'Filhos retirados pelo conselho', 'Lar violento', 'Adolescência em rua'),
+   'Avenida Brasil', 'Centro', '305', '90010-000', 'RS', 'Porto Alegre', '51991234567', '51993456789'),
 
-  -- 6. Tatiane Soares
   ('Tatiane Soares', '44556677889', 'PE-66778899', 27, '1997-11-04', 'Brasileira', 'Solteira', 'Vendedora', 'Médio Incompleto', 'Ativa',
-    'Rua da Aurora', 'Boa Vista', '112', '50050-100', 'PE', 'Recife', '81999887766', '81988776655',
-    '2025-05-20', '16:00:00', 'Nenhum histórico de substância.', NULL,
-    NULL, 'Traumas emocionais na infância', 'Cresceu em abrigo', 'Boa aluna'),
+   'Rua da Aurora', 'Boa Vista', '112', '50050-100', 'PE', 'Recife', '81999887766', '81988776655'),
 
-  -- 7. Eliane Costa
   ('Eliane Costa', '55667788990', 'CE-77889900', 50, '1974-08-08', 'Brasileira', 'Viúva', 'Artesã', 'Fundamental Incompleto', 'Ativa',
-    'Travessa das Palmeiras', 'Mucuripe', '55', '60165-000', 'CE', 'Fortaleza', '85991234567', '85993456789',
-    '2025-04-05', '13:15:00', 'Uso crônico de álcool por mais de 30 anos.', '1 ano',
-    'Internação compulsória por risco de morte', 'Perda do marido e isolamento', 'Infância simples no interior', 'Início precoce no consumo');
+   'Travessa das Palmeiras', 'Mucuripe', '55', '60165-000', 'CE', 'Fortaleza', '85991234567', '85993456789');  
 
+-- -- Maria das Dores (id = 1)
+-- INSERT INTO drogas_utilizadas
+--   (assistida_id, tipo, idade_inicio, tempo_uso, intensidade)
+-- VALUES
+--   (1, 'Álcool', 20, '20 anos', 'Alta');
 
--- Maria das Dores (id = 1)
-INSERT INTO drogas_utilizadas
-  (assistida_id, tipo, idade_inicio, tempo_uso, intensidade)
-VALUES
-  (1, 'Álcool', 20, '20 anos', 'Alta');
+-- -- Ana Paula Lima (id = 2)
+-- INSERT INTO drogas_utilizadas
+--   (assistida_id, tipo, idade_inicio, tempo_uso, intensidade)
+-- VALUES
+--   (2, 'Crack', 26, '10 anos', 'Muito Alta'),
+--   (2, 'Maconha', 20, '5 anos', 'Média');
 
--- Ana Paula Lima (id = 2)
-INSERT INTO drogas_utilizadas
-  (assistida_id, tipo, idade_inicio, tempo_uso, intensidade)
-VALUES
-  (2, 'Crack', 26, '10 anos', 'Muito Alta'),
-  (2, 'Maconha', 20, '5 anos', 'Média');
+-- -- Jéssica Andrade (id = 3)
+-- INSERT INTO drogas_utilizadas
+--   (assistida_id, tipo, idade_inicio, tempo_uso, intensidade)
+-- VALUES
+--   (3, 'Maconha', 15, '5 anos', 'Baixa');
 
--- Jéssica Andrade (id = 3)
-INSERT INTO drogas_utilizadas
-  (assistida_id, tipo, idade_inicio, tempo_uso, intensidade)
-VALUES
-  (3, 'Maconha', 15, '5 anos', 'Baixa');
+-- -- Carla Menezes (id = 4)
+-- INSERT INTO drogas_utilizadas
+--   (assistida_id, tipo, idade_inicio, tempo_uso, intensidade)
+-- VALUES
+--   (4, 'Álcool', 25, '15 anos', 'Alta'),
+--   (4, 'Calmantes', 30, '10 anos', 'Média');
 
--- Carla Menezes (id = 4)
-INSERT INTO drogas_utilizadas
-  (assistida_id, tipo, idade_inicio, tempo_uso, intensidade)
-VALUES
-  (4, 'Álcool', 25, '15 anos', 'Alta'),
-  (4, 'Calmantes', 30, '10 anos', 'Média');
+-- -- Renata Oliveira (id = 5)
+-- INSERT INTO drogas_utilizadas
+--   (assistida_id, tipo, idade_inicio, tempo_uso, intensidade)
+-- VALUES
+--   (5, 'Crack', 23, '10 anos', 'Alta'),
+--   (5, 'Cocaína', 25, '8 anos', 'Alta');
 
--- Renata Oliveira (id = 5)
-INSERT INTO drogas_utilizadas
-  (assistida_id, tipo, idade_inicio, tempo_uso, intensidade)
-VALUES
-  (5, 'Crack', 23, '10 anos', 'Alta'),
-  (5, 'Cocaína', 25, '8 anos', 'Alta');
+-- -- Eliane Costa (id = 7)
+-- INSERT INTO drogas_utilizadas
+--   (assistida_id, tipo, idade_inicio, tempo_uso, intensidade)
+-- VALUES
+--   (7, 'Álcool', 17, '30 anos', 'Muito Alta');
 
--- Eliane Costa (id = 7)
-INSERT INTO drogas_utilizadas
-  (assistida_id, tipo, idade_inicio, tempo_uso, intensidade)
-VALUES
-  (7, 'Álcool', 17, '30 anos', 'Muito Alta');
+-- -- Maria das Dores (id = 1)
+-- INSERT INTO internacoes
+--   (assistida_id, local, duracao, data)
+-- VALUES
+--   (1, 'Clínica Esperança', '30 dias', '2022-01-10'),
+--   (1, 'Casa Recomeço', '45 dias', '2023-03-05');
 
--- Maria das Dores (id = 1)
-INSERT INTO internacoes
-  (assistida_id, local, duracao, data)
-VALUES
-  (1, 'Clínica Esperança', '30 dias', '2022-01-10'),
-  (1, 'Casa Recomeço', '45 dias', '2023-03-05');
+-- -- Carla Menezes (id = 4)
+-- INSERT INTO internacoes
+--   (assistida_id, local, duracao, data)
+-- VALUES
+--   (4, 'Centro de Reabilitação Bahia', '60 dias', '2024-10-15');
 
--- Carla Menezes (id = 4)
-INSERT INTO internacoes
-  (assistida_id, local, duracao, data)
-VALUES
-  (4, 'Centro de Reabilitação Bahia', '60 dias', '2024-10-15');
+-- -- Renata Oliveira (id = 5)
+-- INSERT INTO internacoes
+--   (assistida_id, local, duracao, data)
+-- VALUES
+--   (5, 'Unidade Terapêutica Porto Seguro', '40 dias', '2023-07-22'),
+--   (5, 'Clínica Nova Vida', '90 dias', '2022-11-10');
 
--- Renata Oliveira (id = 5)
-INSERT INTO internacoes
-  (assistida_id, local, duracao, data)
-VALUES
-  (5, 'Unidade Terapêutica Porto Seguro', '40 dias', '2023-07-22'),
-  (5, 'Clínica Nova Vida', '90 dias', '2022-11-10');
+-- -- Eliane Costa (id = 7)
+-- INSERT INTO internacoes
+--   (assistida_id, local, duracao, data)
+-- VALUES
+--   (7, 'Hospital São José', '15 dias', '2023-04-18'),
+--   (7, 'Casa da Esperança', '30 dias', '2024-01-30');
 
--- Eliane Costa (id = 7)
-INSERT INTO internacoes
-  (assistida_id, local, duracao, data)
-VALUES
-  (7, 'Hospital São José', '15 dias', '2023-04-18'),
-  (7, 'Casa da Esperança', '30 dias', '2024-01-30');
+-- -- Maria das Dores
+-- INSERT INTO medicamentos_utilizados
+--   (assistida_id, nome, dosagem, frequencia)
+-- VALUES
+--   (1, 'Clonazepam', '2mg', '1x ao dia');
 
--- Maria das Dores
-INSERT INTO medicamentos_utilizados
-  (assistida_id, nome, dosagem, frequencia)
-VALUES
-  (1, 'Clonazepam', '2mg', '1x ao dia');
+-- -- Jéssica Andrade
+-- INSERT INTO medicamentos_utilizados
+--   (assistida_id, nome, dosagem, frequencia)
+-- VALUES
+--   (3, 'Fluoxetina', '20mg', '1x ao dia');
 
--- Jéssica Andrade
-INSERT INTO medicamentos_utilizados
-  (assistida_id, nome, dosagem, frequencia)
-VALUES
-  (3, 'Fluoxetina', '20mg', '1x ao dia');
+-- -- Carla Menezes
+-- INSERT INTO medicamentos_utilizados
+--   (assistida_id, nome, dosagem, frequencia)
+-- VALUES
+--   (4, 'Diazepam', '5mg', '2x ao dia');
 
--- Carla Menezes
-INSERT INTO medicamentos_utilizados
-  (assistida_id, nome, dosagem, frequencia)
-VALUES
-  (4, 'Diazepam', '5mg', '2x ao dia');
+-- -- Eliane Costa
+-- INSERT INTO medicamentos_utilizados
+--   (assistida_id, nome, dosagem, frequencia)
+-- VALUES
+--   (7, 'Risperidona', '1mg', '1x ao dia');
 
--- Eliane Costa
-INSERT INTO medicamentos_utilizados
-  (assistida_id, nome, dosagem, frequencia)
-VALUES
-  (7, 'Risperidona', '1mg', '1x ao dia');
-
--- Verificar dados inseridos
-SELECT 'Medicamentos inseridos:' as info, COUNT(*) as total
-FROM medicamentos;
+-- -- Verificar dados inseridos
+-- SELECT 'Medicamentos inseridos:' as info, COUNT(*) as total
+-- FROM medicamentos;
 SELECT 'Doações inseridas:' as info, COUNT(*) as total
 FROM doacoes;
 SELECT 'Total arrecadado:' as info, CONCAT('R$ ', FORMAT(SUM(valor), 2, 'pt_BR')) as valor
@@ -209,9 +185,9 @@ FROM doacoes;
 
 SELECT 'Assistidas inseridas:' AS info, COUNT(*) AS total
 FROM assistidas;
-SELECT 'Drogas utilizadas registradas:' AS info, COUNT(*) AS total
-FROM drogas_utilizadas;
-SELECT 'Internações registradas:' AS info, COUNT(*) AS total
-FROM internacoes;
+-- SELECT 'Drogas utilizadas registradas:' AS info, COUNT(*) AS total
+-- FROM drogas_utilizadas;
+-- SELECT 'Internações registradas:' AS info, COUNT(*) AS total
+-- FROM internacoes;
 SELECT 'Medicações utilizadas registradas:' AS info, COUNT(*) AS total
 FROM medicamentos_utilizados;
