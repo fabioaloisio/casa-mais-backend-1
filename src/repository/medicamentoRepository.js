@@ -5,22 +5,22 @@ const Medicamento = require('../models/medicamento');
 
 class MedicamentoRepository {
   async findAll() {
-    const [rows] = await db.execute('SELECT * FROM medicamentos;');
+    const [rows] = await db.execute('SELECT * FROM medicamentos ORDER BY nome ASC;');
     return rows.map(row => new Medicamento(row));
   }
 
   async findById(id) {
-    const [rows] = await db.execute('SELECT * FROM medicamentos WHERE id = ?;', [id]);
+    const [rows] = await db.execute('SELECT * FROM medicamentos WHERE id = ? ORDER BY nome ASC;', [id]);
     return rows.length ? new Medicamento(rows[0]) : null;
   }
 
   async findByTipo(tipo) {
-    const [rows] = await db.execute('SELECT * FROM medicamentos WHERE tipo LIKE ?;', [`%${tipo}%`]);
+    const [rows] = await db.execute('SELECT * FROM medicamentos WHERE tipo LIKE ? ORDER BY nome ASC;', [`%${tipo}%`]);
     return rows.map(row => new Medicamento(row));
   }
 
   async findByNome(nome) {
-    const [rows] = await db.execute('SELECT * FROM medicamentos WHERE nome LIKE ?;', [`%${nome}%`]);
+    const [rows] = await db.execute('SELECT * FROM medicamentos WHERE nome LIKE ? ORDER BY nome ASC;', [`%${nome}%`]);
     return rows.map(row => new Medicamento(row));
   }
 
