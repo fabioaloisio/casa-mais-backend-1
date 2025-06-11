@@ -5,7 +5,7 @@ class Medicamento {
     this.nome = data.nome;
     this.tipo = data.tipo;
     this.quantidade = data.quantidade;
-    this.validade = data.validade;
+    this.unidade_medida_id = data.unidade_medida_id;
   }
 
   validate(isUpdate = false) {
@@ -24,39 +24,23 @@ class Medicamento {
     }
 
     if (!isUpdate || this.quantidade !== undefined) {
-      if (this.quantidade === undefined || this.quantidade === null) {
-        errors.push('Quantidade é obrigatória.');
-      } else if (typeof this.quantidade !== 'number' || this.quantidade <= 0) {
-        errors.push('Quantidade deve ser um número maior que zero.');
+      const quantidadeNumerica = Number(this.quantidade);
+
+      if (isNaN(quantidadeNumerica)) {
+        errors.push('Quantidade deve ser um número válido.');
+      } else if (quantidadeNumerica <= 0) {
+        errors.push('Quantidade deve ser maior que zero.');
       }
     }
 
-    if (!isUpdate || this.validade !== undefined) {
-      if (!this.validade || this.validade.trim().length === 0) {
-        errors.push(isUpdate ? 'Data de validade não pode ser vazia.' : 'Data de validade é obrigatória.');
-      } else if (!this.validaData(this.validade)) {
-        errors.push('Data de validade inválida. Formato esperado: DD/MM/YYYY.');
+
+    if (!isUpdate || this.unidade_medida_id !== undefined) {
+      if (!this.unidade_medida_id || typeof this.unidade_medida_id !== 'number') {
+        errors.push('Unidade de Medida é obrigatória e deve ser um ID válido.');
       }
     }
+
     return errors;
-  }
-
-  validaData(data) {
-    const regex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
-    if (!regex.test(data)) return false;
-
-    const [dia, mes, ano] = data.split('/').map(Number);
-
-    const dataValidade = new Date(ano, mes - 1, dia);
-    const hoje = new Date();
-    hoje.setHours(0, 0, 0, 0);
-
-    return dataValidade >= hoje;
-  }
-
-  getDataParaMySQL() {
-    const [dia, mes, ano] = this.validade.split('/');
-    return `${ano}-${mes.padStart(2, '0')}-${dia.padStart(2, '0')}`;
   }
 
   toJSON() {
@@ -65,10 +49,9 @@ class Medicamento {
       nome: this.nome,
       tipo: this.tipo,
       quantidade: this.quantidade,
-      validade: this.validade
+      unidade_medida_id: this.unidade_medida_id
     };
   }
-
 }
 
 module.exports = Medicamento;

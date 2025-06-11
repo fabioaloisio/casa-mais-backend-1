@@ -3,7 +3,6 @@ const MedicamentoRepository = require('../repository/medicamentoRepository');
 const Medicamento = require('../models/medicamento');
 
 class MedicamentoController {
-
   async getAll(req, res) {
     try {
       const { tipo, nome } = req.query;

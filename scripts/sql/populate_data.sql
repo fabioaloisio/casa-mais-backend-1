@@ -4,33 +4,7 @@
 -- DELETE FROM medicamentos;
 -- DELETE FROM doacoes;
 
--- Popular tabela de medicamentos
-INSERT INTO medicamentos
-  (nome, tipo, quantidade, validade)
-VALUES
-  ('Paracetamol 750mg', 'Comprimido', 10, '2026-06-01'),
-  ('Amoxicilina 500mg', 'Cápsula', 8, '2027-09-01'),
-  ('Dipirona 500mg', 'Comprimido', 20, '2026-01-01'),
-  ('Ibuprofeno 600mg', 'Comprimido', 15, '2028-12-01'),
-  ('Omeprazol 20mg', 'Cápsula', 12, '2026-05-01'),
-  ('Loratadina 10mg', 'Comprimido', 9, '2029-10-01'),
-  ('Metformina 850mg', 'Comprimido', 11, '2026-03-01'),
-  ('Losartana 50mg', 'Comprimido', 14, '2030-11-01'),
-  ('Salbutamol 100mcg', 'Spray', 6, '2031-08-01'),
-  ('Ranitidina 150mg', 'Comprimido', 7, '2026-04-01'),
-  ('Azitromicina 500mg', 'Comprimido', 5, '2028-07-15'),
-  ('Prednisona 20mg', 'Comprimido', 18, '2026-02-01'),
-  ('Dexametasona 4mg', 'Comprimido', 22, '2027-09-15'),
-  ('Vitamina C 500mg', 'Comprimido', 30, '2026-12-01'),
-  ('Complexo B', 'Comprimido', 25, '2026-06-01'),
-  ('Cetirizina 10mg', 'Comprimido', 13, '2029-11-15'),
-  ('Nimesulida 100mg', 'Comprimido', 16, '2026-10-30'),
-  ('Dorflex', 'Comprimido', 24, '2026-01-15'),
-  ('Buscopan 10mg', 'Comprimido', 19, '2028-12-31'),
-  ('Lactulose 667mg/ml', 'Xarope', 4, '2028-08-30');
-
 -- Popular tabela unidades_medida
-
 INSERT INTO unidades_medida (nome, sigla) VALUES
 ('Grama', 'g'),
 ('Miligrama', 'mg'),
@@ -39,6 +13,29 @@ INSERT INTO unidades_medida (nome, sigla) VALUES
 ('Unidade', 'un'),
 ('Ampola', 'amp'),
 ('Caixa', 'cx');
+
+-- Popular tabela de medicamentos (agora com unidade_medida_id)
+INSERT INTO medicamentos (nome, tipo, quantidade, unidade_medida_id) VALUES
+('Paracetamol 750mg', 'Comprimido', 10, (SELECT id FROM unidades_medida WHERE sigla = 'mg')),
+('Amoxicilina 500mg', 'Cápsula', 8, (SELECT id FROM unidades_medida WHERE sigla = 'mg')),
+('Dipirona 500mg', 'Comprimido', 20, (SELECT id FROM unidades_medida WHERE sigla = 'mg')),
+('Ibuprofeno 600mg', 'Comprimido', 15, (SELECT id FROM unidades_medida WHERE sigla = 'mg')),
+('Omeprazol 20mg', 'Cápsula', 12, (SELECT id FROM unidades_medida WHERE sigla = 'mg')),
+('Loratadina 10mg', 'Comprimido', 9, (SELECT id FROM unidades_medida WHERE sigla = 'mg')),
+('Metformina 850mg', 'Comprimido', 11, (SELECT id FROM unidades_medida WHERE sigla = 'mg')),
+('Losartana 50mg', 'Comprimido', 14, (SELECT id FROM unidades_medida WHERE sigla = 'mg')),
+('Salbutamol 100mcg', 'Spray', 6, (SELECT id FROM unidades_medida WHERE sigla = 'un')),
+('Ranitidina 150mg', 'Comprimido', 7, (SELECT id FROM unidades_medida WHERE sigla = 'mg')),
+('Azitromicina 500mg', 'Comprimido', 5, (SELECT id FROM unidades_medida WHERE sigla = 'mg')),
+('Prednisona 20mg', 'Comprimido', 18, (SELECT id FROM unidades_medida WHERE sigla = 'mg')),
+('Dexametasona 4mg', 'Comprimido', 22, (SELECT id FROM unidades_medida WHERE sigla = 'mg')),
+('Vitamina C 500mg', 'Comprimido', 30, (SELECT id FROM unidades_medida WHERE sigla = 'mg')),
+('Complexo B', 'Comprimido', 25, (SELECT id FROM unidades_medida WHERE sigla = 'mg')),
+('Cetirizina 10mg', 'Comprimido', 13, (SELECT id FROM unidades_medida WHERE sigla = 'mg')),
+('Nimesulida 100mg', 'Comprimido', 16, (SELECT id FROM unidades_medida WHERE sigla = 'mg')),
+('Dorflex', 'Comprimido', 24, (SELECT id FROM unidades_medida WHERE sigla = 'mg')),
+('Buscopan 10mg', 'Comprimido', 19, (SELECT id FROM unidades_medida WHERE sigla = 'mg')),
+('Lactulose 667mg/ml', 'Xarope', 4, (SELECT id FROM unidades_medida WHERE sigla = 'mL'));
 
 -- Popular tabela de doações
 INSERT INTO doacoes

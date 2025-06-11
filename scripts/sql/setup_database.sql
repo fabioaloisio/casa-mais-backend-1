@@ -24,17 +24,6 @@ CREATE TABLE IF NOT EXISTS doacoes (
     INDEX idx_tipo_doador (tipo_doador)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Tabela para armazenar doações monetárias';
 
--- Tabela de medicamentos em estoque
-CREATE TABLE IF NOT EXISTS medicamentos (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(100) NOT NULL,
-    tipo VARCHAR(45) NOT NULL,
-    quantidade INT NOT NULL,
-    validade DATE NOT NULL,
-    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Medicamentos disponíveis no estoque da instituição';
-
 -- Tabela de Unidades de Medida
 
 CREATE TABLE IF NOT EXISTS unidades_medida (
@@ -44,6 +33,18 @@ CREATE TABLE IF NOT EXISTS unidades_medida (
   createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 )  ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Unidades de medida de medicamentos cadastradas.';
+
+-- Tabela de medicamentos em estoque
+CREATE TABLE IF NOT EXISTS medicamentos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    tipo VARCHAR(45) NOT NULL,
+    quantidade INT NOT NULL,
+    unidade_medida_id INT NOT NULL,
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
+    FOREIGN KEY (unidade_medida_id) REFERENCES unidades_medida(id) ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Medicamentos disponíveis no estoque da instituição';
 
 -- Tabela principal: assistidas
 CREATE TABLE IF NOT EXISTS assistidas (
