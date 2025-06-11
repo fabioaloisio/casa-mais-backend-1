@@ -1,13 +1,14 @@
-# ğŸ“œ Scripts do Backend
+# =Ü Scripts do Backend
 
-Esta pasta contÃ©m scripts utilitÃ¡rios para o backend da Casa+.
+Esta pasta contém scripts utilitários para o backend da Casa+.
 
-## ğŸ“‹ Scripts DisponÃ­veis
+## =Ë Scripts Disponíveis
 
-### ğŸ› ï¸ **Setup e ConfiguraÃ§Ã£o**
+### =à **Setup e Configuração**
 
 #### `setup-db.js`
-Cria o banco de dados e todas as tabelas necessÃ¡rias.
+
+Cria o banco de dados e todas as tabelas necessárias.
 
 ```bash
 # Executar via npm
@@ -18,15 +19,16 @@ node scripts/setup-db.js
 ```
 
 **Funcionalidades:**
-- âœ… Cria banco de dados `casamais_db`
-- âœ… Cria todas as tabelas com relacionamentos
-- âœ… Configura Ã­ndices e constraints
-- âœ… Verifica conexÃ£o com MySQL
+-  Cria banco de dados `casamais_db`
+-  Cria todas as tabelas com relacionamentos
+-  Configura índices e constraints
+-  Verifica conexão com MySQL
 
-### ğŸ—ƒï¸ **PopulaÃ§Ã£o de Dados**
+### =Ã **População de Dados**
 
 #### `populate-db.js`
-Popula o banco com dados de exemplo originais.
+
+Popula o banco com dados de exemplo originais, e faz a migração dos dados existentes de doações para doadores
 
 ```bash
 # Executar via npm
@@ -37,12 +39,14 @@ node scripts/populate-db.js
 ```
 
 **Funcionalidades:**
-- âœ… Dados de assistidas, medicamentos, doaÃ§Ãµes
-- âœ… Estrutura original do sistema
-- âœ… ValidaÃ§Ã£o de tabelas existentes
+
+-  Dados de assistidas, medicamentos, doações
+-  Estrutura original do sistema
+-  Validação de tabelas existentes
 
 #### `populate-doadores.js`
-Popula o banco com doadores que possuem CPF/CNPJ vÃ¡lidos e endereÃ§os completos.
+
+Popula o banco com doadores que possuem CPF/CNPJ válidos e endereços completos.
 
 ```bash
 # Executar via npm
@@ -53,15 +57,17 @@ node scripts/populate-doadores.js
 ```
 
 **Funcionalidades:**
-- âœ… Gera 10 doadores PF com CPFs vÃ¡lidos
-- âœ… Gera 10 doadores PJ com CNPJs vÃ¡lidos
-- âœ… EndereÃ§os brasileiros completos
-- âœ… Limpa dados existentes antes de popular
-- âœ… Cria doaÃ§Ãµes associadas aos doadores
 
-### ğŸ” **ValidaÃ§Ã£o**
+-  Gera 10 doadores PF com CPFs válidos
+-  Gera 10 doadores PJ com CNPJs válidos
+-  Endereços brasileiros completos
+-  Limpa dados existentes antes de popular
+-  Cria doações associadas aos doadores
+
+### = **Validação**
 
 #### `validar-documentos.js`
+
 Valida todos os CPFs e CNPJs no banco de dados.
 
 ```bash
@@ -73,14 +79,16 @@ node scripts/validar-documentos.js
 ```
 
 **Funcionalidades:**
-- âœ… Valida CPFs usando algoritmo oficial
-- âœ… Valida CNPJs usando algoritmo oficial
-- âœ… Mostra estatÃ­sticas de validaÃ§Ã£o
-- âœ… Lista exemplos de documentos vÃ¡lidos
 
-### ğŸ§ª **Testes de API**
+-  Valida CPFs usando algoritmo oficial
+-  Valida CNPJs usando algoritmo oficial
+-  Mostra estatísticas de validação
+-  Lista exemplos de documentos válidos
+
+### >ê **Testes de API**
 
 #### `test_doadores_endpoints.sh`
+
 Testa todos os endpoints da API de doadores.
 
 ```bash
@@ -92,17 +100,19 @@ bash scripts/test_doadores_endpoints.sh
 ```
 
 **Testes inclusos:**
-- âœ… Listar doadores
-- âœ… Criar doador PF/PJ
-- âœ… Buscar por ID
-- âœ… Filtros (tipo, busca)
-- âœ… Atualizar doador
-- âœ… HistÃ³rico de doaÃ§Ãµes
-- âœ… ValidaÃ§Ãµes de erro
-- âœ… Desativar doador
+
+-  Listar doadores
+-  Criar doador PF/PJ
+-  Buscar por ID
+-  Filtros (tipo, busca)
+-  Atualizar doador
+-  Histórico de doações
+-  Validações de erro
+-  Desativar doador
 
 #### `test_doacoes_endpoints.sh`
-Testa todos os endpoints da API de doaÃ§Ãµes.
+
+Testa todos os endpoints da API de doações.
 
 ```bash
 # Executar via npm
@@ -113,86 +123,90 @@ bash scripts/test_doacoes_endpoints.sh
 ```
 
 **Testes inclusos:**
-- âœ… Listar doaÃ§Ãµes
-- âœ… Criar com doador existente
-- âœ… Criar com novo doador (compatibilidade)
-- âœ… Buscar por ID
-- âœ… Filtros (perÃ­odo, tipo, doador)
-- âœ… Atualizar doaÃ§Ã£o
-- âœ… EstatÃ­sticas
-- âœ… ValidaÃ§Ãµes de erro
-- âœ… Excluir doaÃ§Ã£o
 
-## ğŸ”§ PrÃ©-requisitos
+-  Listar doações
+-  Criar com doador existente
+-  Criar com novo doador (compatibilidade)
+-  Buscar por ID
+-  Filtros (período, tipo, doador)
+-  Atualizar doação
+-  Estatísticas
+-  Validações de erro
+-  Excluir doação
+
+## =' Pré-requisitos
 
 Para executar os scripts:
 
 1. **Servidor rodando**: `npm run dev`
 2. **Banco configurado**: `npm run setup-db`
-3. **DependÃªncias instaladas**: `npm install`
+3. **Dependências instaladas**: `npm install`
 
-## ğŸ“Š SaÃ­da dos Scripts
+## =Ê Saída dos Scripts
 
-### PopulaÃ§Ã£o de Doadores
+### População de Doadores
+
 ```
-ğŸš€ Iniciando populaÃ§Ã£o de doadores com dados vÃ¡lidos...
+=€ Iniciando população de doadores com dados válidos...
 
-âœ… Conectado ao banco de dados
-ğŸ”„ Limpando doadores existentes...
-ğŸ”„ Inserindo doadores PF com CPFs vÃ¡lidos...
-ğŸ”„ Inserindo doadores PJ com CNPJs vÃ¡lidos...
-ğŸ”„ Criando doaÃ§Ãµes para os doadores...
+ Conectado ao banco de dados
+= Limpando doadores existentes...
+= Inserindo doadores PF com CPFs válidos...
+= Inserindo doadores PJ com CNPJs válidos...
+= Criando doações para os doadores...
 
-ğŸ“Š Dados inseridos com sucesso:
+=Ê Dados inseridos com sucesso:
    - Doadores: 20
-   - DoaÃ§Ãµes: 20
+   - Doações: 20
    - Total arrecadado: R$ 10125.00
 
-ğŸ” Exemplos de CPFs gerados:
-   Maria Silva Santos: 29415498110 âœ…
-   JoÃ£o Pedro Oliveira: 29227197907 âœ…
-   Ana Beatriz Costa: 35674996610 âœ…
+= Exemplos de CPFs gerados:
+   Maria Silva Santos: 29415498110 
+   João Pedro Oliveira: 29227197907 
+   Ana Beatriz Costa: 35674996610 
 
-âœ… PopulaÃ§Ã£o de doadores concluÃ­da com sucesso!
+ População de doadores concluída com sucesso!
 ```
 
-### ValidaÃ§Ã£o de Documentos
+### Validação de Documentos
+
 ```
-ğŸ” Validando documentos gerados...
+= Validando documentos gerados...
 
-ğŸ“Š Resultado da validaÃ§Ã£o:
-   âœ… CPFs vÃ¡lidos: 10
-   âŒ CPFs invÃ¡lidos: 0
-   âœ… CNPJs vÃ¡lidos: 10
-   âŒ CNPJs invÃ¡lidos: 0
+=Ê Resultado da validação:
+    CPFs válidos: 10
+   L CPFs inválidos: 0
+    CNPJs válidos: 10
+   L CNPJs inválidos: 0
 
-ğŸ  Exemplos de endereÃ§os gerados:
-   Maria Silva Santos: Alameda Bela Vista, 1172, Santo AndrÃ©/PI - CEP: 34019924
-   JoÃ£o Pedro Oliveira: PraÃ§a Paulista, 3102, Belo Horizonte/SC - CEP: 52569127
+<à Exemplos de endereços gerados:
+   Maria Silva Santos: Alameda Bela Vista, 1172, Santo André/PI - CEP: 34019924
+   João Pedro Oliveira: Praça Paulista, 3102, Belo Horizonte/SC - CEP: 52569127
 ```
 
 ### Testes de API
+
 ```
-ğŸ§ª TESTANDO ENDPOINTS DE DOADORES
+>ê TESTANDO ENDPOINTS DE DOADORES
 ==================================
 
-1ï¸âƒ£  GET - Listar todos os doadores
-Status: 200 âœ…
+1ã  GET - Listar todos os doadores
+Status: 200 
 
-2ï¸âƒ£  POST - Criar doador Pessoa FÃ­sica
-Status: 201 âœ…
+2ã  POST - Criar doador Pessoa Física
+Status: 201 
 
 ...
 
-âœ… TODOS OS TESTES CONCLUÃDOS!
+ TODOS OS TESTES CONCLUÍDOS!
 ```
 
-## ğŸ› ï¸ PersonalizaÃ§Ã£o
+## =à Personalização
 
 ### Adicionando Novos Scripts
 
 1. Crie o arquivo na pasta `scripts/`
-2. Adicione permissÃ£o de execuÃ§Ã£o: `chmod +x scripts/nome_script.sh`
+2. Adicione permissão de execução: `chmod +x scripts/nome_script.sh`
 3. Adicione ao `package.json`:
    ```json
    "scripts": {
@@ -200,39 +214,46 @@ Status: 201 âœ…
    }
    ```
 
-### Modificando PopulaÃ§Ã£o
+### Modificando População
 
 Para alterar os dados gerados, edite:
-- `populate-doadores.js` - Nomes, endereÃ§os, valores
-- FunÃ§Ãµes `gerarCPFValido()` e `gerarCNPJValido()`
+
+- `populate-doadores.js` - Nomes, endereços, valores
+- Funções `gerarCPFValido()` e `gerarCNPJValido()`
 - Arrays de dados fake (cidades, estados, etc.)
 
-## ğŸ› ResoluÃ§Ã£o de Problemas
+## = Resolução de Problemas
 
-### Erro de ConexÃ£o
+### Erro de Conexão
+
 ```bash
-âŒ Erro: Access denied for user 'root'@'localhost'
+L Erro: Access denied for user 'root'@'localhost'
 ```
-**SoluÃ§Ã£o**: Verifique as credenciais no `.env`
+
+**Solução**: Verifique as credenciais no `.env`
 
 ### Erro de Foreign Key
-```bash
-âŒ Erro: Cannot add or update a child row: a foreign key constraint fails
-```
-**SoluÃ§Ã£o**: Execute o script de limpeza antes de popular
 
-### Scripts nÃ£o Executam
 ```bash
-âŒ Permission denied
+L Erro: Cannot add or update a child row: a foreign key constraint fails
 ```
-**SoluÃ§Ã£o**: `chmod +x scripts/*.sh`
 
-## ğŸ“š DocumentaÃ§Ã£o Relacionada
+**Solução**: Execute o script de limpeza antes de popular
+
+### Scripts não Executam
+
+```bash
+L Permission denied
+```
+
+**Solução**: `chmod +x scripts/*.sh`
+
+## =Ú Documentação Relacionada
 
 - **[../docs/CURL_COMMANDS.md](../docs/CURL_COMMANDS.md)** - Comandos curl manuais
-- **[../docs/DOCUMENTOS_VALIDOS.md](../docs/DOCUMENTOS_VALIDOS.md)** - ValidaÃ§Ã£o CPF/CNPJ
-- **[../README.md](../README.md)** - DocumentaÃ§Ã£o principal
+- **[../docs/DOCUMENTOS_VALIDOS.md](../docs/DOCUMENTOS_VALIDOS.md)** - Validação CPF/CNPJ
+- **[../README.md](../README.md)** - Documentação principal
 
 ---
 
-**Scripts organizados para melhor produtividade! ğŸš€**
+**Scripts organizados para melhor produtividade! =€**

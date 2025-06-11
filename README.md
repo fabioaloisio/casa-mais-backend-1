@@ -83,11 +83,6 @@ DB_PORT=3306
 # Criar banco e tabelas
 npm run setup-db
 
-# Popular com dados de exemplo (inclui doadores com CPF/CNPJ válidos)
-npm run populate-doadores
-
-# Validar documentos gerados
-npm run validate-docs
 ```
 
 ### 5. Iniciar o Servidor
@@ -260,9 +255,8 @@ curl -X POST http://localhost:3003/api/doacoes \
 - **[docs/CURL_COMMANDS.md](./docs/CURL_COMMANDS.md)** - Comandos curl para todos os endpoints
 - **[docs/DOCUMENTOS_VALIDOS.md](./docs/DOCUMENTOS_VALIDOS.md)** - Explicação sobre validação de CPF/CNPJ
 - **[scripts/README.md](./scripts/README.md)** - Documentação dos scripts utilitários
-- **[sql/](./sql/)** - Scripts de criação e migração do banco
+- **[scripts/sql/](./scripts/sql/)** - Scripts de criação e migração do banco
 
-## 🔧 Configuração Avançada
 
 ### Variáveis de Ambiente
 
@@ -301,7 +295,7 @@ backend/
 ├── docs/                           # Documentação
 │   ├── CURL_COMMANDS.md
 │   └── DOCUMENTOS_VALIDOS.md
-├── sql/                            # Scripts SQL
+├── scripts/sql/                    # Scripts SQL
 └── package.json                    # Dependências
 ```
 
@@ -316,7 +310,6 @@ backend/
 - ✅ Documento único por doador
 
 ### Doações
-
 - ✅ Valor maior que zero
 - ✅ Data não pode ser futura
 - ✅ Doador obrigatório e válido

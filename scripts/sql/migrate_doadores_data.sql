@@ -31,10 +31,10 @@ WHERE doador_id IS NULL;
 -- 4. Após verificar que todos os registros foram migrados, adicionar a foreign key
 -- ALTER TABLE doacoes ADD CONSTRAINT fk_doador FOREIGN KEY (doador_id) REFERENCES doadores(id);
 
--- 5. Opcional: Após confirmar que tudo está funcionando, remover as colunas antigas
--- ALTER TABLE doacoes 
--- DROP COLUMN tipo_doador,
--- DROP COLUMN nome_doador,
--- DROP COLUMN documento,
--- DROP COLUMN email,
--- DROP COLUMN telefone;
+-- 5. Após confirmar que tudo está funcionando, remover as colunas antigas
+ALTER TABLE doacoes 
+DROP COLUMN tipo_doador,
+DROP COLUMN nome_doador,
+DROP COLUMN documento,
+DROP COLUMN email,
+DROP COLUMN telefone;

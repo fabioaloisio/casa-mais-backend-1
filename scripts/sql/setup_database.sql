@@ -24,15 +24,26 @@ CREATE TABLE IF NOT EXISTS doacoes (
     INDEX idx_tipo_doador (tipo_doador)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Tabela para armazenar doações monetárias';
 
+-- Tabela de Unidades de Medida
+
+CREATE TABLE IF NOT EXISTS unidades_medida (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nome VARCHAR(255) NOT NULL,
+  sigla VARCHAR(5) NOT NULL UNIQUE,
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Unidades de medida de medicamentos cadastradas.';
+
 -- Tabela de medicamentos em estoque
 CREATE TABLE IF NOT EXISTS medicamentos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
     tipo VARCHAR(45) NOT NULL,
     quantidade INT NOT NULL,
-    validade DATE NOT NULL,
+    unidade_medida_id INT NOT NULL,
     createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL
+    updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
+    FOREIGN KEY (unidade_medida_id) REFERENCES unidades_medida(id) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Medicamentos disponíveis no estoque da instituição';
 
 -- Tabela principal: assistidas
@@ -108,6 +119,8 @@ CREATE TABLE IF NOT EXISTS medicamentos_utilizados (
     updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL COMMENT 'Última atualização',
     FOREIGN KEY (assistida_id) REFERENCES assistidas(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Medicamentos usados por assistidas';
+
+
 
 -- Mensagem final de confirmação
 SELECT 'Banco de dados e todas as tabelas criadas com sucesso!' AS mensagem;

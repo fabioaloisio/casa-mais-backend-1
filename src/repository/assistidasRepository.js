@@ -280,6 +280,58 @@ class AssistidaRepository {
         return rows.map(row => new MedicamentoUtilizado(row));
     }
 
+    async obterEstatisticas(filtros = {}) {
+        let queryBase = 'FROM assistidas WHERE 1=1';
+        const valores = [];
+
+        if (filtros.status) {
+            queryBase += ' AND status = ?';
+            valores.push(filtros.status);
+        }
+
+        if (filtros.cidade) {
+            queryBase += ' AND cidade = ?';
+            valores.push(filtros.cidade);
+        }
+
+        if (filtros.dataInicio) {
+            queryBase += ' AND data_atendimento >= ?';
+            valores.push(filtros.dataInicio);
+        }
+
+        if (filtros.dataFim) {
+            queryBase += ' AND data_atendimento <= ?';
+            valores.push(filtros.dataFim);
+        }
+
+        // Total geral
+        const [totalRows] = await db.execute(
+            `SELECT COUNT(*) as total ${queryBase}`,
+            valores
+        );
+
+        // Total por status
+        const [statusRows] = await db.execute(
+            `SELECT status, COUNT(*) as quantidade ${queryBase} GROUP BY status`,
+            valores
+        );
+
+        // Construir resposta
+        const stats = {
+            total: totalRows[0].total,
+            ativas: 0,
+            emTratamento: 0,
+            inativas: 0
+        };
+
+        for (const row of statusRows) {
+            if (row.status === 'Ativa') stats.ativas = row.quantidade;
+            if (row.status === 'Em Tratamento') stats.emTratamento = row.quantidade;
+            if (row.status === 'Inativa') stats.inativas = row.quantidade;
+        }
+
+        return stats
+    }
 
 }
 

@@ -5,30 +5,53 @@ const Medicamento = require('../models/medicamento');
 
 class MedicamentoRepository {
   async findAll() {
-    const [rows] = await db.execute('SELECT * FROM medicamentos;');
+    const [rows] = await db.execute(`
+      SELECT m.*, u.nome AS unidade_nome, u.sigla AS unidade_sigla 
+      FROM medicamentos m 
+      LEFT JOIN unidades_medida u ON m.unidade_medida_id = u.id 
+      ORDER BY m.nome ASC;
+    `);
     return rows.map(row => new Medicamento(row));
   }
 
   async findById(id) {
-    const [rows] = await db.execute('SELECT * FROM medicamentos WHERE id = ?;', [id]);
+    const [rows] = await db.execute(`
+      SELECT m.*, u.nome AS unidade_nome, u.sigla AS unidade_sigla 
+      FROM medicamentos m 
+      LEFT JOIN unidades_medida u ON m.unidade_medida_id = u.id 
+      WHERE m.id = ?;
+    `, [id]);
     return rows.length ? new Medicamento(rows[0]) : null;
   }
 
   async findByTipo(tipo) {
-    const [rows] = await db.execute('SELECT * FROM medicamentos WHERE tipo LIKE ?;', [`%${tipo}%`]);
+    const [rows] = await db.execute(`
+      SELECT m.*, u.nome AS unidade_nome, u.sigla AS unidade_sigla 
+      FROM medicamentos m 
+      LEFT JOIN unidades_medida u ON m.unidade_medida_id = u.id 
+      WHERE m.tipo LIKE ? 
+      ORDER BY m.nome ASC;
+    `, [`%${tipo}%`]);
     return rows.map(row => new Medicamento(row));
   }
 
   async findByNome(nome) {
-    const [rows] = await db.execute('SELECT * FROM medicamentos WHERE nome LIKE ?;', [`%${nome}%`]);
+    const [rows] = await db.execute(`
+      SELECT m.*, u.nome AS unidade_nome, u.sigla AS unidade_sigla 
+      FROM medicamentos m 
+      LEFT JOIN unidades_medida u ON m.unidade_medida_id = u.id 
+      WHERE m.nome LIKE ? 
+      ORDER BY m.nome ASC;
+    `, [`%${nome}%`]);
     return rows.map(row => new Medicamento(row));
   }
 
   async create(medicamento) {
-    const [result] = await db.execute(
-      `INSERT INTO medicamentos (nome, tipo, quantidade, validade) VALUES (?, ?, ?, ?);`,
-      [medicamento.nome, medicamento.tipo, medicamento.quantidade, medicamento.getDataParaMySQL()]
-    );
+    const [result] = await db.execute(`
+      INSERT INTO medicamentos (nome, tipo, quantidade, unidade_medida_id) 
+      VALUES (?, ?, ?, ?);
+    `, [medicamento.nome, medicamento.tipo, medicamento.quantidade, medicamento.unidade_medida_id]);
+
     medicamento.id = result.insertId;
     return medicamento;
   }
@@ -49,19 +72,18 @@ class MedicamentoRepository {
       campos.push('quantidade = ?');
       valores.push(medicamento.quantidade);
     }
-    if (medicamento.validade !== undefined) {
-      campos.push('validade = ?');
-      valores.push(medicamento.getDataParaMySQL());
+    if (medicamento.unidade_medida_id !== undefined) {
+      campos.push('unidade_medida_id = ?');
+      valores.push(medicamento.unidade_medida_id);
     }
 
     if (campos.length === 0) return false;
 
     valores.push(id);
 
-    const [result] = await db.execute(
-      `UPDATE medicamentos SET ${campos.join(', ')} WHERE id = ?;`,
-      valores
-    );
+    const [result] = await db.execute(`
+      UPDATE medicamentos SET ${campos.join(', ')} WHERE id = ?;
+    `, valores);
 
     return result.affectedRows > 0;
   }
