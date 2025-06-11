@@ -5,14 +5,14 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "setup-db": "node scripts/setup-db.js",
-    "populate-db": "node scripts/populate-db.js",
-    "populate-doadores": "node scripts/populate-doadores.js",
-    "validate-docs": "node scripts/validar-documentos.js",
+    "dev": "nodemon index.js",
+    "db:reset": "node scripts/reset-and-setup-db.js",
+    "db:setup": "node scripts/setup-complete-db.js",
     "test:doadores": "bash scripts/test_doadores_endpoints.sh",
     "test:doacoes": "bash scripts/test_doacoes_endpoints.sh",
-    "dev": "nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test:tipos-despesas": "bash scripts/test_tipos_despesas_endpoints.sh",
+    "test:all": "npm run test:doadores && npm run test:doacoes && npm run test:tipos-despesas",
+    "test": "npm run test:all"
   },
   "keywords": [
     "backend",

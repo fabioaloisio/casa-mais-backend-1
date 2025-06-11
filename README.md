@@ -80,8 +80,13 @@ DB_PORT=3306
 ### 4. Setup do Banco de Dados
 
 ```bash
-# Criar banco e tabelas
+# Criar e popular o banco de dados e tabelas
 npm run setup-db
+
+# opcional
+npm run populate-db
+npm run populate-doadores
+npm run validate-docs
 
 ```
 
@@ -99,22 +104,31 @@ Servidor rodando em: `http://localhost:3003`
 
 ## 📋 Scripts Disponíveis
 
-| Script                      | Descrição                            |
-| --------------------------- | ------------------------------------ |
-| `npm start`                 | Inicia servidor em produção          |
-| `npm run dev`               | Inicia servidor em desenvolvimento   |
-| `npm run setup-db`          | Cria banco e tabelas                 |
-| `npm run populate-db`       | Popula dados originais               |
-| `npm run populate-doadores` | Popula doadores com CPF/CNPJ válidos |
-| `npm run validate-docs`     | Valida todos os documentos           |
-| `npm run test:doadores`     | Testa endpoints de doadores          |
-| `npm run test:doacoes`      | Testa endpoints de doações           |
+| Script                        | Descrição                            |
+| ----------------------------- | ------------------------------------ |
+| `npm start`                   | Inicia servidor em produção          |
+| `npm run dev`                 | Inicia servidor em desenvolvimento   |
+| `npm run setup-db`            | Cria banco e tabelas                 |
+| `npm run populate-db`         | Popula dados originais               |
+| `npm run populate-doadores`   | Popula doadores com CPF/CNPJ válidos |
+| `npm run validate-docs`       | Valida todos os documentos           |
+| `npm run test:doadores`       | Testa endpoints de doadores          |
+| `npm run test:doacoes`        | Testa endpoints de doações           |
+| `npm run test:tipos-despesas` | Testa endpoints de tipos de despesas |
+| `npm run test:all`            | Executa todos os testes de endpoints |
 
 ## 🌐 Endpoints da API
 
 ### 👥 Doadores (`/api/doadores`)
 
-
+| Método   | Endpoint       | Descrição               |
+| -------- | -------------- | ----------------------- |
+| `GET`    | `/`            | Lista todos os doadores |
+| `POST`   | `/`            | Cria novo doador        |
+| `GET`    | `/:id`         | Busca doador por ID     |
+| `PUT`    | `/:id`         | Atualiza doador         |
+| `DELETE` | `/:id`         | Desativa doador         |
+| `GET`    | `/:id/doacoes` | Histórico de doações    |
 
 **Filtros disponíveis:**
 
@@ -161,6 +175,31 @@ Servidor rodando em: `http://localhost:3003`
 | `PUT`    | `/:id`   | Atualiza assistida |
 | `DELETE` | `/:id`   | Exclui assistida   |
 
+### 📏 Unidades de Medida (`/api/unidades_medida`)
+
+| Método   | Endpoint | Descrição             |
+| -------- | -------- | --------------------- |
+| `GET`    | `/`      | Lista unidades medida |
+| `POST`   | `/`      | Cria unidade medida   |
+| `GET`    | `/:id`   | Busca por ID          |
+| `PUT`    | `/:id`   | Atualiza unidade      |
+| `DELETE` | `/:id`   | Exclui unidade        |
+
+### 💸 Tipos de Despesas (`/api/tipos-despesas`)
+
+| Método   | Endpoint | Descrição               |
+| -------- | -------- | ----------------------- |
+| `GET`    | `/`      | Lista tipos de despesas |
+| `POST`   | `/`      | Cria tipo de despesa    |
+| `GET`    | `/:id`   | Busca por ID            |
+| `PUT`    | `/:id`   | Atualiza tipo           |
+| `DELETE` | `/:id`   | Exclui tipo             |
+
+**Filtros disponíveis:**
+
+- `?ativo=true/false` - Filtra por status
+- `?search=nome` - Busca por nome
+
 ## 🧪 Testando a API
 
 ### Testes Automatizados
@@ -172,9 +211,16 @@ npm run test:doadores
 # Testar todos os endpoints de doações
 npm run test:doacoes
 
+# Testar todos os endpoints de tipos de despesas
+npm run test:tipos-despesas
+
+# Executar todos os testes
+npm run test:all
+
 # Ou executar diretamente
 bash scripts/test_doadores_endpoints.sh
 bash scripts/test_doacoes_endpoints.sh
+bash scripts/test_tipos_despesas_endpoints.sh
 ```
 
 ### Exemplos de Uso
@@ -237,6 +283,11 @@ curl -X POST http://localhost:3003/api/doacoes \
 - Cadastro das mulheres assistidas
 - Histórico de atendimentos
 
+#### `tipos_despesas`
+
+- Catálogo de tipos/categorias de despesas
+- Classificação para organização financeira
+
 ### Relacionamentos
 
 - `doacoes.doador_id` → `doadores.id` (FK)
@@ -245,7 +296,98 @@ curl -X POST http://localhost:3003/api/doacoes \
 
 ## 📚 Documentação Adicional
 
+- **[docs/CURL_COMMANDS.md](./docs/CURL_COMMANDS.md)** - Comandos curl para todos os endpoints
+- **[docs/DOCUMENTOS_VALIDOS.md](./docs/DOCUMENTOS_VALIDOS.md)** - Explicação sobre validação de CPF/CNPJ
+- **[scripts/README.md](./scripts/README.md)** - Documentação dos scripts utilitários
+- **[scripts/sql/](./scripts/sql/)** - Scripts de criação e migração do banco
 
+### Variáveis de Ambiente
+
+```env
+# Servidor
+PORT=3003
+NODE_ENV=development
+
+# Banco de Dados
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=sua_senha
+DB_NAME=casamais_db
+DB_PORT=3306
+DB_CONNECTION_LIMIT=10
+```
+
+### Estrutura de Arquivos
+
+```
+backend/
+├── src/
+│   ├── controllers/                # Lógica de controle
+│   │   ├── assistidaController.js
+│   │   ├── doacaoController.js
+│   │   ├── doadorController.js
+│   │   ├── medicamentoController.js
+│   │   ├── tipoDespesaController.js
+│   │   └── unidadeMedidaController.js
+│   ├── models/                     # Modelos de dados
+│   │   ├── assistida.js
+│   │   ├── doacao.js
+│   │   ├── doador.js
+│   │   ├── medicamento.js
+│   │   ├── tipoDespesa.js
+│   │   └── unidadeMedida.js
+│   ├── repository/                 # Acesso ao banco
+│   │   ├── assistidasRepository.js
+│   │   ├── doacaoRepository.js
+│   │   ├── doadorRepository.js
+│   │   ├── medicamentoRepository.js
+│   │   ├── tipoDespesaRepository.js
+│   │   └── unidadeMedidaRepository.js
+│   ├── routes/                     # Definição de rotas
+│   │   ├── assistidasRoutes.js
+│   │   ├── doacaoRoutes.js
+│   │   ├── doadorRoutes.js
+│   │   ├── medicamentoRoutes.js
+│   │   ├── tipoDespesaRoutes.js
+│   │   └── unidadeMedidaRoutes.js
+│   ├── config/                     # Configurações
+│   │   └── database.js
+│   └── app.js                      # Configuração do Express
+├── scripts/                        # Scripts utilitários
+│   ├── sql/                        # Scripts SQL
+│   │   ├── create_doadores_table.sql
+│   │   ├── create_tipos_despesas_table.sql
+│   │   ├── migrate_doadores_data.sql
+│   │   ├── populate_data.sql
+│   │   └── setup_database.sql
+│   ├── setup-db.js
+│   ├── populate-db.js
+│   ├── populate-doadores.js
+│   ├── validar-documentos.js
+│   ├── test_doadores_endpoints.sh
+│   ├── test_doacoes_endpoints.sh
+│   └── README.md
+├── docs/                           # Documentação
+│   ├── CURL_COMMANDS.md
+│   └── DOCUMENTOS_VALIDOS.md
+├── .env.example                    # Exemplo de variáveis de ambiente
+├── package.json                    # Dependências
+├── package-lock.json               # Lock das dependências
+├── index.js                        # Ponto de entrada
+└── README.md                       # Este arquivo
+```
+
+## 🚨 Validações Implementadas
+
+### Doadores
+
+- ✅ CPF: 11 dígitos com verificadores válidos
+- ✅ CNPJ: 14 dígitos com verificadores válidos
+- ✅ Email: formato válido
+- ✅ Telefone: obrigatório
+- ✅ Documento único por doador
+
+### Doações
 
 - ✅ Valor maior que zero
 - ✅ Data não pode ser futura
