@@ -83,11 +83,17 @@ DB_PORT=3306
 # Criar e popular o banco de dados e tabelas
 npm run setup-db
 
-# opcional
+# Ou usar os scripts SQL diretamente
+mysql -u root -p < scripts/sql/create_all_tables.sql
+mysql -u root -p casamais_db < scripts/sql/populate_all_data.sql
+
+# Scripts opcionais
 npm run populate-db
 npm run populate-doadores
 npm run validate-docs
 
+# Reset completo do banco (limpa e recria tudo)
+mysql -u root -p < scripts/sql/reset_and_create_all.sql
 ```
 
 ### 5. Iniciar o Servidor
@@ -294,12 +300,36 @@ curl -X POST http://localhost:3003/api/doacoes \
 - `internacoes.assistida_id` → `assistidas.id` (FK)
 - `medicamentos_utilizados.medicamento_id` → `medicamentos.id` (FK)
 
+## 🗄️ Scripts SQL
+
+Os scripts SQL estão versionados e organizados na pasta `scripts/sql/`:
+
+### Scripts Principais
+
+| Script | Descrição | Uso |
+|--------|-----------|-----|
+| **create_all_tables.sql** | Cria todas as tabelas do sistema | `mysql -u root -p < scripts/sql/create_all_tables.sql` |
+| **populate_all_data.sql** | Insere dados iniciais para desenvolvimento | `mysql -u root -p casamais_db < scripts/sql/populate_all_data.sql` |
+| **reset_and_create_all.sql** | Remove e recria todo o banco | `mysql -u root -p < scripts/sql/reset_and_create_all.sql` |
+
+### Estrutura das Tabelas
+
+✅ **Tabelas Implementadas:**
+- `doadores` - Gestão de doadores PF/PJ
+- `doacoes` - Registro de doações
+- `medicamentos` - Catálogo de medicamentos
+- `assistidas` - Cadastro de mulheres assistidas
+- `unidades_medida` - Unidades para medicamentos
+- `tipos_despesas` - Categorias de despesas
+- `internacoes` - Histórico de internações
+- `medicamentos_utilizados` - Controle de medicamentos
+
 ## 📚 Documentação Adicional
 
 - **[docs/CURL_COMMANDS.md](./docs/CURL_COMMANDS.md)** - Comandos curl para todos os endpoints
 - **[docs/DOCUMENTOS_VALIDOS.md](./docs/DOCUMENTOS_VALIDOS.md)** - Explicação sobre validação de CPF/CNPJ
 - **[scripts/README.md](./scripts/README.md)** - Documentação dos scripts utilitários
-- **[scripts/sql/](./scripts/sql/)** - Scripts de criação e migração do banco
+- **[scripts/sql/README.md](./scripts/sql/README.md)** - Documentação detalhada dos scripts SQL
 
 ### Variáveis de Ambiente
 
@@ -355,11 +385,10 @@ backend/
 │   └── app.js                      # Configuração do Express
 ├── scripts/                        # Scripts utilitários
 │   ├── sql/                        # Scripts SQL
-│   │   ├── create_doadores_table.sql
-│   │   ├── create_tipos_despesas_table.sql
-│   │   ├── migrate_doadores_data.sql
-│   │   ├── populate_data.sql
-│   │   └── setup_database.sql
+│   │   ├── create_all_tables.sql   # ✅ Cria todas as tabelas do sistema
+│   │   ├── populate_all_data.sql   # ✅ Popula dados iniciais
+│   │   ├── reset_and_create_all.sql # ✅ Reset completo do banco
+│   │   └── README.md              # Documentação dos scripts SQL
 │   ├── setup-db.js
 │   ├── populate-db.js
 │   ├── populate-doadores.js
