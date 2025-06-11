@@ -168,6 +168,16 @@ Servidor rodando em: `http://localhost:3003`
 | `PUT`    | `/:id`   | Atualiza assistida |
 | `DELETE` | `/:id`   | Exclui assistida   |
 
+### 📏 Unidades de Medida (`/api/unidades_medida`)
+
+| Método   | Endpoint | Descrição              |
+| -------- | -------- | ---------------------- |
+| `GET`    | `/`      | Lista unidades medida  |
+| `POST`   | `/`      | Cria unidade medida    |
+| `GET`    | `/:id`   | Busca por ID           |
+| `PUT`    | `/:id`   | Atualiza unidade       |
+| `DELETE` | `/:id`   | Exclui unidade         |
+
 ## 🧪 Testando a API
 
 ### Testes Automatizados
@@ -280,23 +290,53 @@ DB_CONNECTION_LIMIT=10
 backend/
 ├── src/
 │   ├── controllers/                # Lógica de controle
+│   │   ├── assistidaController.js
+│   │   ├── doacaoController.js
+│   │   ├── doadorController.js
+│   │   ├── medicamentoController.js
+│   │   └── unidadeMedidaController.js
 │   ├── models/                     # Modelos de dados
+│   │   ├── assistida.js
+│   │   ├── doacao.js
+│   │   ├── doador.js
+│   │   ├── medicamento.js
+│   │   └── unidadeMedida.js
 │   ├── repository/                 # Acesso ao banco
+│   │   ├── assistidasRepository.js
+│   │   ├── doacaoRepository.js
+│   │   ├── doadorRepository.js
+│   │   ├── medicamentoRepository.js
+│   │   └── unidadeMedidaRepository.js
 │   ├── routes/                     # Definição de rotas
+│   │   ├── assistidasRoutes.js
+│   │   ├── doacaoRoutes.js
+│   │   ├── doadorRoutes.js
+│   │   ├── medicamentoRoutes.js
+│   │   └── unidadeMedidaRoutes.js
 │   ├── config/                     # Configurações
+│   │   └── database.js
 │   └── app.js                      # Configuração do Express
 ├── scripts/                        # Scripts utilitários
+│   ├── sql/                        # Scripts SQL
+│   │   ├── create_doadores_table.sql
+│   │   ├── migrate_doadores_data.sql
+│   │   ├── populate_data.sql
+│   │   └── setup_database.sql
 │   ├── setup-db.js
 │   ├── populate-db.js
 │   ├── populate-doadores.js
 │   ├── validar-documentos.js
 │   ├── test_doadores_endpoints.sh
-│   └── test_doacoes_endpoints.sh
+│   ├── test_doacoes_endpoints.sh
+│   └── README.md
 ├── docs/                           # Documentação
 │   ├── CURL_COMMANDS.md
 │   └── DOCUMENTOS_VALIDOS.md
-├── scripts/sql/                    # Scripts SQL
-└── package.json                    # Dependências
+├── .env.example                    # Exemplo de variáveis de ambiente
+├── package.json                    # Dependências
+├── package-lock.json               # Lock das dependências
+├── index.js                        # Ponto de entrada
+└── README.md                       # Este arquivo
 ```
 
 ## 🚨 Validações Implementadas
