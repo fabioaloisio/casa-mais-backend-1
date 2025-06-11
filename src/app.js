@@ -18,7 +18,7 @@ app.use('/api/medicamentos', medicamentoRoutes);
 app.use('/api/doacoes', doacaoRoutes);
 app.use('/api/assistidas', assistidasRoutes);
 app.use('/api/doadores', doadorRoutes);
-app.use('/api/unidadeMedidas', unidadeMedidaRoutes);
+app.use('/api/unidades_medida', unidadeMedidaRoutes);
 
 app.get('/', (req, res) => {
   res.json({ message: 'API Casa+ funcionando!' });
