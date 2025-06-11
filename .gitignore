@@ -54,7 +54,6 @@ Thumbs.db
 ehthumbs.db
 
 # Backups do banco de dados
-*.sql
 !sql/*.sql
 backup_*.sql
 dump_*.sql
