@@ -35,6 +35,16 @@ CREATE TABLE IF NOT EXISTS medicamentos (
     updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Medicamentos disponíveis no estoque da instituição';
 
+-- Tabela de Unidades de Medida
+
+CREATE TABLE IF NOT EXISTS unidades_medida (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nome VARCHAR(255) NOT NULL,
+  sigla VARCHAR(5) NOT NULL UNIQUE,
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Unidades de medida de medicamentos cadastradas.';
+
 -- Tabela principal: assistidas
 CREATE TABLE IF NOT EXISTS assistidas (
     id INT PRIMARY KEY AUTO_INCREMENT,

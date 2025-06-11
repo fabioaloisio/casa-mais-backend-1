@@ -29,6 +29,17 @@ VALUES
   ('Buscopan 10mg', 'Comprimido', 19, '2028-12-31'),
   ('Lactulose 667mg/ml', 'Xarope', 4, '2028-08-30');
 
+-- Popular tabela unidades_medida
+
+INSERT INTO unidades_medida (nome, sigla) VALUES
+('Grama', 'g'),
+('Miligrama', 'mg'),
+('Litro', 'L'),
+('Mililitro', 'mL'),
+('Unidade', 'un'),
+('Ampola', 'amp'),
+('Caixa', 'cx');
+
 -- Popular tabela de doações
 INSERT INTO doacoes
   (tipo_doador, nome_doador, documento, email, telefone, valor, data_doacao, observacoes)
