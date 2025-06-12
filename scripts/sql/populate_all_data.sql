@@ -82,8 +82,7 @@ VALUES
   ('Litro', 'L'),
   ('Mililitro', 'mL'),
   ('Unidade', 'un'),
-  ('Ampola', 'amp'),
-  ('Caixa', 'cx');
+  ('Ampola', 'amp');
 
 
 INSERT INTO medicamentos

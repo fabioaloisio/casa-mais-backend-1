@@ -7,16 +7,15 @@ class AssistidaRepository {
             // Busca todas as assistidas
             const [assistidasRaw] = await db.execute('SELECT * FROM assistidas');
 
-            // Para cada assistida, buscar drogas e internações
+            // Para cada assistida, buscar internações e medicamentos (removendo drogas)
             const assistidas = await Promise.all(
                 assistidasRaw.map(async (row) => {
-                    const drogas = await this.findDrogasByAssistidaId(row.id);
                     const internacoes = await this.findInternacoesByAssistidaId(row.id);
                     const medicamentos = await this.findMedicamentosByAssistidaId(row.id);
 
                     return new Assistida({
                         ...row,
-                        drogas,
+                        drogas: [], // Lista vazia para drogas
                         internacoes,
                         medicamentos
                     });
@@ -65,13 +64,13 @@ class AssistidaRepository {
 
             const assistidaId = result.insertId;
 
-            // Inserir drogas
-            for (const droga of drogas) {
-                await conn.execute(
-                    'INSERT INTO drogas_utilizadas (assistida_id, tipo, idade_inicio, tempo_uso, intensidade) VALUES (?, ?, ?, ?, ?)',
-                    [assistidaId, droga.tipo, droga.idade_inicio, droga.tempo_uso, droga.intensidade]
-                );
-            }
+            // Inserir drogas (desabilitado - tabela não existe)
+            // for (const droga of drogas) {
+            //     await conn.execute(
+            //         'INSERT INTO drogas_utilizadas (assistida_id, tipo, idade_inicio, tempo_uso, intensidade) VALUES (?, ?, ?, ?, ?)',
+            //         [assistidaId, droga.tipo, droga.idade_inicio, droga.tempo_uso, droga.intensidade]
+            //     );
+            // }
 
             // Inserir internações
             for (const internacao of internacoes) {
@@ -138,17 +137,17 @@ class AssistidaRepository {
             ]);
 
             // 2. Limpa registros anteriores (substituição total)
-            await conn.execute('DELETE FROM drogas_utilizadas WHERE assistida_id = ?', [id]);
+            // await conn.execute('DELETE FROM drogas_utilizadas WHERE assistida_id = ?', [id]);
             await conn.execute('DELETE FROM internacoes WHERE assistida_id = ?', [id]);
             await conn.execute('DELETE FROM medicamentos_utilizados WHERE assistida_id = ?', [id]);
 
-            // 3. Reinsere novas drogas
-            for (const droga of drogas) {
-                await conn.execute(
-                    'INSERT INTO drogas_utilizadas (assistida_id, tipo, idade_inicio, tempo_uso, intensidade) VALUES (?, ?, ?, ?, ?)',
-                    [id, droga.tipo, droga.idade_inicio, droga.tempo_uso, droga.intensidade]
-                );
-            }
+            // 3. Reinsere novas drogas (desabilitado - tabela não existe)
+            // for (const droga of drogas) {
+            //     await conn.execute(
+            //         'INSERT INTO drogas_utilizadas (assistida_id, tipo, idade_inicio, tempo_uso, intensidade) VALUES (?, ?, ?, ?, ?)',
+            //         [id, droga.tipo, droga.idade_inicio, droga.tempo_uso, droga.intensidade]
+            //     );
+            // }
 
             // 4. Reinsere novas internações
             for (const internacao of internacoes) {
@@ -207,11 +206,10 @@ class AssistidaRepository {
             const [rows] = await db.execute('SELECT * FROM assistidas WHERE id = ?', [id]);
             if (rows.length === 0) return null;
 
-            const drogas = await this.findDrogasByAssistidaId(id);
             const internacoes = await this.findInternacoesByAssistidaId(id);
             const medicamentos = await this.findMedicamentosByAssistidaId(id);
 
-            return new Assistida({ ...rows[0], drogas, internacoes, medicamentos });
+            return new Assistida({ ...rows[0], drogas: [], internacoes, medicamentos });
         } catch (error) {
             throw new Error(`Erro ao buscar assistida: ${error.message}`);
         }
@@ -241,13 +239,12 @@ class AssistidaRepository {
 
             const [rows] = await db.execute(query, params);
 
-            // Buscar drogas, internações, medicamentos
+            // Buscar internações, medicamentos (removendo drogas)
             const assistidas = await Promise.all(rows.map(async (row) => {
-                const drogas = await this.findDrogasByAssistidaId(row.id);
                 const internacoes = await this.findInternacoesByAssistidaId(row.id);
                 const medicamentos = await this.findMedicamentosByAssistidaId(row.id);
 
-                return new Assistida({ ...row, drogas, internacoes, medicamentos });
+                return new Assistida({ ...row, drogas: [], internacoes, medicamentos });
             }));
 
             return assistidas;
@@ -257,11 +254,13 @@ class AssistidaRepository {
     }
 
     async findDrogasByAssistidaId(assistidaId) {
-        const [rows] = await db.execute(
-            'SELECT tipo, idade_inicio, tempo_uso, intensidade FROM drogas_utilizadas WHERE assistida_id = ?',
-            [assistidaId]
-        );
-        return rows.map(row => new DrogaUtilizada(row));
+        // Tabela drogas_utilizadas não existe - retornar array vazio
+        return [];
+        // const [rows] = await db.execute(
+        //     'SELECT tipo, idade_inicio, tempo_uso, intensidade FROM drogas_utilizadas WHERE assistida_id = ?',
+        //     [assistidaId]
+        // );
+        // return rows.map(row => new DrogaUtilizada(row));
     }
 
     async findInternacoesByAssistidaId(assistidaId) {
