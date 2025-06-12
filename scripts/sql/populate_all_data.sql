@@ -65,9 +65,64 @@ INSERT INTO doacoes (doador_id, valor, data_doacao, observacoes) VALUES
 (14, 500.00, '2025-01-02', 'Doação trimestral'),
 (15, 400.00, '2025-01-01', 'Apoio social');
 
--- 5. Verificar dados inseridos
+-- 5. Popular unidades_medida
+INSERT INTO unidades_medida (nome, sigla) VALUES
+('Grama', 'g'),
+('Miligrama', 'mg'),
+('Litro', 'L'),
+('Mililitro', 'mL'),
+('Unidade', 'un'),
+('Ampola', 'amp');
+
+-- 6. Popular medicamentos (com unidade_medida_id)
+INSERT INTO medicamentos (nome, tipo, quantidade, unidade_medida_id) VALUES
+('Paracetamol 750mg', 'Comprimido', 100, 5),
+('Amoxicilina 500mg', 'Cápsula', 80, 5),
+('Dipirona 500mg', 'Comprimido', 200, 5),
+('Ibuprofeno 600mg', 'Comprimido', 150, 5),
+('Omeprazol 20mg', 'Cápsula', 120, 5),
+('Loratadina 10mg', 'Comprimido', 90, 5),
+('Metformina 850mg', 'Comprimido', 110, 5),
+('Losartana 50mg', 'Comprimido', 140, 5),
+('Salbutamol 100mcg', 'Spray', 25, 6),
+('Ranitidina 150mg', 'Comprimido', 70, 5),
+('Azitromicina 500mg', 'Comprimido', 50, 5),
+('Prednisona 20mg', 'Comprimido', 180, 5),
+('Dexametasona 4mg', 'Comprimido', 220, 5),
+('Vitamina C 500mg', 'Comprimido', 300, 5),
+('Complexo B', 'Comprimido', 250, 5),
+('Cetirizina 10mg', 'Comprimido', 130, 5),
+('Nimesulida 100mg', 'Comprimido', 160, 5),
+('Dorflex', 'Comprimido', 240, 5),
+('Buscopan 10mg', 'Comprimido', 190, 5),
+('Lactulose 667mg/ml', 'Xarope', 40, 4);
+
+-- 7. Popular assistidas
+INSERT INTO assistidas (
+  nome, cpf, rg, idade, data_nascimento, nacionalidade, estado_civil, profissao, escolaridade, status,
+  logradouro, bairro, numero, cep, estado, cidade, telefone, telefone_contato
+) VALUES
+('Maria das Dores', '12345678900', 'MG-12345678', 42, '1983-09-15', 'Brasileira', 'Solteira', 'Cozinheira', 'Fundamental Completo', 'Ativa',
+ 'Rua das Flores', 'Centro', '120', '30100-000', 'MG', 'Belo Horizonte', '31999998888', '31988887777'),
+('Ana Paula Lima', '98765432199', 'SP-98765432', 36, '1988-02-20', 'Brasileira', 'Casada', 'Auxiliar de Limpeza', 'Médio Incompleto', 'Em Tratamento',
+ 'Avenida Central', 'Jardim das Palmeiras', '500', '04000-200', 'SP', 'São Paulo', '11912345678', '11934567890'),
+('Jéssica Andrade', '11223344556', 'RJ-33445566', 29, '1995-03-10', 'Brasileira', 'Solteira', 'Manicure', 'Médio Completo', 'Ativa',
+ 'Rua das Acácias', 'Lapa', '88', '20220-330', 'RJ', 'Rio de Janeiro', '21999887766', '21988776655'),
+('Carla Menezes', '22334455667', 'BA-44556677', 40, '1984-07-12', 'Brasileira', 'Divorciada', 'Doméstica', 'Fundamental Completo', 'Inativa',
+ 'Rua do Sossego', 'São Caetano', '22', '40200-000', 'BA', 'Salvador', '71987654321', '71996543210'),
+('Renata Oliveira', '33445566778', 'RS-55667788', 33, '1991-01-25', 'Brasileira', 'Casada', 'Atendente', 'Médio Completo', 'Em Tratamento',
+ 'Avenida Brasil', 'Centro', '305', '90010-000', 'RS', 'Porto Alegre', '51991234567', '51993456789'),
+('Tatiane Soares', '44556677889', 'PE-66778899', 27, '1997-11-04', 'Brasileira', 'Solteira', 'Vendedora', 'Médio Incompleto', 'Ativa',
+ 'Rua da Aurora', 'Boa Vista', '112', '50050-100', 'PE', 'Recife', '81999887766', '81988776655'),
+('Eliane Costa', '55667788990', 'CE-77889900', 50, '1974-08-08', 'Brasileira', 'Viúva', 'Artesã', 'Fundamental Incompleto', 'Ativa',
+ 'Travessa das Palmeiras', 'Mucuripe', '55', '60165-000', 'CE', 'Fortaleza', '85991234567', '85993456789');
+
+-- 8. Verificar dados inseridos
 SELECT 'Dados inseridos com sucesso!' as status;
 SELECT 'Tipos de despesas:', COUNT(*) as total FROM tipos_despesas;
 SELECT 'Doadores:', COUNT(*) as total FROM doadores;
 SELECT 'Despesas:', COUNT(*) as total FROM despesas;
 SELECT 'Doações:', COUNT(*) as total FROM doacoes;
+SELECT 'Unidades de medida:', COUNT(*) as total FROM unidades_medida;
+SELECT 'Medicamentos:', COUNT(*) as total FROM medicamentos;
+SELECT 'Assistidas:', COUNT(*) as total FROM assistidas;
