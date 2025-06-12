@@ -77,6 +77,7 @@ CREATE TABLE IF NOT EXISTS doacoes (
   CONSTRAINT fk_doacoes_doador FOREIGN KEY (doador_id) REFERENCES doadores (id) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+
 -- 5. Tabela unidades_medida (base para FK)
 CREATE TABLE IF NOT EXISTS unidades_medida (
   id int NOT NULL AUTO_INCREMENT,
@@ -93,15 +94,15 @@ CREATE TABLE IF NOT EXISTS unidades_medida (
 CREATE TABLE IF NOT EXISTS medicamentos (
   id int NOT NULL AUTO_INCREMENT,
   nome varchar(100) NOT NULL,
-  tipo varchar(45) NOT NULL,
-  quantidade int NOT NULL,
+  forma_farmaceutica varchar(45) NOT NULL,
+  descricao varchar(250) DEFAULT NULL,
   unidade_medida_id int NOT NULL,
   createdAt timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
   updatedAt timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
   PRIMARY KEY (id),
   KEY idx_medicamentos_unidade_medida_id (unidade_medida_id),
   KEY nome (nome),
-  KEY tipo (tipo),
+  KEY forma_farmaceutica (forma_farmaceutica),
   CONSTRAINT fk_medicamentos_unidade_medida FOREIGN KEY (unidade_medida_id) REFERENCES unidades_medida (id) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 

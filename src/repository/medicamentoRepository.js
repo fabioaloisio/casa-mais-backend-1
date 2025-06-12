@@ -24,14 +24,14 @@ class MedicamentoRepository {
     return rows.length ? new Medicamento(rows[0]) : null;
   }
 
-  async findByTipo(tipo) {
+  async findByFormaFarmaceutica(forma_farmaceutica) {
     const [rows] = await db.execute(`
       SELECT m.*, u.nome AS unidade_nome, u.sigla AS unidade_sigla 
       FROM medicamentos m 
       LEFT JOIN unidades_medida u ON m.unidade_medida_id = u.id 
-      WHERE m.tipo LIKE ? 
+      WHERE m.forma_farmaceutica LIKE ? 
       ORDER BY m.nome ASC;
-    `, [`%${tipo}%`]);
+    `, [`%${forma_farmaceutica}%`]);
     return rows.map(row => new Medicamento(row));
   }
 
@@ -48,9 +48,9 @@ class MedicamentoRepository {
 
   async create(medicamento) {
     const [result] = await db.execute(`
-      INSERT INTO medicamentos (nome, tipo, quantidade, unidade_medida_id) 
+      INSERT INTO medicamentos (nome, forma_farmaceutica, descricao, unidade_medida_id) 
       VALUES (?, ?, ?, ?);
-    `, [medicamento.nome, medicamento.tipo, medicamento.quantidade, medicamento.unidade_medida_id]);
+    `, [medicamento.nome, medicamento.forma_farmaceutica, medicamento.descricao, medicamento.unidade_medida_id]);
 
     medicamento.id = result.insertId;
     return medicamento;
@@ -64,13 +64,13 @@ class MedicamentoRepository {
       campos.push('nome = ?');
       valores.push(medicamento.nome);
     }
-    if (medicamento.tipo !== undefined) {
-      campos.push('tipo = ?');
-      valores.push(medicamento.tipo);
+    if (medicamento.forma_farmaceutica !== undefined) {
+      campos.push('forma_farmaceutica = ?');
+      valores.push(medicamento.forma_farmaceutica);
     }
-    if (medicamento.quantidade !== undefined) {
-      campos.push('quantidade = ?');
-      valores.push(medicamento.quantidade);
+    if (medicamento.descricao !== undefined) {
+      campos.push('descricao = ?');
+      valores.push(medicamento.descricao);
     }
     if (medicamento.unidade_medida_id !== undefined) {
       campos.push('unidade_medida_id = ?');

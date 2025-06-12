@@ -10,7 +10,17 @@ async function resetAndSetupDatabase() {
     // 1. RESET - Remover tabelas existentes (ordem importa por causa das FKs)
     console.log('\n🧹 Removendo tabelas existentes...');
     
-    const tablesToDrop = ['doacoes', 'despesas', 'doadores', 'tipos_despesas'];
+    const tablesToDrop = [
+      'medicamentos_utilizados', 
+      'internacoes', 
+      'doacoes', 
+      'despesas', 
+      'medicamentos', 
+      'assistidas', 
+      'unidades_medida', 
+      'doadores', 
+      'tipos_despesas'
+    ];
     
     for (const table of tablesToDrop) {
       try {
