@@ -1,5 +1,4 @@
 -- Script para popular todas as tabelas com dados de exemplo
--- Data: 2025-01-06
 
 USE casamais_db;
 
@@ -88,66 +87,26 @@ VALUES
 INSERT INTO medicamentos
   (nome, forma_farmaceutica, descricao, unidade_medida_id)
 VALUES
-  ('Paracetamol 750mg', 'Comprimido', 'Analgésico e antitérmico.', (SELECT id
-    FROM unidades_medida
-    WHERE sigla = 'mg')),
-  ('Amoxicilina 500mg', 'Cápsula', 'Antibiótico de amplo espectro.', (SELECT id
-    FROM unidades_medida
-    WHERE sigla = 'mg')),
-  ('Dipirona 500mg', 'Comprimido', 'Eficaz contra dores e febre.', (SELECT id
-    FROM unidades_medida
-    WHERE sigla = 'mg')),
-  ('Ibuprofeno 600mg', 'Comprimido', 'Anti-inflamatório não esteroide.', (SELECT id
-    FROM unidades_medida
-    WHERE sigla = 'mg')),
-  ('Omeprazol 20mg', 'Cápsula', 'Redução da produção de ácido gástrico.', (SELECT id
-    FROM unidades_medida
-    WHERE sigla = 'mg')),
-  ('Loratadina 10mg', 'Comprimido', 'Antialérgico sem sedação.', (SELECT id
-    FROM unidades_medida
-    WHERE sigla = 'mg')),
-  ('Metformina 850mg', 'Comprimido', 'Controle da glicemia em diabéticos.', (SELECT id
-    FROM unidades_medida
-    WHERE sigla = 'mg')),
-  ('Losartana 50mg', 'Comprimido', 'Uso para pressão arterial.', (SELECT id
-    FROM unidades_medida
-    WHERE sigla = 'mg')),
-  ('Salbutamol 100mcg', 'Spray', 'Broncodilatador para asma.', (SELECT id
-    FROM unidades_medida
-    WHERE sigla = 'un')),
-  ('Ranitidina 150mg', 'Comprimido', 'Tratamento de úlceras e refluxo.', (SELECT id
-    FROM unidades_medida
-    WHERE sigla = 'mg')),
-  ('Azitromicina 500mg', 'Comprimido', 'Antibiótico para infecções bacterianas.', (SELECT id
-    FROM unidades_medida
-    WHERE sigla = 'mg')),
-  ('Prednisona 20mg', 'Comprimido', 'Corticosteroide para inflamações.', (SELECT id
-    FROM unidades_medida
-    WHERE sigla = 'mg')),
-  ('Dexametasona 4mg', 'Comprimido', 'Anti-inflamatório potente.', (SELECT id
-    FROM unidades_medida
-    WHERE sigla = 'mg')),
-  ('Vitamina C 500mg', 'Comprimido', 'Reforço para imunidade.', (SELECT id
-    FROM unidades_medida
-    WHERE sigla = 'mg')),
-  ('Complexo B', 'Comprimido', 'Suplemento vitamínico.', (SELECT id
-    FROM unidades_medida
-    WHERE sigla = 'mg')),
-  ('Cetirizina 10mg', 'Comprimido', 'Antialérgico eficaz.', (SELECT id
-    FROM unidades_medida
-    WHERE sigla = 'mg')),
-  ('Nimesulida 100mg', 'Comprimido', 'Anti-inflamatório potente.', (SELECT id
-    FROM unidades_medida
-    WHERE sigla = 'mg')),
-  ('Dorflex', 'Comprimido', 'Relaxante muscular e analgésico.', (SELECT id
-    FROM unidades_medida
-    WHERE sigla = 'mg')),
-  ('Buscopan 10mg', 'Comprimido', 'Alívio para cólicas e desconforto abdominal.', (SELECT id
-    FROM unidades_medida
-    WHERE sigla = 'mg')),
-  ('Lactulose 667mg/ml', 'Xarope', 'Tratamento da constipação intestinal.', (SELECT id
-    FROM unidades_medida
-    WHERE sigla = 'mL'));
+  ('Paracetamol 750mg', 'Comprimido', 'Analgésico e antitérmico.', 2),
+  ('Amoxicilina 500mg', 'Cápsula', 'Antibiótico de amplo espectro.', 2),
+  ('Dipirona 500mg', 'Comprimido', 'Eficaz contra dores e febre.', 2),
+  ('Ibuprofeno 600mg', 'Comprimido', 'Anti-inflamatório não esteroide.', 2),
+  ('Omeprazol 20mg', 'Cápsula', 'Redução da produção de ácido gástrico.', 2),
+  ('Loratadina 10mg', 'Comprimido', 'Antialérgico sem sedação.', 2),
+  ('Metformina 850mg', 'Comprimido', 'Controle da glicemia em diabéticos.', 2),
+  ('Losartana 50mg', 'Comprimido', 'Uso para pressão arterial.', 2),
+  ('Salbutamol 100mcg', 'Spray', 'Broncodilatador para asma.', 5),
+  ('Ranitidina 150mg', 'Comprimido', 'Tratamento de úlceras e refluxo.', 2),
+  ('Azitromicina 500mg', 'Comprimido', 'Antibiótico para infecções bacterianas.', 2),
+  ('Prednisona 20mg', 'Comprimido', 'Corticosteroide para inflamações.', 2),
+  ('Dexametasona 4mg', 'Comprimido', 'Anti-inflamatório potente.', 2),
+  ('Vitamina C 500mg', 'Comprimido', 'Reforço para imunidade.', 2),
+  ('Complexo B', 'Comprimido', 'Suplemento vitamínico.', 2),
+  ('Cetirizina 10mg', 'Comprimido', 'Antialérgico eficaz.', 2),
+  ('Nimesulida 100mg', 'Comprimido', 'Anti-inflamatório potente.', 2),
+  ('Dorflex', 'Comprimido', 'Relaxante muscular e analgésico.', 2),
+  ('Buscopan 10mg', 'Comprimido', 'Alívio para cólicas e desconforto abdominal.', 2),
+  ('Lactulose 667mg/ml', 'Xarope', 'Tratamento da constipação intestinal.', 4);
 
 
 -- 7. Popular assistidas

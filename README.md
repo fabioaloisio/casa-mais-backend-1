@@ -80,20 +80,22 @@ DB_PORT=3306
 ### 4. Setup do Banco de Dados
 
 ```bash
-# Criar e popular o banco de dados e tabelas
-npm run setup-db
+# Criar estrutura do banco
+npm run db:create
+
+# Popular com dados de exemplo
+npm run db:populate
+
+# Setup completo (criar + popular)
+npm run db:setup
+
+# Reset completo (limpar + criar + popular)
+npm run db:full-reset
 
 # Ou usar os scripts SQL diretamente
-mysql -u root -p < scripts/sql/create_all_tables.sql
-mysql -u root -p casamais_db < scripts/sql/populate_all_data.sql
-
-# Scripts opcionais
-npm run populate-db
-npm run populate-doadores
-npm run validate-docs
-
-# Reset completo do banco (limpa e recria tudo)
-mysql -u root -p < scripts/sql/reset_and_create_all.sql
+mysql -u root -psua_senha_aqui casamais_db < scripts/sql/create_tables.sql
+mysql -u root -psua_senha_aqui casamais_db < scripts/sql/populate_data.sql
+mysql -u root -psua_senha_aqui casamais_db < scripts/sql/reset_tables.sql
 ```
 
 ### 5. Iniciar o Servidor
@@ -110,18 +112,17 @@ Servidor rodando em: `http://localhost:3003`
 
 ## 📋 Scripts Disponíveis
 
-| Script                        | Descrição                            |
-| ----------------------------- | ------------------------------------ |
-| `npm start`                   | Inicia servidor em produção          |
-| `npm run dev`                 | Inicia servidor em desenvolvimento   |
-| `npm run setup-db`            | Cria banco e tabelas                 |
-| `npm run populate-db`         | Popula dados originais               |
-| `npm run populate-doadores`   | Popula doadores com CPF/CNPJ válidos |
-| `npm run validate-docs`       | Valida todos os documentos           |
-| `npm run test:doadores`       | Testa endpoints de doadores          |
-| `npm run test:doacoes`        | Testa endpoints de doações           |
-| `npm run test:tipos-despesas` | Testa endpoints de tipos de despesas |
-| `npm run test:all`            | Executa todos os testes de endpoints |
+| Script                       | Descrição                          |
+| ---------------------------- | ---------------------------------- |
+| `npm start`                  | Inicia servidor em produção        |
+| `npm run dev`                | Inicia servidor em desenvolvimento |
+| **Banco de Dados**           |                                    |
+| `npm run db:create`          | Cria estrutura do banco            |
+| `npm run db:populate`        | Popula dados de exemplo            |
+| `npm run db:setup`           | Setup completo (criar + popular)   |
+| `npm run db:reset`           | Remove todas as tabelas            |
+| `npm run db:full-reset`      | Reset + setup completo             |
+| `npm run db:insert-expenses` | Adiciona 20 despesas de exemplo    |
 
 ## 🌐 Endpoints da API
 
@@ -208,26 +209,7 @@ Servidor rodando em: `http://localhost:3003`
 
 ## 🧪 Testando a API
 
-### Testes Automatizados
-
-```bash
-# Testar todos os endpoints de doadores
-npm run test:doadores
-
-# Testar todos os endpoints de doações
-npm run test:doacoes
-
-# Testar todos os endpoints de tipos de despesas
-npm run test:tipos-despesas
-
-# Executar todos os testes
-npm run test:all
-
-# Ou executar diretamente
-bash scripts/test_doadores_endpoints.sh
-bash scripts/test_doacoes_endpoints.sh
-bash scripts/test_tipos_despesas_endpoints.sh
-```
+### Testes Manuais
 
 ### Exemplos de Uso
 
@@ -306,15 +288,16 @@ Os scripts SQL estão versionados e organizados na pasta `scripts/sql/`:
 
 ### Scripts Principais
 
-| Script | Descrição | Uso |
-|--------|-----------|-----|
-| **create_all_tables.sql** | Cria todas as tabelas do sistema | `mysql -u root -p < scripts/sql/create_all_tables.sql` |
-| **populate_all_data.sql** | Insere dados iniciais para desenvolvimento | `mysql -u root -p casamais_db < scripts/sql/populate_all_data.sql` |
-| **reset_and_create_all.sql** | Remove e recria todo o banco | `mysql -u root -p < scripts/sql/reset_and_create_all.sql` |
+| Script                | Descrição                                  | Uso                                                                          |
+| --------------------- | ------------------------------------------ | ---------------------------------------------------------------------------- |
+| **create_tables.sql** | Cria todas as tabelas do sistema           | `mysql -u root -psua_senha_aqui casamais_db < scripts/sql/create_tables.sql` |
+| **populate_data.sql** | Insere dados iniciais para desenvolvimento | `mysql -u root -psua_senha_aqui casamais_db < scripts/sql/populate_data.sql` |
+| **reset_tables.sql**  | Remove todas as tabelas (apenas DROP)      | `mysql -u root -psua_senha_aqui casamais_db < scripts/sql/reset_tables.sql`  |
 
 ### Estrutura das Tabelas
 
 ✅ **Tabelas Implementadas:**
+
 - `doadores` - Gestão de doadores PF/PJ
 - `doacoes` - Registro de doações
 - `medicamentos` - Catálogo de medicamentos
@@ -326,10 +309,7 @@ Os scripts SQL estão versionados e organizados na pasta `scripts/sql/`:
 
 ## 📚 Documentação Adicional
 
-- **[docs/CURL_COMMANDS.md](./docs/CURL_COMMANDS.md)** - Comandos curl para todos os endpoints
-- **[docs/DOCUMENTOS_VALIDOS.md](./docs/DOCUMENTOS_VALIDOS.md)** - Explicação sobre validação de CPF/CNPJ
 - **[scripts/README.md](./scripts/README.md)** - Documentação dos scripts utilitários
-- **[scripts/sql/README.md](./scripts/sql/README.md)** - Documentação detalhada dos scripts SQL
 
 ### Variáveis de Ambiente
 
@@ -385,20 +365,16 @@ backend/
 │   └── app.js                      # Configuração do Express
 ├── scripts/                        # Scripts utilitários
 │   ├── sql/                        # Scripts SQL
-│   │   ├── create_all_tables.sql   # ✅ Cria todas as tabelas do sistema
-│   │   ├── populate_all_data.sql   # ✅ Popula dados iniciais
-│   │   ├── reset_and_create_all.sql # ✅ Reset completo do banco
-│   │   └── README.md              # Documentação dos scripts SQL
-│   ├── setup-db.js
-│   ├── populate-db.js
-│   ├── populate-doadores.js
-│   ├── validar-documentos.js
-│   ├── test_doadores_endpoints.sh
-│   ├── test_doacoes_endpoints.sh
+│   │   ├── create_tables.sql       # ✅ Cria todas as tabelas do sistema
+│   │   ├── populate_data.sql       # ✅ Popula dados iniciais
+│   │   ├── reset_tables.sql        # ✅ Remove todas as tabelas
+│   ├── utils/
+│   │   └── sql-executor.js         # ✅ Utilitário para executar SQL
+│   ├── db-create.js                # ✅ Cria estrutura do banco
+│   ├── db-populate.js              # ✅ Popula dados de exemplo
+│   ├── db-reset.js                 # ✅ Reset das tabelas
+│   ├── db-insert-expenses.js       # ✅ Insere despesas extras
 │   └── README.md
-├── docs/                           # Documentação
-│   ├── CURL_COMMANDS.md
-│   └── DOCUMENTOS_VALIDOS.md
 ├── .env.example                    # Exemplo de variáveis de ambiente
 ├── package.json                    # Dependências
 ├── package-lock.json               # Lock das dependências

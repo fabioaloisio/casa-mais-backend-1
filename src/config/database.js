@@ -16,18 +16,18 @@ const dbConfig = {
 
 const pool = mysql.createPool(dbConfig);
 
-//test connection
-
+// Test connection function (call manually when needed)
 const testConnection = async () => {
   try {
     const connection = await pool.getConnection();
     console.log('Conectado com sucesso ao banco de dados');
     connection.release();
+    return true;
   } catch (error) {
-    console.error('Erro ao conectar ao banco de dados Mysql:', error.message);
+    console.error('Erro ao conectar ao banco de dados MySQL:', error.message);
+    return false;
   }
 }
 
-testConnection();
-
 module.exports = pool;
+module.exports.testConnection = testConnection;

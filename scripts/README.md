@@ -1,119 +1,152 @@
 # Scripts do Casa Mais
 
-Scripts para configuração completa do banco de dados com um único comando.
+Scripts para gerenciamento completo do banco de dados seguindo princípios DRY.
 
 ## 🚀 Setup Rápido
 
-### Opção 1: Reset Completo (Recomendado)
+### Opção 1: Setup Completo (Recomendado)
+
 ```bash
-# Via npm script (recomendado)
+# Setup completo: cria estrutura + popula dados
+npm run db:setup
+```
+
+### Opção 2: Reset + Setup
+
+```bash
+# Remove tudo + cria + popula (banco limpo)
+npm run db:full-reset
+```
+
+### Opção 3: Comandos Individuais
+
+```bash
+# Criar apenas estrutura
+npm run db:create
+
+# Popular apenas dados
+npm run db:populate
+
+# Reset apenas (remove tabelas)
 npm run db:reset
 
-# Ou diretamente
-node scripts/reset-and-setup-db.js
 ```
 
-### Opção 2: Setup Incremental
+### Opção 4: SQL Direto
+
+Nao recomendado (comando ps pode caputrar a senha do banco de dados)
+
 ```bash
-# Via npm script (recomendado)  
-npm run db:setup
+# Criar estrutura
+mysql -u root -psua_senha_aqui casamais_db < scripts/sql/create_tables.sql
 
-# Ou diretamente
-node scripts/setup-complete-db.js
+# Popular dados
+mysql -u root -psua_senha_aqui casamais_db < scripts/sql/populate_data.sql
+
+# Reset (remover tabelas)
+mysql -u root -psua_senha_aqui casamais_db < scripts/sql/reset_tables.sql
 ```
 
-### Opção 3: SQL Direto
-```bash
-# Script SQL completo
-mysql -u root -p3511 casamais_db < scripts/sql/reset_and_create_all.sql
+## 📁 Arquivos de Script
 
-# Ou em partes
-mysql -u root -p3511 casamais_db < scripts/sql/create_all_tables.sql
-mysql -u root -p3511 casamais_db < scripts/sql/populate_all_data.sql
-```
+### JavaScript (Executores)
+
+- **`db-create.js`** - Executa `create_tables.sql`
+- **`db-populate.js`** - Executa `populate_data.sql`
+- **`db-reset.js`** - Executa `reset_tables.sql`
+
+### SQL (Fonte da Verdade)
+
+- **`sql/create_tables.sql`** - Estrutura de 11 tabelas
+- **`sql/populate_data.sql`** - Dados de exemplo
+- **`sql/reset_tables.sql`** - Remove todas as tabelas
+
+### Utilitários
+
+- **`utils/sql-executor.js`** - Classe para executar arquivos SQL
 
 ## 📋 Estrutura Criada
 
-### Tabelas com Foreign Keys otimizadas:
+### Tabelas com Foreign Keys:
 
-#### **tipos_despesas**
-- `id` (PK)
-- `nome`, `descricao`, `ativo`
-- Timestamps automáticos
+#### **Tabelas Base (sem FK)**
 
-#### **doadores** 
-- `id` (PK)
-- `tipo_doador`, `nome`, `documento`
-- `email`, `telefone`, `endereco`, `cidade`, `estado`, `cep`
-- Timestamps automáticos
+- `tipos_despesas` - Categorias de despesas
+- `doadores` - Doadores PF/PJ
+- `unidades_medida` - Unidades para medicamentos
+- `assistidas` - Pessoas assistidas
+- `usuarios` - Usuários do sistema
 
-#### **despesas**
-- `id` (PK)
-- `tipo_despesa_id` (FK → tipos_despesas.id) ← **Posição 2**
-- `descricao`, `categoria`, `valor`, `data_despesa`
-- `forma_pagamento`, `fornecedor`, `observacoes`, `status`
-- Timestamps automáticos
+#### **Tabelas com FK**
 
-#### **doacoes**
-- `id` (PK)  
-- `doador_id` (FK → doadores.id) ← **Posição 2**
-- `valor`, `data_doacao`, `observacoes`
-- Timestamps automáticos
+- `despesas` → `tipos_despesas`
+- `doacoes` → `doadores`
+- `medicamentos` → `unidades_medida`
+- `consultas` → `assistidas`
+- `internacoes` → `assistidas`
+- `medicamentos_utilizados` → `assistidas`
 
-## ⚡ Características
+## 📊 Dados Incluídos
+
+- **10 tipos de despesas** (Alimentação, Medicamentos, etc.)
+- **15 doadores** (10 PF + 5 PJ com dados realistas)
+- **10 despesas** de exemplo com diferentes categorias
+- **15 doações** de exemplo vinculadas aos doadores
+- **6 unidades de medida** para medicamentos
+- **20 medicamentos** comuns na área de saúde
+- **7 assistidas** com perfis variados
+
+## ⚡ Características Técnicas
 
 - **Engine**: InnoDB com charset utf8mb4
 - **Foreign Keys**: `ON DELETE RESTRICT ON UPDATE CASCADE`
 - **Índices**: Automáticos nas FKs e campos principais
 - **Validação**: Documentos únicos, campos obrigatórios
 - **Performance**: Estrutura otimizada para consultas
-
-## 📊 Dados Incluídos
-
-- **10 tipos de despesas** essenciais (Alimentação, Medicamentos, etc.)
-- **5 doadores** (3 PF + 2 PJ com dados realistas)
-- **3 despesas** de exemplo com diferentes categorias
-- **5 doações** de exemplo vinculadas aos doadores
-
-## ✅ Benefícios
-
-- ✅ **Setup instantâneo** - um comando e está pronto
-- ✅ **Estrutura otimizada** - FKs nas posições corretas  
-- ✅ **Integridade garantida** - constraints automáticas
-- ✅ **Dados prontos** - exemplos para testar imediatamente
-- ✅ **Compatibilidade total** - funciona com todo o sistema existente
-- ✅ **Zero configuração** - sem ajustes manuais necessários
-
-## 🧪 Scripts de Teste
-
-Para validar as APIs após setup:
-
-```bash
-# Testar API específica
-npm run test:doadores         # Testa endpoints de doadores
-npm run test:doacoes         # Testa endpoints de doações  
-npm run test:tipos-despesas  # Testa endpoints de tipos de despesa
-
-# Testar todas as APIs
-npm run test:all             # Executa todos os testes
-npm test                     # Alias para test:all
-```
+- **DRY**: Schema definido uma única vez nos SQLs
 
 ## 📋 Scripts NPM Disponíveis
 
 ```bash
+# Servidor
 npm start                    # Inicia servidor de produção
 npm run dev                  # Inicia servidor de desenvolvimento
-npm run db:reset            # Reset completo do banco  
-npm run db:setup            # Setup incremental do banco
-npm run test:all            # Testa todas as APIs
+
+# Banco de Dados
+npm run db:create            # Cria estrutura do banco
+npm run db:populate          # Popula dados de exemplo
+npm run db:setup             # Setup completo (criar + popular)
+npm run db:reset             # Remove todas as tabelas
+npm run db:full-reset        # Reset + setup completo
+
 ```
 
-## 🎯 Uso Prático
+## 🎯 Fluxos de Uso
 
-Ideal para:
-- ✅ Novos desenvolvedores configurando ambiente
-- ✅ Reset durante desenvolvimento/testes  
-- ✅ Deployment em novos ambientes
-- ✅ Demonstrações e apresentações
-- ✅ Validação de APIs após mudanças
+### Novo desenvolvedor:
+
+```bash
+npm run db:setup
+```
+
+### Desenvolvimento/testes:
+
+```bash
+npm run db:full-reset
+```
+
+### Apenas estrutura:
+
+```bash
+npm run db:create
+```
+
+## ✅ Benefícios
+
+- ✅ **Setup instantâneo** - comandos organizados e rápidos
+- ✅ **Estrutura completa** - 11 tabelas com relacionamentos
+- ✅ **Integridade garantida** - constraints e FKs automáticas
+- ✅ **Dados prontos** - exemplos para testar imediatamente
+- ✅ **DRY compliant** - sem duplicação de estruturas
+- ✅ **Flexível** - comandos para diferentes cenários
+- ✅ **Manutenível** - mudanças apenas nos arquivos SQL

@@ -1,5 +1,4 @@
--- Script unificado para criar todas as tabelas com estrutura correta
--- Data: 2025-01-06
+-- Script unificado para criar todas as tabelas
 
 -- Criar database se não existir
 CREATE DATABASE IF NOT EXISTS casamais_db;
@@ -175,5 +174,40 @@ CREATE TABLE IF NOT EXISTS medicamentos_utilizados (
   CONSTRAINT fk_medicamentos_utilizados_assistida FOREIGN KEY (assistida_id) REFERENCES assistidas (id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- 10. Verificar estruturas criadas
+-- 10. Tabela usuarios
+CREATE TABLE IF NOT EXISTS usuarios (
+  id int NOT NULL AUTO_INCREMENT,
+  nome varchar(255) NOT NULL,
+  email varchar(255) NOT NULL,
+  senha varchar(255) NOT NULL,
+  tipo enum('admin','usuario') NOT NULL DEFAULT 'usuario',
+  ativo tinyint(1) NOT NULL DEFAULT 1,
+  data_cadastro timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  data_atualizacao timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  UNIQUE KEY email (email),
+  KEY tipo (tipo),
+  KEY ativo (ativo)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- 11. Tabela consultas (com FK para assistidas)
+CREATE TABLE IF NOT EXISTS consultas (
+  id int NOT NULL AUTO_INCREMENT,
+  assistida_id int DEFAULT NULL,
+  data_consulta date NOT NULL,
+  hora_consulta time NOT NULL,
+  medico varchar(255) NOT NULL,
+  especialidade varchar(100) DEFAULT NULL,
+  observacoes text DEFAULT NULL,
+  status enum('agendada','realizada','cancelada') NOT NULL DEFAULT 'agendada',
+  data_cadastro timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  data_atualizacao timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  KEY idx_consultas_assistida_id (assistida_id),
+  KEY data_consulta (data_consulta),
+  KEY status (status),
+  CONSTRAINT fk_consultas_assistida FOREIGN KEY (assistida_id) REFERENCES assistidas (id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- 12. Verificar estruturas criadas
 SELECT 'Tabelas criadas com sucesso!' as status;

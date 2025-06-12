@@ -6,13 +6,11 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "db:reset": "node scripts/reset-and-setup-db.js",
-    "db:setup": "node scripts/setup-complete-db.js",
-    "test:doadores": "bash scripts/test_doadores_endpoints.sh",
-    "test:doacoes": "bash scripts/test_doacoes_endpoints.sh",
-    "test:tipos-despesas": "bash scripts/test_tipos_despesas_endpoints.sh",
-    "test:all": "npm run test:doadores && npm run test:doacoes && npm run test:tipos-despesas",
-    "test": "npm run test:all"
+    "db:create": "node scripts/db-create.js",
+    "db:populate": "node scripts/db-populate.js",
+    "db:reset": "node scripts/db-reset.js",
+    "db:setup": "npm run db:create && npm run db:populate",
+    "db:full-reset": "npm run db:reset && npm run db:setup"
   },
   "keywords": [
     "backend",
