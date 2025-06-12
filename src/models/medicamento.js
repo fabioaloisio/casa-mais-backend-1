@@ -3,8 +3,8 @@ class Medicamento {
   constructor(data) {
     this.id = data.id || null;
     this.nome = data.nome;
-    this.tipo = data.tipo;
-    this.quantidade = data.quantidade;
+    this.forma_farmaceutica = data.forma_farmaceutica;
+    this.descricao = data.descricao || '';
     this.unidade_medida_id = data.unidade_medida_id;
   }
 
@@ -17,22 +17,17 @@ class Medicamento {
       }
     }
 
-    if (!isUpdate || this.tipo !== undefined) {
-      if (!this.tipo || this.tipo.trim().length === 0) {
-        errors.push(isUpdate ? 'Tipo do Medicamento não pode ser vazio.' : 'Tipo do Medicamento é obrigatório.');
+    if (!isUpdate || this.forma_farmaceutica !== undefined) {
+      if (!this.forma_farmaceutica || this.forma_farmaceutica.trim().length === 0) {
+        errors.push(isUpdate ? 'Forma Farmacêutica não pode ser vazia.' : 'Forma Farmacêutica é obrigatória.');
       }
     }
 
-    if (!isUpdate || this.quantidade !== undefined) {
-      const quantidadeNumerica = Number(this.quantidade);
-
-      if (isNaN(quantidadeNumerica)) {
-        errors.push('Quantidade deve ser um número válido.');
-      } else if (quantidadeNumerica <= 0) {
-        errors.push('Quantidade deve ser maior que zero.');
+    if (!isUpdate || this.descricao !== undefined) {
+      if (this.descricao.length > 250) {
+        errors.push('Descrição deve ter no máximo 250 caracteres.');
       }
     }
-
 
     if (!isUpdate || this.unidade_medida_id !== undefined) {
       if (!this.unidade_medida_id || typeof this.unidade_medida_id !== 'number') {
@@ -47,8 +42,8 @@ class Medicamento {
     return {
       id: this.id,
       nome: this.nome,
-      tipo: this.tipo,
-      quantidade: this.quantidade,
+      forma_farmaceutica: this.forma_farmaceutica,
+      descricao: this.descricao,
       unidade_medida_id: this.unidade_medida_id
     };
   }

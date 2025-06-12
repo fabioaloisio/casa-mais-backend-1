@@ -5,11 +5,11 @@ const Medicamento = require('../models/medicamento');
 class MedicamentoController {
   async getAll(req, res) {
     try {
-      const { tipo, nome } = req.query;
+      const { forma_farmaceutica, nome } = req.query;
       let medicamentos;
 
-      if (tipo) {
-        medicamentos = await MedicamentoRepository.findByTipo(tipo);
+      if (forma_farmaceutica) {
+        medicamentos = await MedicamentoRepository.findByFormaFarmaceutica(forma_farmaceutica);
       } else if (nome) {
         medicamentos = await MedicamentoRepository.findByNome(nome);
       } else {
