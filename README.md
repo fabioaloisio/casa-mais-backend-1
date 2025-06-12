@@ -19,16 +19,36 @@ API REST completa para o sistema de gestão da Casa+, uma ONG dedicada ao cuidad
 - ✅ Estatísticas e relatórios
 - ✅ Validações de negócio
 
+### 💸 **Gestão de Despesas**
+
+- ✅ CRUD completo com categorização por tipos
+- ✅ Relacionamento com tipos de despesas via Foreign Key
+- ✅ Controle de status (pendente, paga, cancelada)
+- ✅ Filtros por categoria, fornecedor e período
+
 ### 💊 **Gestão de Medicamentos**
 
 - ✅ Cadastro completo com validações
 - ✅ Sistema de estoque
+- ✅ Relacionamento com unidades de medida
 
 ### 👩 **Gestão de Assistidas**
 
 - ✅ Cadastro de mulheres assistidas
 - ✅ Controle de internações
 - ✅ Histórico de medicamentos utilizados
+- ✅ Agendamento de consultas
+
+### 📊 **Tipos de Despesas**
+
+- ✅ Categorização hierárquica de despesas
+- ✅ Sistema de ativação/desativação
+- ✅ Relacionamento com despesas
+
+### 📏 **Unidades de Medida**
+
+- ✅ Catálogo para medicamentos
+- ✅ Siglas padronizadas (mg, mL, un, etc.)
 
 ## 🛠️ Tecnologias
 
@@ -80,23 +100,30 @@ DB_PORT=3306
 ### 4. Setup do Banco de Dados
 
 ```bash
-# Criar estrutura do banco
-npm run db:create
-
-# Popular com dados de exemplo
-npm run db:populate
-
-# Setup completo (criar + popular)
+# Setup completo recomendado (cria + popula automaticamente)
 npm run db:setup
 
-# Reset completo (limpar + criar + popular)
-npm run db:full-reset
+# Comandos individuais
+npm run db:create     # Cria 11 tabelas com relacionamentos FK
+npm run db:populate   # Popula dados de exemplo
+npm run db:reset      # Remove todas as tabelas
+npm run db:full-reset # Reset + setup completo
 
-# Ou usar os scripts SQL diretamente
+# Scripts SQL diretos
 mysql -u root -psua_senha_aqui casamais_db < scripts/sql/create_tables.sql
 mysql -u root -psua_senha_aqui casamais_db < scripts/sql/populate_data.sql
 mysql -u root -psua_senha_aqui casamais_db < scripts/sql/reset_tables.sql
 ```
+
+#### 🎯 **Dados Populados Automaticamente:**
+
+- **10 tipos de despesas** (Alimentação, Medicamentos, etc.)
+- **15 doadores** (10 PF + 5 PJ com CPF/CNPJ válidos)
+- **10 despesas** vinculadas aos tipos
+- **15 doações** vinculadas aos doadores
+- **6 unidades de medida** (mg, mL, un, etc.)
+- **20 medicamentos** com relacionamentos
+- **7 assistidas** com dados completos
 
 ### 5. Iniciar o Servidor
 
@@ -116,13 +143,13 @@ Servidor rodando em: `http://localhost:3003`
 | ---------------------------- | ---------------------------------- |
 | `npm start`                  | Inicia servidor em produção        |
 | `npm run dev`                | Inicia servidor em desenvolvimento |
-| **Banco de Dados**           |                                    |
-| `npm run db:create`          | Cria estrutura do banco            |
+| **Banco de Dados (DRY)**     |                                    |
+| `npm run db:setup`           | **Setup completo recomendado**     |
+| `npm run db:create`          | Cria 11 tabelas + relacionamentos  |
 | `npm run db:populate`        | Popula dados de exemplo            |
-| `npm run db:setup`           | Setup completo (criar + popular)   |
 | `npm run db:reset`           | Remove todas as tabelas            |
 | `npm run db:full-reset`      | Reset + setup completo             |
-| `npm run db:insert-expenses` | Adiciona 20 despesas de exemplo    |
+| `npm run db:insert-expenses` | Adiciona 20 despesas extras        |
 
 ## 🌐 Endpoints da API
 
@@ -161,6 +188,23 @@ Servidor rodando em: `http://localhost:3003`
 - `?dataInicio=YYYY-MM-DD` - Data inicial
 - `?dataFim=YYYY-MM-DD` - Data final
 - `?doadorId=123` - Doações de um doador específico
+
+### 💸 Despesas (`/api/despesas`)
+
+| Método   | Endpoint | Descrição               |
+| -------- | -------- | ----------------------- |
+| `GET`    | `/`      | Lista todas as despesas |
+| `POST`   | `/`      | Cria nova despesa       |
+| `GET`    | `/:id`   | Busca despesa por ID    |
+| `PUT`    | `/:id`   | Atualiza despesa        |
+| `DELETE` | `/:id`   | Exclui despesa          |
+
+**Filtros disponíveis:**
+
+- `?categoria=categoria` - Filtra por categoria
+- `?status=pendente/paga/cancelada` - Filtra por status
+- `?dataInicio=YYYY-MM-DD` - Data inicial
+- `?dataFim=YYYY-MM-DD` - Data final
 
 ### 💊 Medicamentos (`/api/medicamentos`)
 
@@ -276,11 +320,39 @@ curl -X POST http://localhost:3003/api/doacoes \
 - Catálogo de tipos/categorias de despesas
 - Classificação para organização financeira
 
-### Relacionamentos
+### Relacionamentos (Foreign Keys)
 
+- `despesas.tipo_despesa_id` → `tipos_despesas.id` (FK)
 - `doacoes.doador_id` → `doadores.id` (FK)
+- `medicamentos.unidade_medida_id` → `unidades_medida.id` (FK)
+- `consultas.assistida_id` → `assistidas.id` (FK)
 - `internacoes.assistida_id` → `assistidas.id` (FK)
-- `medicamentos_utilizados.medicamento_id` → `medicamentos.id` (FK)
+- `medicamentos_utilizados.assistida_id` → `assistidas.id` (FK)
+
+## 🏗️ Arquitetura DRY-Compliant
+
+### ✅ **Princípios Implementados:**
+
+- **Single Source of Truth**: Estrutura SQL definida apenas nos arquivos `.sql`
+- **SQLExecutor Utility**: Classe para execução consistente de arquivos SQL
+- **Zero Duplicação**: Elimina código SQL duplicado entre arquivos JavaScript
+- **Modular**: Scripts separados por responsabilidade (create, populate, reset)
+- **Cross-Platform**: Compatível com Windows, macOS e Linux
+
+### 📁 **Estrutura dos Scripts:**
+
+```
+scripts/
+├── sql/                    # Fonte da verdade (SQL)
+│   ├── create_tables.sql   # ✅ Estrutura de 11 tabelas
+│   ├── populate_data.sql   # ✅ Dados de exemplo
+│   └── reset_tables.sql    # ✅ Limpeza das tabelas
+├── utils/
+│   └── sql-executor.js     # ✅ Utilitário para execução
+├── db-create.js            # ✅ Executor JavaScript
+├── db-populate.js          # ✅ Executor JavaScript
+└── db-reset.js             # ✅ Executor JavaScript
+```
 
 ## 🗄️ Scripts SQL
 
@@ -296,16 +368,19 @@ Os scripts SQL estão versionados e organizados na pasta `scripts/sql/`:
 
 ### Estrutura das Tabelas
 
-✅ **Tabelas Implementadas:**
+✅ **11 Tabelas Implementadas:**
 
-- `doadores` - Gestão de doadores PF/PJ
-- `doacoes` - Registro de doações
-- `medicamentos` - Catálogo de medicamentos
-- `assistidas` - Cadastro de mulheres assistidas
-- `unidades_medida` - Unidades para medicamentos
-- `tipos_despesas` - Categorias de despesas
-- `internacoes` - Histórico de internações
-- `medicamentos_utilizados` - Controle de medicamentos
+- `tipos_despesas` - Categorias de despesas (base)
+- `doadores` - Gestão de doadores PF/PJ (base)
+- `despesas` - Registro de despesas → tipos_despesas
+- `doacoes` - Registro de doações → doadores
+- `unidades_medida` - Unidades para medicamentos (base)
+- `medicamentos` - Catálogo de medicamentos → unidades_medida
+- `assistidas` - Cadastro de mulheres assistidas (base)
+- `consultas` - Agendamento de consultas → assistidas
+- `internacoes` - Histórico de internações → assistidas
+- `medicamentos_utilizados` - Controle de medicamentos → assistidas
+- `usuarios` - Sistema de usuários (base)
 
 ## 📚 Documentação Adicional
 
