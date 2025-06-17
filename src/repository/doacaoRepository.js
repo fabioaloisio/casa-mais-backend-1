@@ -34,7 +34,8 @@ class DoacaoRepository {
         dr.documento as doador_documento,
         dr.tipo_doador as doador_tipo_doador,
         dr.email as doador_email,
-        dr.telefone as doador_telefone
+        dr.telefone as doador_telefone,
+        dr.ativo as doador_ativo
       FROM doacoes d
       INNER JOIN doadores dr ON d.doador_id = dr.id
       WHERE 1=1
@@ -92,7 +93,8 @@ class DoacaoRepository {
         dr.documento as doador_documento,
         dr.tipo_doador as doador_tipo_doador,
         dr.email as doador_email,
-        dr.telefone as doador_telefone
+        dr.telefone as doador_telefone,
+        dr.ativo as doador_ativo
       FROM doacoes d
       INNER JOIN doadores dr ON d.doador_id = dr.id
       WHERE d.id = ?
@@ -115,7 +117,8 @@ class DoacaoRepository {
         dr.documento as doador_documento,
         dr.tipo_doador as doador_tipo_doador,
         dr.email as doador_email,
-        dr.telefone as doador_telefone
+        dr.telefone as doador_telefone,
+        dr.ativo as doador_ativo
       FROM doacoes d
       INNER JOIN doadores dr ON d.doador_id = dr.id
       WHERE d.doador_id = ?
@@ -204,7 +207,8 @@ class DoacaoRepository {
         dr.documento as doador_documento,
         dr.tipo_doador as doador_tipo_doador,
         dr.email as doador_email,
-        dr.telefone as doador_telefone
+        dr.telefone as doador_telefone,
+        dr.ativo as doador_ativo
        ${queryBase} 
        ORDER BY d.data_doacao DESC, d.id DESC 
        LIMIT 1`,

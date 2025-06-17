@@ -9,6 +9,6 @@ router.get('/estatisticas', doacaoController.estatisticas);
 router.get('/:id', doacaoController.buscarPorId);
 router.get('/doador/:doadorId', doacaoController.buscarPorDoador);
 router.put('/:id', doacaoController.atualizar);
-router.delete('/:id', doacaoController.excluir);
+router.delete('/:id', doacaoController.excluir); // Retorna erro 403 - Doações não podem ser excluídas
 
 module.exports = router;

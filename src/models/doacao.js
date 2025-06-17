@@ -108,7 +108,8 @@ class Doacao {
         documento: row.doador_documento,
         tipo_doador: row.doador_tipo_doador,
         email: row.doador_email,
-        telefone: row.doador_telefone
+        telefone: row.doador_telefone,
+        ativo: row.doador_ativo === 1 || row.doador_ativo === true
       };
     }
 

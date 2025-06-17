@@ -48,12 +48,13 @@ class SQLExecutor {
         .map(stmt => stmt.trim())
         .filter(stmt => {
           const cleaned = stmt.replace(/\n/g, ' ').trim();
-          // Aceitar statements que contêm CREATE, INSERT, USE ou SELECT
-          const hasCreateCommand = cleaned.toLowerCase().includes('create ') || 
-                                  cleaned.toLowerCase().includes('insert ') ||
-                                  cleaned.toLowerCase().includes('use ') ||
-                                  cleaned.toLowerCase().includes('select ');
-          const isValid = cleaned.length > 0 && hasCreateCommand;
+          // Aceitar statements que contêm comandos SQL válidos
+          const sqlCommands = [
+            'create ', 'insert ', 'use ', 'select ', 'update ', 'delete ',
+            'alter ', 'drop ', 'truncate ', 'set ', 'show ', '--'
+          ];
+          const hasValidCommand = sqlCommands.some(cmd => cleaned.toLowerCase().includes(cmd));
+          const isValid = cleaned.length > 0 && (hasValidCommand || cleaned.startsWith('--'));
           
           return isValid;
         });

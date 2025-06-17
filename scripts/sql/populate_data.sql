@@ -19,23 +19,35 @@ VALUES
 
 -- 2. Popular doadores
 INSERT INTO doadores
-  (tipo_doador, nome, documento, email, telefone, endereco, cidade, estado, cep)
+  (tipo_doador, nome, documento, email, telefone, endereco, cidade, estado, cep, ativo)
 VALUES
-  ('PF', 'Maria Silva Santos', '97200167606', 'maria.silva@email.com', '11987654321', 'Rua das Flores, 123', 'São Paulo', 'SP', '01234567'),
-  ('PF', 'João Pedro Oliveira', '57813901037', 'joao.pedro@email.com', '11976543210', 'Av. Paulista, 456', 'São Paulo', 'SP', '01311000'),
-  ('PF', 'Ana Beatriz Costa', '02951994150', 'ana.costa@email.com', '11965432109', 'Rua Augusta, 789', 'São Paulo', 'SP', '01305100'),
-  ('PF', 'Carlos Eduardo Lima', '65773830655', 'carlos.lima@email.com', '11954321098', 'Rua Oscar Freire, 321', 'São Paulo', 'SP', '01426001'),
-  ('PF', 'Juliana Ferreira', '41682563677', 'juliana.f@email.com', '11943210987', 'Av. Faria Lima, 654', 'São Paulo', 'SP', '01452000'),
-  ('PF', 'Roberto Alves Souza', '47303095020', 'roberto.souza@email.com', '11932109876', 'Rua Haddock Lobo, 987', 'São Paulo', 'SP', '01414001'),
-  ('PF', 'Fernanda Rodrigues', '58525383880', 'fernanda.r@email.com', '11921098765', 'Av. Rebouças, 147', 'São Paulo', 'SP', '05401300'),
-  ('PF', 'Paulo Henrique Silva', '57352730869', 'paulo.silva@email.com', '11910987654', 'Rua Cardeal Arcoverde, 258', 'São Paulo', 'SP', '05407002'),
-  ('PF', 'Mariana Gomes', '01650993560', 'mariana.gomes@email.com', '11909876543', 'Av. Consolação, 369', 'São Paulo', 'SP', '01301100'),
-  ('PF', 'Ricardo Martins', '28937353989', 'ricardo.m@email.com', '11898765432', 'Rua da Consolação, 741', 'São Paulo', 'SP', '01302907'),
-  ('PJ', 'Supermercado Bom Preço LTDA', '68569796000131', 'contato@bompreco.com.br', '1133334444', 'Av. do Comércio, 1000', 'São Paulo', 'SP', '03031000'),
-  ('PJ', 'Farmácia Saúde & Vida ME', '20729550000153', 'contato@saudevida.com.br', '1144445555', 'Rua da Saúde, 200', 'São Paulo', 'SP', '04038001'),
-  ('PJ', 'Padaria Pão Quente EIRELI', '28097821000107', 'contato@paoquente.com.br', '1155556666', 'Av. São João, 300', 'São Paulo', 'SP', '01035000'),
-  ('PJ', 'Auto Peças Central LTDA', '64040600000166', 'vendas@autopecas.com.br', '1166667777', 'Rua do Gasômetro, 400', 'São Paulo', 'SP', '04047020'),
-  ('PJ', 'Restaurante Sabor Caseiro ME', '67444698000105', 'contato@saborcaseiro.com.br', '1177778888', 'Av. Lins de Vasconcelos, 500', 'São Paulo', 'SP', '01538001');
+  -- DOADORES ATIVOS COM DOAÇÕES (IDs 1-8)
+  ('PF', 'Maria Silva Santos', '97200167606', 'maria.silva@email.com', '11987654321', 'Rua das Flores, 123', 'São Paulo', 'SP', '01234567', 1),
+  ('PF', 'João Pedro Oliveira', '57813901037', 'joao.pedro@email.com', '11976543210', 'Av. Paulista, 456', 'São Paulo', 'SP', '01311000', 1),
+  ('PF', 'Carlos Eduardo Lima', '65773830655', 'carlos.lima@email.com', '11954321098', 'Rua Oscar Freire, 321', 'São Paulo', 'SP', '01426001', 1),
+  ('PF', 'Roberto Alves Souza', '47303095020', 'roberto.souza@email.com', '11932109876', 'Rua Haddock Lobo, 987', 'São Paulo', 'SP', '01414001', 1),
+  ('PF', 'Fernanda Rodrigues', '58525383880', 'fernanda.r@email.com', '11921098765', 'Av. Rebouças, 147', 'São Paulo', 'SP', '05401300', 1),
+  ('PF', 'Mariana Gomes', '01650993560', 'mariana.gomes@email.com', '11909876543', 'Av. Consolação, 369', 'São Paulo', 'SP', '01301100', 1),
+  ('PJ', 'Supermercado Bom Preço LTDA', '68569796000131', 'contato@bompreco.com.br', '1133334444', 'Av. do Comércio, 1000', 'São Paulo', 'SP', '03031000', 1),
+  ('PJ', 'Farmácia Saúde & Vida ME', '20729550000153', 'contato@saudevida.com.br', '1144445555', 'Rua da Saúde, 200', 'São Paulo', 'SP', '04038001', 1),
+  
+  -- DOADORES INATIVOS SEM DOAÇÕES (IDs 9-12)
+  ('PF', 'Ana Beatriz Costa', '02951994150', 'ana.costa@email.com', '11965432109', 'Rua Augusta, 789', 'São Paulo', 'SP', '01305100', 0),
+  ('PF', 'Juliana Ferreira', '41682563677', 'juliana.f@email.com', '11943210987', 'Av. Faria Lima, 654', 'São Paulo', 'SP', '01452000', 0),
+  ('PJ', 'Padaria Pão Quente EIRELI', '28097821000107', 'contato@paoquente.com.br', '1155556666', 'Av. São João, 300', 'São Paulo', 'SP', '01035000', 0),
+  ('PJ', 'Auto Peças Central LTDA', '64040600000166', 'vendas@autopecas.com.br', '1166667777', 'Rua do Gasômetro, 400', 'São Paulo', 'SP', '04047020', 0),
+  
+  -- DOADORES ATIVOS SEM DOAÇÕES - PODEM SER EXCLUÍDOS (IDs 13-16)
+  ('PF', 'Paulo Henrique Silva', '57352730869', 'paulo.silva@email.com', '11910987654', 'Rua Cardeal Arcoverde, 258', 'São Paulo', 'SP', '05407002', 1),
+  ('PF', 'Ricardo Martins', '28937353989', 'ricardo.m@email.com', '11898765432', 'Rua da Consolação, 741', 'São Paulo', 'SP', '01302907', 1),
+  ('PJ', 'Restaurante Sabor Caseiro ME', '67444698000105', 'contato@saborcaseiro.com.br', '1177778888', 'Av. Lins de Vasconcelos, 500', 'São Paulo', 'SP', '01538001', 1),
+  ('PJ', 'Loja de Roupas Fashion LTDA', '12345678000195', 'contato@fashionloja.com.br', '1188889999', 'Rua 25 de Março, 600', 'São Paulo', 'SP', '01021200', 1),
+  
+  -- DOADORES INATIVOS SEM DOAÇÕES - PODEM SER EXCLUÍDOS (IDs 17-20)
+  ('PF', 'Lucas Pereira Santos', '88776655443', 'lucas.santos@email.com', '11999887766', 'Av. Brigadeiro Faria Lima, 800', 'São Paulo', 'SP', '01451000', 0),
+  ('PF', 'Camila Souza Lima', '77665544332', 'camila.lima@email.com', '11988776655', 'Rua Pamplona, 900', 'São Paulo', 'SP', '01405000', 0),
+  ('PJ', 'Padaria do Bairro ME', '98765432000187', 'contato@padariadobairro.com.br', '1199998888', 'Rua do Comércio, 700', 'São Paulo', 'SP', '03040000', 0),
+  ('PJ', 'Mercado Central EIRELI', '87654321000176', 'vendas@mercadocentral.com.br', '1177776666', 'Av. Celso Garcia, 800', 'São Paulo', 'SP', '03059000', 0);
 
 -- 3. Popular despesas (usando tipo_despesa_id)
 INSERT INTO despesas
@@ -53,24 +65,23 @@ VALUES
   (5, 'Internet banda larga', 'Utilidades', 99.90, '2025-01-30', 'cartao_credito', 'Vivo Fibra', 'Mensalidade internet', 'pendente');
 
 -- 4. Popular doacoes (usando doador_id)
+-- Apenas doadores ATIVOS (IDs 1-8) têm doações
 INSERT INTO doacoes
   (doador_id, valor, data_doacao, observacoes)
 VALUES
-  (1, 150.00, '2025-01-05', 'Doação mensal'),
-  (2, 200.00, '2025-01-04', NULL),
-  (3, 100.00, '2025-01-03', 'Primeira doação'),
-  (4, 300.00, '2025-01-02', 'Doação especial'),
-  (5, 50.00, '2025-01-01', NULL),
-  (6, 500.00, '2024-12-31', 'Doação de fim de ano'),
-  (7, 120.00, '2024-12-30', 'Doação recorrente'),
-  (8, 180.00, '2024-12-29', NULL),
-  (9, 250.00, '2024-12-28', 'Em memória de...'),
-  (10, 75.00, '2024-12-27', NULL),
-  (11, 1000.00, '2025-01-05', 'Doação corporativa mensal'),
-  (12, 750.00, '2025-01-04', 'Parceria solidária'),
-  (13, 300.00, '2025-01-03', NULL),
-  (14, 500.00, '2025-01-02', 'Doação trimestral'),
-  (15, 400.00, '2025-01-01', 'Apoio social');
+  -- DOAÇÕES DE DOADORES ATIVOS (IDs 1-8)
+  (1, 150.00, '2025-01-05', 'Doação mensal - Maria Silva'),
+  (1, 100.00, '2024-12-05', 'Doação anterior - Maria Silva'),
+  (2, 200.00, '2025-01-04', 'Doação - João Pedro'),
+  (3, 300.00, '2025-01-02', 'Doação especial - Carlos Eduardo'),
+  (4, 500.00, '2024-12-31', 'Doação de fim de ano - Roberto Alves'),
+  (5, 120.00, '2024-12-30', 'Doação recorrente - Fernanda'),
+  (6, 180.00, '2024-12-29', 'Doação - Mariana Gomes'),
+  (7, 1000.00, '2025-01-05', 'Doação corporativa mensal - Supermercado'),
+  (7, 800.00, '2024-12-05', 'Doação anterior - Supermercado'),
+  (8, 750.00, '2025-01-04', 'Parceria solidária - Farmácia');
+
+-- Doadores com IDs 13-20 NÃO têm doações e PODEM ser excluídos
 
 
 INSERT INTO unidades_medida
@@ -138,3 +149,22 @@ SELECT 'Doações:', COUNT(*) as total FROM doacoes;
 SELECT 'Unidades de medida:', COUNT(*) as total FROM unidades_medida;
 SELECT 'Medicamentos:', COUNT(*) as total FROM medicamentos;
 SELECT 'Assistidas:', COUNT(*) as total FROM assistidas;
+
+-- 9. Verificar distribuição de doadores
+SELECT 
+  'RESUMO DOADORES:' as info,
+  COUNT(*) as total_doadores,
+  SUM(CASE WHEN ativo = 1 THEN 1 ELSE 0 END) as ativos,
+  SUM(CASE WHEN ativo = 0 THEN 1 ELSE 0 END) as inativos
+FROM doadores;
+
+SELECT 
+  'DOADORES COM DOAÇÕES (NÃO PODEM SER EXCLUÍDOS):' as info,
+  COUNT(DISTINCT d.doador_id) as total
+FROM doacoes d;
+
+SELECT 
+  'DOADORES SEM DOAÇÕES (PODEM SER EXCLUÍDOS):' as info,
+  COUNT(*) as total
+FROM doadores d
+WHERE d.id NOT IN (SELECT DISTINCT doador_id FROM doacoes);

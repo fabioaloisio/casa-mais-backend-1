@@ -57,6 +57,12 @@ class DoacaoController {
       // Criar doação
       const id = await doacaoRepository.criar(doacao);
       
+      // Ativar o doador automaticamente ao receber uma doação
+      const doador = await doadorRepository.findById(doadorIdFinal);
+      if (doador && !doador.ativo) {
+        await doadorRepository.update(doadorIdFinal, { ativo: true });
+      }
+      
       // Buscar doação criada
       const doacaoCriada = await doacaoRepository.buscarPorId(id);
       
@@ -214,42 +220,13 @@ class DoacaoController {
     }
   }
 
-  // Excluir doação
+  // Excluir doação - DESABILITADO
   async excluir(req, res) {
-    try {
-      const { id } = req.params;
-      
-      // Verificar se doação existe
-      const existe = await doacaoRepository.existe(id);
-      if (!existe) {
-        return res.status(404).json({
-          success: false,
-          message: 'Doação não encontrada'
-        });
-      }
-      
-      // Excluir doação
-      const excluido = await doacaoRepository.excluir(id);
-      
-      if (!excluido) {
-        return res.status(500).json({
-          success: false,
-          message: 'Erro ao excluir doação'
-        });
-      }
-      
-      return res.json({
-        success: true,
-        message: 'Doação excluída com sucesso'
-      });
-    } catch (error) {
-      console.error('Erro ao excluir doação:', error);
-      return res.status(500).json({
-        success: false,
-        message: 'Erro ao excluir doação',
-        error: error.message
-      });
-    }
+    // Doações não podem ser excluídas para manter integridade do histórico
+    return res.status(403).json({
+      success: false,
+      message: 'Não é permitido excluir doações. As doações devem ser mantidas para histórico e auditoria.'
+    });
   }
 
   // Obter estatísticas

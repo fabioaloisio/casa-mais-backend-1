@@ -131,6 +131,18 @@ class DoadorController {
         }
       }
 
+      // Verificar se está tentando inativar um doador com doações
+      if (dadosAtualizacao.ativo === false || dadosAtualizacao.ativo === 0) {
+        const doacoes = await doadorRepository.findDoacoesByDoadorId(id);
+        if (doacoes.length > 0) {
+          return res.status(400).json({ 
+            success: false,
+            message: 'Não é possível inativar um doador que possui doações registradas',
+            total_doacoes: doacoes.length
+          });
+        }
+      }
+
       const doadorAtualizado = new Doador();
       Object.assign(doadorAtualizado, dadosAtualizacao);
 

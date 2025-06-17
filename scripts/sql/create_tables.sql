@@ -29,13 +29,15 @@ CREATE TABLE IF NOT EXISTS doadores (
   cidade varchar(100) DEFAULT NULL,
   estado varchar(2) DEFAULT NULL,
   cep varchar(10) DEFAULT NULL,
+  ativo tinyint(1) NOT NULL DEFAULT 1,
   data_cadastro timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   data_atualizacao timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (id),
   UNIQUE KEY documento (documento),
   KEY tipo_doador (tipo_doador),
   KEY cidade (cidade),
-  KEY estado (estado)
+  KEY estado (estado),
+  KEY ativo (ativo)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- 3. Tabela despesas (com FK para tipos_despesas)

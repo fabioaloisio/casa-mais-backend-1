@@ -139,17 +139,16 @@ Servidor rodando em: `http://localhost:3003`
 
 ## 📋 Scripts Disponíveis
 
-| Script                       | Descrição                          |
-| ---------------------------- | ---------------------------------- |
-| `npm start`                  | Inicia servidor em produção        |
-| `npm run dev`                | Inicia servidor em desenvolvimento |
-| **Banco de Dados (DRY)**     |                                    |
-| `npm run db:setup`           | **Setup completo recomendado**     |
-| `npm run db:create`          | Cria 11 tabelas + relacionamentos  |
-| `npm run db:populate`        | Popula dados de exemplo            |
-| `npm run db:reset`           | Remove todas as tabelas            |
-| `npm run db:full-reset`      | Reset + setup completo             |
-| `npm run db:insert-expenses` | Adiciona 20 despesas extras        |
+| Script                   | Descrição                          |
+| ------------------------ | ---------------------------------- |
+| `npm start`              | Inicia servidor em produção        |
+| `npm run dev`            | Inicia servidor em desenvolvimento |
+| **Banco de Dados (DRY)** |                                    |
+| `npm run db:setup`       | **Setup completo recomendado**     |
+| `npm run db:create`      | Cria 11 tabelas + relacionamentos  |
+| `npm run db:populate`    | Popula dados de exemplo            |
+| `npm run db:reset`       | Remove todas as tabelas            |
+| `npm run db:full-reset`  | Reset + setup completo             |
 
 ## 🌐 Endpoints da API
 
